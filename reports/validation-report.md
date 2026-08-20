@@ -1,7 +1,8 @@
-# RRE International — Product Migration Validation Report
+# RRE International — Full Validation Report
 
-Generated: 2026-08-20T20:28:43.578Z
-Source: JCB Price list month of June 2026.xlsx
+Generated: 2026-08-20T21:02:09.387Z
+
+## Counts
 
 | Metric | Count |
 |---|---|
@@ -9,12 +10,20 @@ Source: JCB Price list month of June 2026.xlsx
 | Products published | 85150 |
 | Products excluded | 0 |
 | Distinct categories | 41 |
-| Products with confirmed category names | 0 of 41 |
-| Slugs that required disambiguation suffix | 5 |
+| Duplicate slugs | 0 |
+| Duplicate canonical URLs | 0 |
 
-**All 85150 Excel rows were published. Zero exclusions.**
+## Image status distribution
 
-## Notes
-- `show_price` is set to `false` on every product per client decision: MRP is stored exactly as sourced but not shown publicly until an export pricing methodology is confirmed.
-- `image_status` is set to `image_pending` for all products pending Phase 3 (PDF image matching) and Phase 4 (placeholder assignment).
-- `category_name` defaults to the raw `category_code` until confirmed via reports/category-mapping-review.csv.
+| Status | Count |
+|---|---|
+| source_image | 0 |
+| placeholder_image | 0 |
+| image_pending | 85150 |
+| generated_image | 0 |
+
+## Result
+
+**PASS — no hard failures.**
+
+
