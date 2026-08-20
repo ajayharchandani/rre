@@ -31,7 +31,7 @@ const PRODUCTS_PATH = path.join(ROOT, 'src', 'data', 'generated', 'products.json
 const STAGING_DIR = path.join(ROOT, 'scripts', '.pdf-image-staging');
 const PUBLISHED_IMAGES_DIR = path.join(ROOT, 'src', 'public', 'images', 'products');
 const REPORT_PATH = path.join(ROOT, 'reports', 'image-mapping-report.csv');
-const PLACEHOLDER_URL = '/images/products/rre-image-coming-soon.svg';
+const PLACEHOLDER_URL = '/images/products/rre-image-coming-soon.png';
 
 function csvEscape(val) {
   const s = val === null || val === undefined ? '' : String(val);

@@ -89,8 +89,8 @@ function main() {
     }
   }
   if (brokenImageFiles) failures.push(`${brokenImageFiles} product(s) marked source_image but the file is missing on disk. Examples: ${brokenSamples.join(', ')}`);
-  const placeholderPath = path.join(PUBLIC_DIR, 'images', 'products', 'rre-image-coming-soon.svg');
-  if (!fs.existsSync(placeholderPath)) failures.push('Standardized placeholder graphic is missing: src/public/images/products/rre-image-coming-soon.svg');
+  const placeholderPath = path.join(PUBLIC_DIR, 'images', 'products', 'rre-image-coming-soon.png');
+  if (!fs.existsSync(placeholderPath)) failures.push('Standardized placeholder graphic is missing: src/public/images/products/rre-image-coming-soon.png');
 
   const excluded = excelRowCount - products.length;
 

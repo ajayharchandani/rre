@@ -20,7 +20,7 @@
         </h1>
 
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; text-align: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
-          <img src="<%= product.image_url || '/images/products/rre-image-coming-soon.svg' %>" alt="<%= product.description %>" style="max-height: 240px; margin: 0 auto; object-fit: contain;">
+          <img src="<%= product.image_url || '/images/products/rre-image-coming-soon.png' %>" alt="<%= product.description %>" style="max-height: 240px; max-width: 100%; width: auto; margin: 0 auto; object-fit: contain; display: block;">
           <% if (product.image_status === 'source_image') { %>
             <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.75rem;">Photo from RRE International's product catalogue</div>
           <% } else { %>
@@ -87,7 +87,7 @@
           </table>
 
           <div style="margin-top: 1.5rem; padding: 1.25rem; background: #f8fafc; border-radius: 8px; font-size: 0.9rem; color: #334155;">
-            Pricing shown in our master price list is for domestic reference only. For export FOB / CIF pricing based on destination and order quantity, please request a quote via WhatsApp or the RFQ form.
+            For export FOB / CIF pricing based on destination and order quantity, please request a quote via WhatsApp or the RFQ form.
           </div>
 
         </div>
