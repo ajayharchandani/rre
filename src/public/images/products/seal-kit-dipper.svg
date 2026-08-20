@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" fill="#f8fafc" rx="8" />
+  <!-- 100mm Dipper Seal Rings -->
+  <circle cx="200" cy="140" r="95" fill="none" stroke="#0284c7" stroke-width="16" />
+  <circle cx="200" cy="140" r="75" fill="none" stroke="#0f172a" stroke-width="10" />
+  <circle cx="200" cy="140" r="55" fill="none" stroke="#f59e0b" stroke-width="8" />
+  <rect x="120" y="15" width="160" height="24" rx="4" fill="#0f172a" />
+  <text x="200" y="31" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">DIPPER SEAL KIT · 991/00156</text>
+  <text x="200" y="275" fill="#64748b" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">100mm Bore × 60mm Rod · 350 Bar Rated</text>
+</svg>

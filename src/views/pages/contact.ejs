@@ -1,0 +1,88 @@
+<!-- src/views/pages/contact.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 3.5rem 0; background: #0f172a; color: #ffffff;">
+  <div class="container" style="max-width: 860px;">
+    <span class="badge badge-brand" style="margin-bottom: 1rem;">Export Sales Desk</span>
+    <h1 style="font-size: 2.5rem; color: #ffffff; margin-bottom: 1rem;">Contact RRE International</h1>
+    <p style="color: #cbd5e1; font-size: 1.15rem; line-height: 1.6;">
+      Reach our international engineering and export sales desk directly for parts inquiries, technical specifications, and wholesale quotations.
+    </p>
+  </div>
+</section>
+
+<section style="padding: 4rem 0; background: #ffffff;">
+  <div class="container" style="max-width: 860px;">
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3.5rem;">
+      
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.75rem;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💬</div>
+        <h2 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: #0f172a;">WhatsApp Export Desk</h2>
+        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Fast technical response and real-time stock verification.</p>
+        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>" style="color: #16a34a; font-weight: 700; font-size: 1.05rem;" target="_blank" rel="noopener">
+          <%= organization.contact.phoneDisplay %>
+        </a>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.75rem;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">✉️</div>
+        <h2 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: #0f172a;">Export Sales Email</h2>
+        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Send formal Bills of Materials and Proforma inquiries.</p>
+        <a href="mailto:<%= organization.contact.email %>" style="color: #0284c7; font-weight: 700; font-size: 1.05rem;">
+          <%= organization.contact.email %>
+        </a>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.75rem;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🏭</div>
+        <h2 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: #0f172a;">Headquarters & Plant</h2>
+        <p style="font-size: 0.9rem; color: #334155; line-height: 1.6;">
+          <strong><%= organization.name %></strong><br>
+          <%= organization.address.street %><br>
+          <%= organization.address.city %>-<%= organization.address.postalCode %>, <%= organization.address.country %>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Quick Message Form -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+      <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: #0f172a;">Send Direct Message to Export Team</h2>
+      
+      <form action="/rfq" method="POST">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Your Name *</label>
+            <input type="text" name="name" required class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="John Doe">
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Company / Country *</label>
+            <input type="text" name="company" required class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="Company Ltd, UAE">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Email Address *</label>
+            <input type="email" name="email" required class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="name@company.com">
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">WhatsApp Number</label>
+            <input type="tel" name="whatsapp" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="+971 50 ...">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.75rem;">
+          <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Your Requirement / Message *</label>
+          <textarea name="description" required rows="4" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="Specify part numbers, machine models, or questions..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1rem;">
+          Send Message
+        </button>
+      </form>
+    </div>
+
+  </div>
+</section>

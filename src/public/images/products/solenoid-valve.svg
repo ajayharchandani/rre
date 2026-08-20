@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" fill="#f8fafc" rx="8" />
+  <!-- Solenoid Body -->
+  <rect x="120" y="90" width="110" height="120" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="2" />
+  <!-- Connector Plugs -->
+  <rect x="70" y="125" width="50" height="50" rx="4" fill="#334155" stroke="#0f172a" stroke-width="2" />
+  <!-- Spool Cartridge -->
+  <rect x="230" y="120" width="100" height="60" rx="4" fill="#64748b" stroke="#0f172a" stroke-width="2" />
+  <circle cx="255" cy="150" r="8" fill="#0f172a" stroke="#f59e0b" stroke-width="2" />
+  <circle cx="295" cy="150" r="8" fill="#0f172a" stroke="#f59e0b" stroke-width="2" />
+  <rect x="110" y="15" width="180" height="24" rx="4" fill="#0f172a" />
+  <text x="200" y="31" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">SOLENOID VALVE · 701/52700</text>
+  <text x="200" y="275" fill="#64748b" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">12V DC Forward/Reverse Shifter Solenoid</text>
+</svg>

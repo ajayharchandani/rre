@@ -1,0 +1,171 @@
+<!-- src/views/pages/part-detail.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 3.5rem 0; background: #0f172a; color: #ffffff;">
+  <div class="container">
+    <div style="max-width: 900px;">
+      
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap;">
+        <span class="badge badge-brand"><%= product.brandName %> Replacement Catalog</span>
+        <span class="badge badge-instock">Verified Compatible Component</span>
+        <span style="font-size: 0.85rem; color: #94a3b8;">HSN Code: <%= product.hsnCode %></span>
+      </div>
+
+      <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); color: #ffffff; margin-bottom: 0.75rem; font-family: monospace; letter-spacing: 0.02em;">
+        Part Number <span style="color: #fbbf24;"><%= product.partNumber %></span>
+      </h1>
+
+      <div style="font-size: 1.35rem; color: #e2e8f0; margin-bottom: 1.25rem; font-weight: 700;">
+        <%= product.name %>
+      </div>
+
+      <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem;">
+        Official replacement part specification for <strong><%= product.machineName %></strong> (<%= product.categoryName %>). Precision engineered by RRE International under ISO 9001:2015 certified quality management.
+      </p>
+
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="/rfq?part=<%= encodeURIComponent(product.partNumber) %>&product=<%= encodeURIComponent(product.name) %>" class="btn btn-primary" style="padding: 0.85rem 1.85rem; font-size: 1rem;">
+          📋 Request Price & Stock for <%= product.partNumber %>
+        </a>
+        <a href="<%= whatsAppUrl %>" class="btn btn-whatsapp" style="padding: 0.85rem 1.85rem; font-size: 1rem;" target="_blank" rel="noopener">
+          💬 Check on WhatsApp (<%= organization.contact.phoneDisplay %>)
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Direct Answer Section for AI / Search Intent -->
+<section style="padding: 3.5rem 0; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
+  <div class="container" style="max-width: 960px;">
+    
+    <!-- Part Visual Schematic & Direct Answer Card -->
+    <div style="background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 2rem; margin-bottom: 3rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 style="font-size: 1.35rem; margin-bottom: 1rem; color: #0f172a;">
+            Quick Reference: What is Part Number <%= product.partNumber %>?
+          </h2>
+          <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.92rem;">
+            <div>
+              <span style="color: #64748b; font-size: 0.78rem; text-transform: uppercase; font-weight: 800; display: block;">Component Name</span>
+              <strong style="color: #0f172a;"><%= product.name %></strong>
+            </div>
+            <div>
+              <span style="color: #64748b; font-size: 0.78rem; text-transform: uppercase; font-weight: 800; display: block;">Primary OE Part Number</span>
+              <strong style="color: #0f172a; font-family: monospace; font-size: 1.1rem;"><%= product.partNumber %></strong>
+            </div>
+            <div>
+              <span style="color: #64748b; font-size: 0.78rem; text-transform: uppercase; font-weight: 800; display: block;">Target Machine Platform</span>
+              <strong style="color: #0f172a;"><%= product.machineName %></strong>
+            </div>
+            <div>
+              <span style="color: #64748b; font-size: 0.78rem; text-transform: uppercase; font-weight: 800; display: block;">Product Category</span>
+              <strong style="color: #0f172a;"><%= product.categoryName %></strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; text-align: center;">
+          <img src="<%= product.image || '/images/products/hydraulic-pump-335y1459.svg' %>" alt="<%= product.name %>" style="max-height: 180px; margin: 0 auto; object-fit: contain;">
+          <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem; font-weight: 700;">
+            OEM Reference Drawing & Specification
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alternative Part Number Cross Reference -->
+    <% if (product.alternativePartNumbers && product.alternativePartNumbers.length > 0) { %>
+      <div style="margin-bottom: 3rem;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #0f172a;">
+          Cross-Reference & Superseded Part Numbers for <%= product.partNumber %>
+        </h3>
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th>Part Number Variant</th>
+              <th>Reference Type</th>
+              <th>Fitment Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% product.alternativePartNumbers.forEach(alt => { %>
+              <tr>
+                <td style="font-family: monospace; font-weight: 700; color: #0f172a;"><%= alt.partNumber %></td>
+                <td><%= alt.type %></td>
+                <td><span class="badge badge-instock">100% Direct Interchangeable</span></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+
+    <!-- Technical Specifications -->
+    <div style="margin-bottom: 3rem;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #0f172a;">
+        Technical Dimensions & Engineering Data
+      </h3>
+      <table class="spec-table">
+        <tbody>
+          <% Object.entries(product.specifications || {}).forEach(([key, val]) => { %>
+            <tr>
+              <th style="width: 40%;"><%= key %></th>
+              <td><%= val %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Machine Model Compatibility List -->
+    <div style="margin-bottom: 3rem;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #0f172a;">
+        Compatible Machine Models for <%= product.partNumber %>
+      </h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+        <% internalLinks.compatibleModels.forEach(cm => { %>
+          <a href="<%= cm.url %>" class="btn btn-outline" style="font-size: 0.9rem;">
+            🚜 <%= cm.name %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Part FAQs -->
+    <% if (product.faqs && product.faqs.length > 0) { %>
+      <div style="margin-bottom: 3rem;">
+        <h3 style="font-size: 1.35rem; margin-bottom: 1.25rem; color: #0f172a;">
+          Frequently Asked Questions About <%= product.partNumber %>
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <% product.faqs.forEach(faq => { %>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+              <h4 style="font-size: 1.05rem; margin-bottom: 0.4rem; color: #0f172a;"><%= faq.question %></h4>
+              <p style="color: #475569; font-size: 0.92rem; line-height: 1.6;"><%= faq.answer %></p>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Bottom Conversion CTA -->
+    <div style="background: linear-gradient(135deg, #090d16, #1e293b); color: #ffffff; padding: 2.5rem; border-radius: 10px; text-align: center;">
+      <h3 style="color: #ffffff; font-size: 1.5rem; margin-bottom: 0.75rem;">Need Price & Shipping Timelines for <%= product.partNumber %>?</h3>
+      <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">
+        Contact our export desk directly. We provide CIF ocean freight and air courier rates to UAE, Saudi Arabia, Africa, and over 45 global markets.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="/rfq?part=<%= encodeURIComponent(product.partNumber) %>" class="btn btn-primary">
+          Submit RFQ for <%= product.partNumber %>
+        </a>
+        <a href="<%= whatsAppUrl %>" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          WhatsApp Fast Chat (<%= organization.contact.phoneDisplay %>)
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>

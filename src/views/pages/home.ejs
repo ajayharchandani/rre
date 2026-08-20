@@ -1,0 +1,822 @@
+<!-- src/views/pages/home.ejs -->
+
+<!-- ===== HERO SECTION — SEARCH-FIRST PREMIUM B2B ===== -->
+<section class="hero-section-light">
+  <div class="hero-bg-slideshow">
+    <div class="hero-bg-slide active" style="background-image: url('/images/hero/slide-2.jpg');"></div>
+    <div class="hero-bg-slide" style="background-image: url('/images/hero/slide-1.jpg');"></div>
+    <div class="hero-bg-slide" style="background-image: url('/images/hero/slide-3.jpg');"></div>
+    <div class="hero-bg-slide" style="background-image: url('/images/hero/slide-4.jpg');"></div>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="container hero-content-wrap">
+
+    <!-- Trust Badges Row -->
+    <div class="hero-trust-row" data-animate="fadeInDown">
+      <span class="trust-chip gold">★ Est. 1984</span>
+      <span class="trust-chip green">✓ ISO 9001:2015 · ECI/2512/2983</span>
+      <span class="trust-chip blue">🌍 Exporting to 45+ Countries</span>
+      <span class="trust-chip gray">85,000+ Verified SKUs</span>
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="hero-headline" data-animate="fadeInUp">
+      High-Precision Replacement Spare Parts<br>
+      <span class="hero-headline-accent">for Heavy Earthmoving Machinery</span>
+    </h1>
+
+    <p class="hero-subline" data-animate="fadeInUp" data-delay="100">
+      Direct manufacturer from <strong>Delhi, India</strong>. Engineered to exact OEM tolerances for
+      <strong>JCB 3DX · Caterpillar 424 · Case 770 · Komatsu PC200</strong>.
+      Worldwide container consolidation with FOB / CIF pricing.
+    </p>
+
+    <!-- PRIMARY SEARCH ENGINE -->
+    <div class="hero-search-card" data-animate="fadeInUp" data-delay="200">
+      <div class="hero-search-label">🔍 Search by Part Number, Product, Machine or Brand</div>
+      <form action="/search" method="GET" class="hero-search-form" id="hero-search-form">
+        <input
+          type="text"
+          name="q"
+          id="hero-search-input"
+          class="hero-search-input js-search-input"
+          placeholder="Enter part number e.g. 335/Y1459, 991/00147, 123/06014, 458/M1047..."
+          autocomplete="off"
+          aria-label="Search part numbers and spare parts"
+        >
+        <button type="submit" class="hero-search-btn" id="hero-search-btn">
+          Search Catalog →
+        </button>
+      </form>
+      <div class="hero-quick-links">
+        <span class="quick-links-label">Fast-Moving SKUs:</span>
+        <a href="/parts/335-y1459" class="hero-quick-chip">335/Y1459 — Hydraulic Pump</a>
+        <a href="/parts/991-00147" class="hero-quick-chip">991/00147 — Boom Seal Kit</a>
+        <a href="/parts/123-06014" class="hero-quick-chip">123/06014 — King Pin</a>
+        <a href="/parts/458-m1047" class="hero-quick-chip">458/M1047 — Crown Wheel</a>
+      </div>
+    </div>
+
+    <!-- Dual CTA Row -->
+    <div class="hero-cta-row" data-animate="fadeInUp" data-delay="300">
+      <a href="/rfq" class="btn btn-primary btn-lg" id="hero-rfq-cta">
+        📋 Submit Bill of Materials (RFQ)
+      </a>
+      <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I need price & availability for earthmoving spare parts. Please assist.') %>"
+         class="btn btn-whatsapp btn-lg" id="hero-whatsapp-cta" target="_blank" rel="noopener">
+        💬 WhatsApp Export Desk · <%= organization.contact.phoneDisplay %>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Slide dots -->
+  <div class="hero-slide-dots">
+    <button class="slide-dot active js-slide-dot" data-slide="0" aria-label="Slide 1"></button>
+    <button class="slide-dot js-slide-dot" data-slide="1" aria-label="Slide 2"></button>
+    <button class="slide-dot js-slide-dot" data-slide="2" aria-label="Slide 3"></button>
+    <button class="slide-dot js-slide-dot" data-slide="3" aria-label="Slide 4"></button>
+  </div>
+</section>
+
+<!-- ===== BRAND & TRUST CREDIBILITY BAR ===== -->
+<section class="brand-credibility-bar">
+  <div class="container">
+    <div class="credibility-label">OEM-Compatible Replacement Parts Engineered For:</div>
+    <div class="brand-pills-row">
+      <div class="brand-pill-item">
+        <span class="brand-pill-logo jcb-pill">JCB</span>
+        <span class="brand-pill-name">3DX · 4DX · JS200</span>
+      </div>
+      <div class="brand-pill-divider"></div>
+      <div class="brand-pill-item">
+        <span class="brand-pill-logo cat-pill">CAT</span>
+        <span class="brand-pill-name">424 · 424B · 424D</span>
+      </div>
+      <div class="brand-pill-divider"></div>
+      <div class="brand-pill-item">
+        <span class="brand-pill-logo case-pill">CASE</span>
+        <span class="brand-pill-name">770 · 770EX · 851EX</span>
+      </div>
+      <div class="brand-pill-divider"></div>
+      <div class="brand-pill-item">
+        <span class="brand-pill-logo komatsu-pill">KOMATSU</span>
+        <span class="brand-pill-name">PC200 · PC210 · PC300</span>
+      </div>
+      <div class="brand-pill-divider"></div>
+      <div class="brand-pill-item">
+        <span class="brand-pill-logo volvo-pill">VOLVO</span>
+        <span class="brand-pill-name">EC160 · EC210 Series</span>
+      </div>
+      <div class="brand-pill-divider"></div>
+      <div class="brand-pill-item">
+        <span class="brand-pill-logo perkins-pill">PERKINS</span>
+        <span class="brand-pill-name">1104 · 1106 Engine</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST ASSURANCE STRIP ===== -->
+<section class="assurance-strip-light">
+  <div class="container">
+    <div class="assurance-strip-grid">
+      <div class="assurance-strip-item">
+        <div class="assurance-icon">🏛️</div>
+        <div>
+          <div class="assurance-title">SWIFT & L/C Payment</div>
+          <div class="assurance-sub">Letter of Credit · Bank Wire Accepted</div>
+        </div>
+      </div>
+      <div class="assurance-strip-item">
+        <div class="assurance-icon">📜</div>
+        <div>
+          <div class="assurance-title">ISO 9001:2015 Certified</div>
+          <div class="assurance-sub">Cert No: <%= organization.certification.certificateNumber %></div>
+        </div>
+      </div>
+      <div class="assurance-strip-item">
+        <div class="assurance-icon">🇮🇳</div>
+        <div>
+          <div class="assurance-title">Direct Manufacturer — India</div>
+          <div class="assurance-sub">In-House CNC Machining & Heat Treatment</div>
+        </div>
+      </div>
+      <div class="assurance-strip-item">
+        <div class="assurance-icon">🚢</div>
+        <div>
+          <div class="assurance-title">Weekly Ocean Freight</div>
+          <div class="assurance-sub">Maersk · MSC · Hapag-Lloyd sailings</div>
+        </div>
+      </div>
+      <div class="assurance-strip-item">
+        <div class="assurance-icon">✈️</div>
+        <div>
+          <div class="assurance-title">Express Air Courier</div>
+          <div class="assurance-sub">DHL & FedEx 24–48h dispatch</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHATSAPP PHOTO LEAD GEN BANNER ===== -->
+<section class="whatsapp-photo-section">
+  <div class="container">
+    <div class="whatsapp-photo-card">
+      <div class="whatsapp-photo-content">
+        <div class="whatsapp-badge-pill">⚡ Instant Part Identification</div>
+        <h2 class="whatsapp-photo-headline">Can't Find Your Part Number?<br>Send Us a Photo on WhatsApp!</h2>
+        <p class="whatsapp-photo-desc">
+          Photo of the damaged part or machine serial plate → Our engineering team identifies exact dimensions, matching OEM part numbers, and delivers an instant wholesale FOB/CIF price quote.
+        </p>
+      </div>
+      <div class="whatsapp-photo-cta">
+        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I need help identifying a spare part. Sending a photo for verification.') %>"
+           class="btn btn-whatsapp btn-xl" id="whatsapp-photo-btn" target="_blank" rel="noopener">
+          📸 Send Photo on WhatsApp
+        </a>
+        <div class="whatsapp-response-tag">⏱ Average response: &lt;15 minutes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAST-MOVING PRODUCTS SECTION ===== -->
+<section class="products-section">
+  <div class="container">
+    <div class="section-header-flex">
+      <div>
+        <div class="section-eyebrow">Verified Export Inventory</div>
+        <h2 class="section-title">Fast-Moving Spare Parts & Components</h2>
+      </div>
+      <a href="/products" class="btn btn-outline">View All 85,000+ SKUs →</a>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div class="category-tabs" id="product-tabs">
+      <button class="cat-tab active js-cat-tab" data-cat="all" id="tab-all">All Fast-Moving</button>
+      <button class="cat-tab js-cat-tab" data-cat="hydraulic-pumps-valves" id="tab-pumps">Hydraulic Pumps</button>
+      <button class="cat-tab js-cat-tab" data-cat="hydraulic-seal-kits" id="tab-seals">Seal Kits</button>
+      <button class="cat-tab js-cat-tab" data-cat="pins-and-bushes" id="tab-pins">Pins & Bushes</button>
+      <button class="cat-tab js-cat-tab" data-cat="transmission-drivetrain" id="tab-transmission">Drivetrain</button>
+      <button class="cat-tab js-cat-tab" data-cat="engine-cooling" id="tab-engine">Engine & Cooling</button>
+      <button class="cat-tab js-cat-tab" data-cat="brakes-chassis" id="tab-brakes">Brakes</button>
+      <button class="cat-tab js-cat-tab" data-cat="electrical-solenoid" id="tab-electrical">Electrical</button>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+      <% products.forEach((prod, idx) => { %>
+        <article class="prod-card js-prod-card" data-cat="<%= prod.categorySlug %>" style="animation-delay: <%= (idx % 8) * 60 %>ms">
+
+          <div class="prod-card-img-wrap">
+            <span class="prod-badge brand-badge"><%= prod.brandName %></span>
+            <% if (prod.availability === 'in_stock') { %>
+              <span class="prod-badge stock-badge">In Stock</span>
+            <% } %>
+            <img
+              src="<%= prod.image || '/images/products/hydraulic-pump.jpg' %>"
+              alt="<%= prod.name %> — Part No <%= prod.partNumber %>"
+              loading="lazy"
+              onerror="this.src='/images/products/hydraulic-pump.jpg'"
+            >
+          </div>
+
+          <div class="prod-card-body">
+            <div class="prod-pn-row">
+              <span class="prod-pn-label">PN: <strong><%= prod.partNumber %></strong></span>
+              <span class="prod-hsn">HSN <%= prod.hsnCode %></span>
+            </div>
+
+            <h3 class="prod-card-title">
+              <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
+            </h3>
+
+            <div class="prod-meta-row">
+              <span>🏗️ <%= prod.machineName %></span>
+              <span>📦 MOQ: <%= prod.moq %></span>
+            </div>
+
+            <p class="prod-card-desc"><%= prod.description.substring(0, 105) %>...</p>
+
+            <div class="prod-card-actions">
+              <a href="/products/<%= prod.slug %>" class="btn btn-outline btn-sm" id="prod-specs-<%= prod.id %>">
+                Specs & Details
+              </a>
+              <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, please share price & availability for Part No. ' + prod.partNumber + ' (' + prod.name + ').') %>"
+                 class="btn btn-whatsapp btn-sm" id="prod-wa-<%= prod.id %>" target="_blank" rel="noopener">
+                💬 WhatsApp Price
+              </a>
+            </div>
+          </div>
+
+        </article>
+      <% }) %>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SUPPORTED MACHINE PLATFORMS ===== -->
+<section class="machines-section">
+  <div class="container">
+    <div class="section-header-center">
+      <div class="section-eyebrow">Machinery Coverage</div>
+      <h2 class="section-title">Engineered for Benchmark Earthmoving Platforms</h2>
+      <p class="section-subtext">Parts matched to exact production year revisions, engine configurations, and hydraulic pump variants.</p>
+    </div>
+
+    <div class="machines-grid">
+      <% featuredMachines.forEach(mach => { %>
+        <div class="machine-card" id="machine-<%= mach.slug %>">
+          <div class="machine-card-img">
+            <img src="<%= mach.image || '/images/machines/jcb-3dx.jpg' %>" alt="<%= mach.name %>" loading="lazy" onerror="this.src='/images/machines/jcb-3dx.jpg'">
+            <span class="machine-brand-badge"><%= mach.brandSlug.toUpperCase() %></span>
+          </div>
+          <div class="machine-card-body">
+            <div class="machine-type-tag"><%= mach.type %></div>
+            <h3 class="machine-title">
+              <a href="/machines/<%= mach.slug %>"><%= mach.name %></a>
+            </h3>
+            <p class="machine-desc"><%= mach.description.substring(0, 140) %>...</p>
+            <div class="machine-card-footer">
+              <a href="/machines/<%= mach.slug %>" class="machine-catalog-link">View Parts Catalog →</a>
+              <a href="/rfq?machine=<%= encodeURIComponent(mach.name) %>" class="btn btn-outline btn-sm">RFQ</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 13-CATEGORY COMPONENT TAXONOMY ===== -->
+<section class="categories-section">
+  <div class="container">
+    <div class="section-header-flex">
+      <div>
+        <div class="section-eyebrow">Component Taxonomy</div>
+        <h2 class="section-title">Explore Spare Parts by Machinery System</h2>
+      </div>
+      <a href="/products" class="btn btn-outline">All Categories →</a>
+    </div>
+
+    <!-- Highlighted User-Requested Categories -->
+    <div class="featured-category-row">
+      <a href="/products/cabin-rubber-parts" class="feat-cat-card feat-cabin" id="feat-cat-cabin">
+        <div class="feat-cat-icon">🚐</div>
+        <div class="feat-cat-label">Cabin & Mounts</div>
+        <div class="feat-cat-sub">Anti-vibration mounts, cabin dampers, hydraulic hoses</div>
+      </a>
+      <a href="/products/cabin-rubber-parts" class="feat-cat-card feat-rubber" id="feat-cat-rubber">
+        <div class="feat-cat-icon">🔵</div>
+        <div class="feat-cat-label">Rubber Parts</div>
+        <div class="feat-cat-sub">Rubber seals, mounts, engine dampers, door weather strips</div>
+      </a>
+      <a href="/products/electrical-solenoid" class="feat-cat-card feat-electrical" id="feat-cat-electrical">
+        <div class="feat-cat-icon">⚡</div>
+        <div class="feat-cat-label">Electrical & Solenoid</div>
+        <div class="feat-cat-sub">12V/24V solenoid valves, alternators, wiring harnesses</div>
+      </a>
+      <a href="/products/fabrication-structural" class="feat-cat-card feat-fabrication" id="feat-cat-fabrication">
+        <div class="feat-cat-icon">🏗️</div>
+        <div class="feat-cat-label">Fabrication</div>
+        <div class="feat-cat-sub">Boom arms, linkage frames, chassis plates, weldments</div>
+      </a>
+    </div>
+
+    <!-- Full Category Grid -->
+    <div class="categories-grid">
+      <% featuredCategories.forEach(cat => { %>
+        <article class="cat-card" id="cat-<%= cat.slug %>">
+          <div class="cat-card-header">
+            <span class="cat-short-badge"><%= cat.shortName %></span>
+            <span class="cat-icon">⚙️</span>
+          </div>
+          <h3 class="cat-title">
+            <a href="/products/<%= cat.slug %>"><%= cat.name %></a>
+          </h3>
+          <p class="cat-desc"><%= cat.description.substring(0, 120) %>...</p>
+          <div class="cat-sub-tags">
+            <% (cat.subcategories || []).slice(0, 3).forEach(sub => { %>
+              <span class="cat-sub-tag"><%= sub %></span>
+            <% }) %>
+          </div>
+          <a href="/products/<%= cat.slug %>" class="cat-browse-link">Browse <%= cat.shortName %> →</a>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ANIMATED GLOBAL SHIPPING MAP ===== -->
+<section class="shipping-map-section">
+  <div class="container">
+    <div class="section-header-center" style="margin-bottom:2.5rem;">
+      <div class="section-eyebrow" style="color:#fbbf24;">Global Export Network</div>
+      <h2 class="section-title" style="color:#fff;">Products Shipped to 45+ Countries</h2>
+      <p class="section-subtext" style="color:#94a3b8;">Weekly container sailings from JNPT Nhava Sheva & Mundra Port to GCC, Africa, South-East Asia and beyond.</p>
+    </div>
+  </div>
+
+  <!-- Full-width animated world map -->
+  <div class="shipping-map-canvas" id="shippingMapCanvas">
+
+    <!-- Real world map as background image -->
+    <div class="world-map-bg"></div>
+
+    <!-- Animated SVG Overlay -->
+    <svg class="shipping-routes-svg" viewBox="0 0 1440 720" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <!-- Glow filter for routes -->
+        <filter id="routeGlow">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- Glow for origin pulse -->
+        <filter id="originGlow">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- Route gradient — orange to destination -->
+        <linearGradient id="routeGradUAE" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#ef4444" stop-opacity="0.7"/>
+        </linearGradient>
+        <linearGradient id="routeGradAfrica" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#10b981" stop-opacity="0.7"/>
+        </linearGradient>
+        <linearGradient id="routeGradEurope" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.7"/>
+        </linearGradient>
+        <linearGradient id="routeGradAsia" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#a78bfa" stop-opacity="0.7"/>
+        </linearGradient>
+      </defs>
+
+      <!-- ── SHIPPING ROUTES (curved paths from Delhi) ── -->
+      <!-- Delhi → UAE (Dubai) -->
+      <path class="ship-route route-gcc" d="M 880 310 Q 790 240 710 295" fill="none" stroke="url(#routeGradUAE)" stroke-width="2"/>
+      <!-- Delhi → Saudi Arabia -->
+      <path class="ship-route route-gcc" d="M 880 310 Q 780 255 690 305" fill="none" stroke="url(#routeGradUAE)" stroke-width="1.5"/>
+      <!-- Delhi → Qatar -->
+      <path class="ship-route route-gcc" d="M 880 310 Q 800 230 720 280" fill="none" stroke="url(#routeGradUAE)" stroke-width="1.5"/>
+      <!-- Delhi → Oman -->
+      <path class="ship-route route-gcc" d="M 880 310 Q 820 295 760 330" fill="none" stroke="url(#routeGradUAE)" stroke-width="1.5"/>
+      <!-- Delhi → Nigeria (sea — around India, through Red Sea, Atlantic) -->
+      <path class="ship-route route-africa" d="M 880 310 Q 760 370 640 350 Q 560 340 520 370 Q 490 390 468 380" fill="none" stroke="url(#routeGradAfrica)" stroke-width="2"/>
+      <!-- Delhi → Kenya -->
+      <path class="ship-route route-africa" d="M 880 310 Q 800 370 740 360 Q 680 355 640 370 Q 600 385 590 400" fill="none" stroke="url(#routeGradAfrica)" stroke-width="1.5"/>
+      <!-- Delhi → South Africa -->
+      <path class="ship-route route-africa" d="M 880 310 Q 830 400 780 420 Q 720 445 680 460 Q 620 480 580 490" fill="none" stroke="url(#routeGradAfrica)" stroke-width="1.5"/>
+      <!-- Delhi → UK / Europe -->
+      <path class="ship-route route-europe" d="M 880 310 Q 820 250 750 230 Q 680 210 650 210 Q 600 210 560 195" fill="none" stroke="url(#routeGradEurope)" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <!-- Delhi → Australia -->
+      <path class="ship-route route-asia" d="M 880 310 Q 970 370 1010 390 Q 1050 410 1080 420" fill="none" stroke="url(#routeGradAsia)" stroke-width="1.5" stroke-dasharray="6,4"/>
+      <!-- Delhi → Malaysia/Singapore -->
+      <path class="ship-route route-asia" d="M 880 310 Q 950 330 990 345" fill="none" stroke="url(#routeGradAsia)" stroke-width="1.5"/>
+      <!-- Delhi → Bangladesh/Myanmar -->
+      <path class="ship-route route-asia" d="M 880 310 Q 930 300 955 295" fill="none" stroke="url(#routeGradAsia)" stroke-width="1.5"/>
+
+      <!-- ── ANIMATED CARGO DOTS on routes ── -->
+      <!-- UAE route dot -->
+      <circle class="cargo-dot dot-gcc" r="5" fill="#fbbf24" filter="url(#routeGlow)">
+        <animateMotion dur="4s" repeatCount="indefinite" begin="0s">
+          <mpath href="#routeUAE"/>
+        </animateMotion>
+      </circle>
+      <!-- Inline path refs for animateMotion -->
+      <path id="routeUAE" d="M 880 310 Q 790 240 710 295" fill="none"/>
+      <path id="routeSaudi" d="M 880 310 Q 780 255 690 305" fill="none"/>
+      <path id="routeNigeria" d="M 880 310 Q 760 370 640 350 Q 560 340 520 370 Q 490 390 468 380" fill="none"/>
+      <path id="routeKenya" d="M 880 310 Q 800 370 740 360 Q 680 355 640 370 Q 600 385 590 400" fill="none"/>
+      <path id="routeSAfrica" d="M 880 310 Q 830 400 780 420 Q 720 445 680 460 Q 620 480 580 490" fill="none"/>
+      <path id="routeEurope" d="M 880 310 Q 820 250 750 230 Q 680 210 650 210 Q 600 210 560 195" fill="none"/>
+      <path id="routeAustralia" d="M 880 310 Q 970 370 1010 390 Q 1050 410 1080 420" fill="none"/>
+      <path id="routeSingapore" d="M 880 310 Q 950 330 990 345" fill="none"/>
+
+      <!-- cargo dot — UAE -->
+      <circle r="5" fill="#f59e0b" filter="url(#routeGlow)">
+        <animateMotion dur="3.5s" repeatCount="indefinite" begin="0s"><mpath href="#routeUAE"/></animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3.5s" repeatCount="indefinite"/>
+      </circle>
+      <!-- cargo dot — Saudi (delayed) -->
+      <circle r="4" fill="#fb923c" filter="url(#routeGlow)">
+        <animateMotion dur="4s" repeatCount="indefinite" begin="1.2s"><mpath href="#routeSaudi"/></animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite" begin="1.2s"/>
+      </circle>
+      <!-- cargo dot — Nigeria (sea, slow) -->
+      <circle r="5" fill="#10b981" filter="url(#routeGlow)">
+        <animateMotion dur="7s" repeatCount="indefinite" begin="0.5s"><mpath href="#routeNigeria"/></animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="7s" repeatCount="indefinite" begin="0.5s"/>
+      </circle>
+      <!-- cargo dot — Kenya -->
+      <circle r="4" fill="#34d399" filter="url(#routeGlow)">
+        <animateMotion dur="6s" repeatCount="indefinite" begin="2s"><mpath href="#routeKenya"/></animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="6s" repeatCount="indefinite" begin="2s"/>
+      </circle>
+      <!-- cargo dot — South Africa (long) -->
+      <circle r="4" fill="#6ee7b7" filter="url(#routeGlow)">
+        <animateMotion dur="8.5s" repeatCount="indefinite" begin="3s"><mpath href="#routeSAfrica"/></animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="8.5s" repeatCount="indefinite" begin="3s"/>
+      </circle>
+      <!-- cargo dot — Europe -->
+      <circle r="4" fill="#60a5fa" filter="url(#routeGlow)">
+        <animateMotion dur="6.5s" repeatCount="indefinite" begin="1.8s"><mpath href="#routeEurope"/></animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="6.5s" repeatCount="indefinite" begin="1.8s"/>
+      </circle>
+      <!-- cargo dot — Australia -->
+      <circle r="4" fill="#c084fc" filter="url(#routeGlow)">
+        <animateMotion dur="5s" repeatCount="indefinite" begin="0.9s"><mpath href="#routeAustralia"/></animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="5s" repeatCount="indefinite" begin="0.9s"/>
+      </circle>
+      <!-- cargo dot — Singapore -->
+      <circle r="4" fill="#a78bfa" filter="url(#routeGlow)">
+        <animateMotion dur="4s" repeatCount="indefinite" begin="2.5s"><mpath href="#routeSingapore"/></animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite" begin="2.5s"/>
+      </circle>
+
+      <!-- ── DESTINATION MARKERS ── -->
+      <!-- UAE / Dubai -->
+      <g class="dest-marker">
+        <circle cx="710" cy="295" r="8" fill="#ef4444" opacity="0.9" filter="url(#routeGlow)"/>
+        <circle cx="710" cy="295" r="14" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.5">
+          <animate attributeName="r" values="8;18;8" dur="2.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.7;0;0.7" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <rect x="650" y="268" width="92" height="20" rx="4" fill="rgba(0,0,0,0.65)"/>
+        <text x="696" y="282" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">🇦🇪 UAE / Dubai</text>
+      </g>
+      <!-- Saudi Arabia -->
+      <g class="dest-marker">
+        <circle cx="690" cy="305" r="7" fill="#ef4444" opacity="0.85"/>
+        <rect x="628" y="310" width="100" height="18" rx="4" fill="rgba(0,0,0,0.65)"/>
+        <text x="678" y="323" text-anchor="middle" fill="#fbbf24" font-size="9.5" font-weight="700">🇸🇦 Saudi Arabia</text>
+      </g>
+      <!-- Qatar -->
+      <g class="dest-marker">
+        <circle cx="720" cy="280" r="5.5" fill="#f97316" opacity="0.9"/>
+        <rect x="666" y="263" width="66" height="16" rx="3" fill="rgba(0,0,0,0.65)"/>
+        <text x="699" y="275" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="700">🇶🇦 Qatar</text>
+      </g>
+      <!-- Nigeria -->
+      <g class="dest-marker">
+        <circle cx="468" cy="380" r="7" fill="#10b981" opacity="0.9" filter="url(#routeGlow)"/>
+        <circle cx="468" cy="380" r="13" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.4">
+          <animate attributeName="r" values="7;16;7" dur="3s" repeatCount="indefinite" begin="1s"/>
+          <animate attributeName="opacity" values="0.6;0;0.6" dur="3s" repeatCount="indefinite" begin="1s"/>
+        </circle>
+        <rect x="414" y="355" width="84" height="18" rx="4" fill="rgba(0,0,0,0.65)"/>
+        <text x="456" y="368" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="700">🇳🇬 Nigeria</text>
+      </g>
+      <!-- Kenya -->
+      <g class="dest-marker">
+        <circle cx="590" cy="400" r="6.5" fill="#10b981" opacity="0.9"/>
+        <rect x="547" y="407" width="72" height="18" rx="3" fill="rgba(0,0,0,0.65)"/>
+        <text x="583" y="420" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="700">🇰🇪 Kenya</text>
+      </g>
+      <!-- South Africa -->
+      <g class="dest-marker">
+        <circle cx="580" cy="490" r="6.5" fill="#34d399" opacity="0.9"/>
+        <rect x="522" y="497" width="100" height="18" rx="3" fill="rgba(0,0,0,0.65)"/>
+        <text x="572" y="510" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="700">🇿🇦 South Africa</text>
+      </g>
+      <!-- UK / Europe -->
+      <g class="dest-marker">
+        <circle cx="560" cy="195" r="6.5" fill="#60a5fa" opacity="0.9"/>
+        <rect x="498" y="178" width="90" height="18" rx="3" fill="rgba(0,0,0,0.65)"/>
+        <text x="543" y="191" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="700">🇬🇧 UK / Europe</text>
+      </g>
+      <!-- Australia -->
+      <g class="dest-marker">
+        <circle cx="1080" cy="420" r="6.5" fill="#c084fc" opacity="0.9"/>
+        <rect x="1020" y="403" width="86" height="18" rx="3" fill="rgba(0,0,0,0.65)"/>
+        <text x="1063" y="416" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="700">🇦🇺 Australia</text>
+      </g>
+      <!-- Singapore / SEA -->
+      <g class="dest-marker">
+        <circle cx="990" cy="345" r="6.5" fill="#a78bfa" opacity="0.9"/>
+        <rect x="930" y="328" width="100" height="18" rx="3" fill="rgba(0,0,0,0.65)"/>
+        <text x="980" y="341" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="700">🇸🇬 S.E. Asia</text>
+      </g>
+
+      <!-- ── ORIGIN MARKER — Delhi, India ── -->
+      <g class="origin-marker" filter="url(#originGlow)">
+        <!-- Pulsing rings -->
+        <circle cx="880" cy="310" r="18" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.8">
+          <animate attributeName="r" values="14;30;14" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.8;0;0.8" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="880" cy="310" r="10" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.6">
+          <animate attributeName="r" values="10;22;10" dur="2s" repeatCount="indefinite" begin="0.4s"/>
+          <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" begin="0.4s"/>
+        </circle>
+        <circle cx="880" cy="310" r="9" fill="#f59e0b"/>
+        <circle cx="880" cy="310" r="5" fill="#fff"/>
+        <!-- Label -->
+        <rect x="820" y="323" width="120" height="36" rx="6" fill="rgba(15,23,42,0.9)" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="880" y="337" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="800">📦 Delhi, India</text>
+        <text x="880" y="351" text-anchor="middle" fill="#94a3b8" font-size="8.5">RRE Manufacturing HQ</text>
+      </g>
+    </svg>
+
+    <!-- Floating Live Stats Overlay -->
+    <div class="map-live-stats">
+      <div class="map-stat-chip">
+        <span class="map-stat-pulse"></span>
+        <strong>45+</strong> Countries
+      </div>
+      <div class="map-stat-chip">
+        <span class="map-stat-pulse gcc"></span>
+        <strong>GCC</strong> 3–5 Days
+      </div>
+      <div class="map-stat-chip">
+        <span class="map-stat-pulse africa"></span>
+        <strong>Africa</strong> 18–28 Days
+      </div>
+      <div class="map-stat-chip">
+        <span class="map-stat-pulse europe"></span>
+        <strong>Europe</strong> 20–25 Days
+      </div>
+    </div>
+  </div>
+
+  <!-- Market Cards below map -->
+  <div class="container" style="margin-top:2.5rem;">
+    <div class="export-markets-grid">
+      <% featuredCountries.forEach(cnt => { %>
+        <div class="export-market-card" id="market-<%= cnt.slug %>">
+          <div class="market-card-top">
+            <h3 class="market-name"><%= cnt.name %></h3>
+            <span class="market-region-tag"><%= cnt.region %></span>
+          </div>
+          <div class="market-transit">⏱ <strong><%= cnt.transitTime %></strong> Sea Transit</div>
+          <div class="market-ports">
+            <strong>Ports:</strong> <%= (cnt.majorPorts || []).slice(0,2).join(' · ') %>
+          </div>
+          <a href="/export/<%= cnt.slug %>" class="market-detail-link">Logistics Info & Requirements →</a>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ===== MANUFACTURING EXCELLENCE SECTION ===== -->
+<section class="manufacturing-section">
+  <div class="container">
+    <div class="manufacturing-grid">
+      <div class="manufacturing-content">
+        <div class="section-eyebrow">In-House Manufacturing — Delhi NCR</div>
+        <h2 class="section-title">Precision Manufactured to Exact OEM Tolerances</h2>
+        <p style="color: #64748b; line-height: 1.7; margin-bottom: 1.5rem;">
+          Our Delhi facility houses CNC turning centers, 4-axis machining, induction surface hardening furnaces,
+          precision cylindrical grinders, and a Coordinate Measuring Machine (CMM) — delivering parts that match
+          or exceed original equipment quality.
+        </p>
+
+        <div class="manufacturing-capabilities-grid">
+          <div class="capability-item">
+            <span class="cap-icon">⚙️</span>
+            <div>
+              <div class="cap-title">CNC 4-Axis Machining</div>
+              <div class="cap-desc">High-precision turning centers</div>
+            </div>
+          </div>
+          <div class="capability-item">
+            <span class="cap-icon">🔥</span>
+            <div>
+              <div class="cap-title">Induction Hardening</div>
+              <div class="cap-desc">58–62 HRC case depth control</div>
+            </div>
+          </div>
+          <div class="capability-item">
+            <span class="cap-icon">📏</span>
+            <div>
+              <div class="cap-title">CMM Dimensional Check</div>
+              <div class="cap-desc">Ra 0.4µm surface finish verified</div>
+            </div>
+          </div>
+          <div class="capability-item">
+            <span class="cap-icon">🧪</span>
+            <div>
+              <div class="cap-title">400-Bar Hydrostatic Test</div>
+              <div class="cap-desc">High-pressure cylinder testing rig</div>
+            </div>
+          </div>
+          <div class="capability-item">
+            <span class="cap-icon">📦</span>
+            <div>
+              <div class="cap-title">VCI Anti-Corrosion Pack</div>
+              <div class="cap-desc">Oceanic barrier packaging</div>
+            </div>
+          </div>
+          <div class="capability-item">
+            <span class="cap-icon">🏆</span>
+            <div>
+              <div class="cap-title">ISO 9001:2015 QMS</div>
+              <div class="cap-desc">Euroswiss Certification Inc.</div>
+            </div>
+          </div>
+        </div>
+
+        <a href="/about" class="btn btn-primary" style="margin-top: 1.5rem;" id="about-facility-link">
+          View Manufacturing Facility →
+        </a>
+      </div>
+
+      <div class="manufacturing-stats-panel">
+        <div class="stat-card-large">
+          <div class="stat-big-num">1984</div>
+          <div class="stat-big-label">Year Established</div>
+        </div>
+        <div class="stat-card-large highlight">
+          <div class="stat-big-num">85,000+</div>
+          <div class="stat-big-label">Reference SKUs</div>
+        </div>
+        <div class="stat-card-large">
+          <div class="stat-big-num">45+</div>
+          <div class="stat-big-label">Export Countries</div>
+        </div>
+        <div class="stat-card-large">
+          <div class="stat-big-num">40+</div>
+          <div class="stat-big-label">Years of Expertise</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TECHNICAL RESOURCES ===== -->
+<section class="resources-section">
+  <div class="container">
+    <div class="section-header-flex">
+      <div>
+        <div class="section-eyebrow">Engineering Knowledge</div>
+        <h2 class="section-title">Technical Procurement Guides</h2>
+      </div>
+      <a href="/resources" class="btn btn-outline">All Guides →</a>
+    </div>
+
+    <div class="resources-grid">
+      <% recentResources.forEach(res => { %>
+        <article class="resource-card">
+          <div class="resource-category-tag"><%= res.category %></div>
+          <h3 class="resource-title">
+            <a href="/resources/<%= res.slug %>"><%= res.title %></a>
+          </h3>
+          <p class="resource-excerpt"><%= res.excerpt %></p>
+          <div class="resource-meta">
+            <span>📖 <%= res.readingTime %></span>
+            <span>by <%= res.author.split(' ').slice(0,3).join(' ') %></span>
+          </div>
+          <a href="/resources/<%= res.slug %>" class="resource-read-link">Read Guide →</a>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== TRUST & CERTIFICATIONS SECTION ===== -->
+<section class="certifications-section" id="certifications">
+  <div class="container">
+    <div class="cert-section-header">
+      <div class="section-eyebrow">Verified &amp; Certified Supplier</div>
+      <h2 class="section-title">Government Registered &amp; Quality Accredited</h2>
+      <p class="section-subtext">
+        RRE International holds valid government export licenses, MSME credentials, and international ISO 9001:2015 accreditation for seamless global trade.
+      </p>
+    </div>
+
+    <!-- 3 Horizontal Certificate Cards -->
+    <div class="cert-cards-horizontal">
+      <!-- 1. ISO 9001:2015 -->
+      <div class="cert-item-card" id="cert-iso">
+        <span class="cert-item-badge iso">🏅 ISO 9001:2015 Certified</span>
+        <div class="cert-thumb-frame" onclick="openCertLightbox('/images/cert-iso9001.jpg', 'ISO 9001 : 2015 Quality Management Systems')">
+          <img src="/images/cert-iso9001.jpg" alt="ISO 9001:2015 Certificate - RRE International" class="cert-thumb-img" loading="lazy">
+          <div class="cert-thumb-overlay">
+            <span class="cert-view-btn">🔍 View Full Certificate</span>
+          </div>
+        </div>
+        <div class="cert-meta-info">
+          <h3 class="cert-doc-title">ISO 9001 : 2015 QMS</h3>
+          <p class="cert-doc-sub">Cert No: <strong>ECI/2512/2983</strong> · Euroswiss Certification Inc., Switzerland. Accredited by GEAC.</p>
+        </div>
+      </div>
+
+      <!-- 2. IEC (Importer Exporter Code) -->
+      <div class="cert-item-card" id="cert-iec">
+        <span class="cert-item-badge iec">🇮🇳 Govt. IEC Holder</span>
+        <div class="cert-thumb-frame" onclick="openCertLightbox('/images/cert-iec.jpg', 'Importer-Exporter Code (IEC) - Ministry of Commerce &amp; Industry')">
+          <img src="/images/cert-iec.jpg" alt="IEC Certificate - RRE International" class="cert-thumb-img" loading="lazy">
+          <div class="cert-thumb-overlay">
+            <span class="cert-view-btn">🔍 View Full Certificate</span>
+          </div>
+        </div>
+        <div class="cert-meta-info">
+          <h3 class="cert-doc-title">Importer-Exporter Code</h3>
+          <p class="cert-doc-sub">IEC No: <strong>AXBPJ4236F</strong> · DGFT, Ministry of Commerce &amp; Industry, Government of India.</p>
+        </div>
+      </div>
+
+      <!-- 3. MSME Udyam -->
+      <div class="cert-item-card" id="cert-udyam">
+        <span class="cert-item-badge udyam">🏭 MSME Registered</span>
+        <div class="cert-thumb-frame" onclick="openCertLightbox('/images/cert-udyam.jpg', 'Udyam Registration Certificate - Ministry of MSME')">
+          <img src="/images/cert-udyam.jpg" alt="Udyam Registration Certificate - RRE International" class="cert-thumb-img" loading="lazy">
+          <div class="cert-thumb-overlay">
+            <span class="cert-view-btn">🔍 View Full Certificate</span>
+          </div>
+        </div>
+        <div class="cert-meta-info">
+          <h3 class="cert-doc-title">MSME Udyam Registration</h3>
+          <p class="cert-doc-sub">Reg No: <strong>UDYAM-DL-01-0067628</strong> · Ministry of Micro, Small &amp; Medium Enterprises, Govt. of India.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="cert-lightbox-modal" id="certLightboxModal" onclick="closeCertLightbox()">
+    <div class="cert-lightbox-container" onclick="event.stopPropagation()">
+      <div class="cert-lightbox-header">
+        <span class="cert-lightbox-title" id="certLightboxTitle">Certificate Viewer</span>
+        <button class="cert-lightbox-close" onclick="closeCertLightbox()" aria-label="Close modal">✕</button>
+      </div>
+      <div class="cert-lightbox-body">
+        <img id="certLightboxImg" src="" alt="Certificate Document">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL RFQ CTA BANNER ===== -->
+<section class="rfq-cta-section">
+  <div class="container">
+    <div class="rfq-cta-card">
+      <div class="rfq-cta-content">
+        <div class="rfq-cta-eyebrow">🚀 Direct Manufacturer Pricing</div>
+        <h2 class="rfq-cta-headline">Ready to Source Direct from the Factory?</h2>
+        <p class="rfq-cta-desc">
+          Submit your complete Bill of Materials for a wholesale FOB/CIF quotation, or chat directly with our export engineering desk on WhatsApp for urgent part identification and pricing.
+        </p>
+      </div>
+      <div class="rfq-cta-actions">
+        <a href="/rfq" class="btn btn-primary btn-xl" id="final-rfq-btn">
+          📋 Submit RFQ / Bill of Materials
+        </a>
+        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I want to discuss a bulk spare parts requirement.') %>"
+           class="btn btn-whatsapp btn-xl" id="final-wa-btn" target="_blank" rel="noopener">
+          💬 Chat with Export Specialist · <%= organization.contact.phoneDisplay %>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,56 @@
+<!-- src/views/pages/about.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 3.5rem 0; background: #0f172a; color: #ffffff;">
+  <div class="container" style="max-width: 860px;">
+    <span class="badge badge-brand" style="margin-bottom: 1rem;">Engineering Heritage Since <%= organization.established %></span>
+    <h1 style="font-size: 2.5rem; color: #ffffff; margin-bottom: 1rem;">About RRE International</h1>
+    <p style="color: #cbd5e1; font-size: 1.15rem; line-height: 1.6;">
+      <%= organization.tagline %> — Four decades of specialized precision manufacturing in earthmoving machinery replacement components, serving international distributors and contractors from Delhi, India.
+    </p>
+  </div>
+</section>
+
+<section style="padding: 4rem 0; background: #ffffff;">
+  <div class="container" style="max-width: 860px;">
+    
+    <h2 style="font-size: 1.85rem; margin-bottom: 1.25rem;">Our Manufacturing & Quality Control Infrastructure</h2>
+    <p style="color: #334155; font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+      Founded under the leadership of Mr. Rajender Kumar Jain, RRE International has grown from a specialized metallurgical workshop into an ISO 9001:2015 certified global supplier. Our Delhi NCR manufacturing facilities combine state-of-the-art CNC turning centers, specialized induction hardening furnaces, and hydraulic pressure testing rigs.
+    </p>
+
+    <!-- Facility Capabilities Grid -->
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2rem; margin-bottom: 3rem;">
+      <h3 style="font-size: 1.3rem; margin-bottom: 1.25rem; color: #0f172a;"><%= organization.facility.title %></h3>
+      <ul style="list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.95rem; color: #334155;">
+        <% organization.facility.capabilities.forEach(cap => { %>
+          <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <span style="color: #f59e0b; font-weight: 800;">✓</span>
+            <span><%= cap %></span>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+
+    <!-- ISO 9001:2015 Verification Details -->
+    <div style="border: 2px solid #f59e0b; border-radius: 8px; padding: 2rem; margin-bottom: 3rem; background: #fffbeb;">
+      <h3 style="color: #92400e; font-size: 1.3rem; margin-bottom: 0.75rem;">Official Quality Certification</h3>
+      <p style="font-size: 0.95rem; color: #78350f; margin-bottom: 1rem; line-height: 1.6;">
+        <strong>Certificate Standard:</strong> <%= organization.certification.title %><br>
+        <strong>Certificate Number:</strong> <%= organization.certification.certificateNumber %><br>
+        <strong>Issuing Registrar:</strong> <%= organization.certification.issuingBody %><br>
+        <strong>Certified Scope:</strong> <%= organization.certification.scope %>
+      </p>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <a href="/rfq" class="btn btn-primary">
+        Submit RFQ for Manufacturing
+      </a>
+      <a href="/export-process" class="btn btn-outline">
+        View Shipping & Incoterms →
+      </a>
+    </div>
+
+  </div>
+</section>

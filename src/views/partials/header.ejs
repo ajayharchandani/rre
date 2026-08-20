@@ -1,0 +1,99 @@
+<!-- src/views/partials/header.ejs -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-main">
+      
+      <!-- Official Brand Logo -->
+      <a href="/" class="logo-link" aria-label="RRE International Homepage">
+        <img 
+          src="/images/rre-logo.jpg" 
+          alt="RRE International" 
+          class="header-logo-img"
+          width="46"
+          height="46"
+          style="width:46px;height:46px;object-fit:contain;flex-shrink:0;"
+        >
+        <div class="header-logo-text">
+          <span class="header-logo-brand">RRE<sup>™</sup></span>
+          <span class="header-logo-sub">INTERNATIONAL</span>
+        </div>
+      </a>
+
+      <!-- Header Search Engine Bar (Desktop) -->
+      <div class="search-form-wrapper header-desktop-search">
+        <form action="/search" method="GET" class="search-input-group">
+          <input 
+            type="text" 
+            name="q" 
+            class="search-input js-search-input" 
+            placeholder="Search Part No. (e.g. 335/Y1459, 991/00147) or Product..."
+            autocomplete="off"
+            value="<%= typeof query !== 'undefined' ? query : '' %>"
+            aria-label="Search part numbers and heavy equipment spare parts"
+          >
+          <button type="submit" class="search-btn" aria-label="Submit search">
+            Search
+          </button>
+        </form>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="/products" class="nav-link <%= currentPath.startsWith('/products') ? 'active' : '' %>">Products & Categories</a>
+        <a href="/brands" class="nav-link <%= currentPath.startsWith('/brands') ? 'active' : '' %>">Brands</a>
+        <a href="/machines" class="nav-link <%= currentPath.startsWith('/machines') ? 'active' : '' %>">Machines</a>
+        <a href="/export" class="nav-link <%= currentPath.startsWith('/export') ? 'active' : '' %>">Export Markets</a>
+        <a href="/resources" class="nav-link <%= currentPath.startsWith('/resources') ? 'active' : '' %>">Technical Guides</a>
+        <a href="/about" class="nav-link <%= currentPath === '/about' ? 'active' : '' %>">Facility</a>
+      </nav>
+
+      <!-- Primary Action CTA -->
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <a href="/rfq" class="btn btn-primary" style="white-space: nowrap;">
+          Get Export Quote (RFQ)
+        </a>
+        <button class="btn btn-secondary js-mobile-menu-toggle mobile-menu-btn" aria-label="Toggle mobile menu">
+          ☰
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Search Bar (always visible on mobile below header) -->
+    <div class="header-mobile-search">
+      <div class="search-form-wrapper">
+        <form action="/search" method="GET" class="search-input-group">
+          <input 
+            type="text" 
+            name="q" 
+            class="search-input js-search-input" 
+            placeholder="Search Part No. (335/Y1459, 123/06014)..."
+            autocomplete="off"
+            value="<%= typeof query !== 'undefined' ? query : '' %>"
+            aria-label="Search part numbers"
+          >
+          <button type="submit" class="search-btn">
+            Search
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="js-mobile-nav-drawer" style="display: none; background: #0b1120; border-top: 1px solid #1e293b; padding: 1.25rem 0;">
+    <div class="container">
+      <nav style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <a href="/products" style="color: #cbd5e1; font-size: 1rem; font-weight: 600; padding: 0.5rem 0; border-bottom: 1px solid #1e293b;">Catalog & Categories</a>
+        <a href="/brands" style="color: #cbd5e1; font-size: 1rem; font-weight: 600; padding: 0.5rem 0; border-bottom: 1px solid #1e293b;">Supported Brands (JCB, CAT, Case, Komatsu)</a>
+        <a href="/machines" style="color: #cbd5e1; font-size: 1rem; font-weight: 600; padding: 0.5rem 0; border-bottom: 1px solid #1e293b;">Machine Models (JCB 3DX, 4DX, JS200)</a>
+        <a href="/export" style="color: #cbd5e1; font-size: 1rem; font-weight: 600; padding: 0.5rem 0; border-bottom: 1px solid #1e293b;">Export Destinations (UAE, Saudi, Africa)</a>
+        <a href="/resources" style="color: #cbd5e1; font-size: 1rem; font-weight: 600; padding: 0.5rem 0; border-bottom: 1px solid #1e293b;">Engineering & Procurement Guides</a>
+        <a href="/about" style="color: #cbd5e1; font-size: 1rem; font-weight: 600; padding: 0.5rem 0; border-bottom: 1px solid #1e293b;">Manufacturing Plant & Quality Labs</a>
+        <a href="/export-process" style="color: #cbd5e1; font-size: 1rem; font-weight: 600; padding: 0.5rem 0; border-bottom: 1px solid #1e293b;">Container Shipping & Incoterms</a>
+        <a href="/contact" style="color: #cbd5e1; font-size: 1rem; font-weight: 600; padding: 0.5rem 0;">Export Sales Desk Contact</a>
+      </nav>
+    </div>
+  </div>
+</header>

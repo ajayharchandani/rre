@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" fill="#f8fafc" rx="8" />
+  <rect x="150" y="60" width="100" height="180" rx="8" fill="#e2e8f0" stroke="#0f172a" stroke-width="2.5" />
+  <!-- Pleated Media Lines -->
+  <g stroke="#cbd5e1" stroke-width="2">
+    <line x1="160" y1="80" x2="160" y2="220" />
+    <line x1="175" y1="80" x2="175" y2="220" />
+    <line x1="190" y1="80" x2="190" y2="220" />
+    <line x1="205" y1="80" x2="205" y2="220" />
+    <line x1="220" y1="80" x2="220" y2="220" />
+    <line x1="235" y1="80" x2="235" y2="220" />
+  </g>
+  <!-- End Caps -->
+  <rect x="140" y="50" width="120" height="20" rx="4" fill="#334155" stroke="#0f172a" stroke-width="2" />
+  <rect x="140" y="230" width="120" height="20" rx="4" fill="#334155" stroke="#0f172a" stroke-width="2" />
+  <rect x="110" y="15" width="180" height="24" rx="4" fill="#0f172a" />
+  <text x="200" y="31" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">HYDRAULIC FILTER · 32/925346</text>
+  <text x="200" y="275" fill="#64748b" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">10-Micron Microglass · Return Line Filter</text>
+</svg>

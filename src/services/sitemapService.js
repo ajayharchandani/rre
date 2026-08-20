@@ -1,0 +1,229 @@
+// src/services/sitemapService.js
+const { categories, brands, machines, machineModels, products, countries, resources } = require('../data/catalog');
+const PartNumberNormalizer = require('./partNumberNormalizer');
+const SeoService = require('./seoService');
+
+class SitemapService {
+  static getBaseUrl() {
+    return SeoService.getBaseUrl();
+  }
+
+  static getToday() {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  /**
+   * Master Sitemap Index: /sitemap.xml
+   */
+  static getMasterSitemapIndex() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const sitemaps = [
+      `${baseUrl}/sitemaps/main.xml`,
+      `${baseUrl}/sitemaps/products.xml`,
+      `${baseUrl}/sitemaps/categories.xml`,
+      `${baseUrl}/sitemaps/brands.xml`,
+      `${baseUrl}/sitemaps/machines.xml`,
+      `${baseUrl}/sitemaps/models.xml`,
+      `${baseUrl}/sitemaps/parts.xml`,
+      `${baseUrl}/sitemaps/countries.xml`,
+      `${baseUrl}/sitemaps/resources.xml`
+    ];
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+    sitemaps.forEach(loc => {
+      xml += `  <sitemap>\n`;
+      xml += `    <loc>${loc}</loc>\n`;
+      xml += `    <lastmod>${today}</lastmod>\n`;
+      xml += `  </sitemap>\n`;
+    });
+    xml += `</sitemapindex>`;
+
+    return xml;
+  }
+
+  /**
+   * Helper to format a urlset XML
+   */
+  static formatUrlSet(items = []) {
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+    items.forEach(item => {
+      xml += `  <url>\n`;
+      xml += `    <loc>${item.loc}</loc>\n`;
+      xml += `    <lastmod>${item.lastmod || this.getToday()}</lastmod>\n`;
+      xml += `    <changefreq>${item.changefreq || 'weekly'}</changefreq>\n`;
+      xml += `    <priority>${item.priority || '0.7'}</priority>\n`;
+      xml += `  </url>\n`;
+    });
+    xml += `</urlset>`;
+    return xml;
+  }
+
+  /**
+   * Main Static Pages: /sitemaps/main.xml
+   */
+  static getMainSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = [
+      { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'daily', lastmod: today },
+      { loc: `${baseUrl}/products`, priority: '0.9', changefreq: 'daily', lastmod: today },
+      { loc: `${baseUrl}/brands`, priority: '0.8', changefreq: 'weekly', lastmod: today },
+      { loc: `${baseUrl}/machines`, priority: '0.8', changefreq: 'weekly', lastmod: today },
+      { loc: `${baseUrl}/rfq`, priority: '0.9', changefreq: 'weekly', lastmod: today },
+      { loc: `${baseUrl}/export`, priority: '0.8', changefreq: 'weekly', lastmod: today },
+      { loc: `${baseUrl}/resources`, priority: '0.8', changefreq: 'weekly', lastmod: today },
+      { loc: `${baseUrl}/about`, priority: '0.7', changefreq: 'monthly', lastmod: today },
+      { loc: `${baseUrl}/contact`, priority: '0.7', changefreq: 'monthly', lastmod: today },
+      { loc: `${baseUrl}/export-process`, priority: '0.7', changefreq: 'monthly', lastmod: today }
+    ];
+
+    return this.formatUrlSet(urls);
+  }
+
+  /**
+   * Products Sitemap: /sitemaps/products.xml
+   */
+  static getProductsSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = products
+      .filter(p => p.isIndexable !== false)
+      .map(product => ({
+        loc: `${baseUrl}/products/${product.slug}`,
+        priority: '0.9',
+        changefreq: 'weekly',
+        lastmod: today
+      }));
+
+    return this.formatUrlSet(urls);
+  }
+
+  /**
+   * Categories Sitemap: /sitemaps/categories.xml
+   */
+  static getCategoriesSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = categories.map(cat => ({
+      loc: `${baseUrl}/products/${cat.slug}`,
+      priority: '0.8',
+      changefreq: 'weekly',
+      lastmod: today
+    }));
+
+    return this.formatUrlSet(urls);
+  }
+
+  /**
+   * Brands Sitemap: /sitemaps/brands.xml
+   */
+  static getBrandsSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = brands.map(brand => ({
+      loc: `${baseUrl}/brands/${brand.slug}`,
+      priority: '0.8',
+      changefreq: 'weekly',
+      lastmod: today
+    }));
+
+    return this.formatUrlSet(urls);
+  }
+
+  /**
+   * Machines Sitemap: /sitemaps/machines.xml
+   */
+  static getMachinesSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = machines.map(m => ({
+      loc: `${baseUrl}/machines/${m.slug}`,
+      priority: '0.8',
+      changefreq: 'weekly',
+      lastmod: today
+    }));
+
+    return this.formatUrlSet(urls);
+  }
+
+  /**
+   * Machine Models Sitemap: /sitemaps/models.xml
+   */
+  static getModelsSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = machineModels.map(m => ({
+      loc: `${baseUrl}/machines/${m.brandSlug}/${m.slug}`,
+      priority: '0.8',
+      changefreq: 'weekly',
+      lastmod: today
+    }));
+
+    return this.formatUrlSet(urls);
+  }
+
+  /**
+   * Dedicated Part Numbers Sitemap: /sitemaps/parts.xml
+   */
+  static getPartsSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = products
+      .filter(p => p.isIndexable !== false)
+      .map(product => ({
+        loc: `${baseUrl}/parts/${PartNumberNormalizer.toSlug(product.partNumber)}`,
+        priority: '0.9',
+        changefreq: 'weekly',
+        lastmod: today
+      }));
+
+    return this.formatUrlSet(urls);
+  }
+
+  /**
+   * Countries Export Landing Pages: /sitemaps/countries.xml
+   */
+  static getCountriesSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = countries.map(c => ({
+      loc: `${baseUrl}/export/${c.slug}`,
+      priority: '0.8',
+      changefreq: 'monthly',
+      lastmod: today
+    }));
+
+    return this.formatUrlSet(urls);
+  }
+
+  /**
+   * Resource Articles Sitemap: /sitemaps/resources.xml
+   */
+  static getResourcesSitemap() {
+    const baseUrl = this.getBaseUrl();
+    const today = this.getToday();
+
+    const urls = resources.map(r => ({
+      loc: `${baseUrl}/resources/${r.slug}`,
+      priority: '0.7',
+      changefreq: 'monthly',
+      lastmod: r.publishedDate || today
+    }));
+
+    return this.formatUrlSet(urls);
+  }
+}
+
+module.exports = SitemapService;

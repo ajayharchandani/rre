@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" fill="#f8fafc" rx="8" />
+  <circle cx="200" cy="150" r="95" fill="#b45309" stroke="#451a03" stroke-width="3" />
+  <!-- Waffle Oil Grooving -->
+  <circle cx="200" cy="150" r="85" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="12 4" />
+  <circle cx="200" cy="150" r="70" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="12 4" />
+  <circle cx="200" cy="150" r="55" fill="#0f172a" stroke="#1e293b" stroke-width="2" />
+  <!-- Internal 38 Spline Teeth -->
+  <circle cx="200" cy="150" r="50" fill="#f8fafc" stroke="#0f172a" stroke-width="4" stroke-dasharray="4 3" />
+  <rect x="110" y="15" width="180" height="24" rx="4" fill="#0f172a" />
+  <text x="200" y="31" fill="#fbbf24" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">BRAKE DISC · 458/20403</text>
+  <text x="200" y="275" fill="#64748b" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">Ø208mm Sintered Bronze Friction Plate · Wet Brake</text>
+</svg>

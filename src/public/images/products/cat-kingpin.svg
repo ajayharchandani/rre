@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" fill="#f8fafc" rx="8" />
+  <rect x="90" y="100" width="220" height="100" rx="6" fill="#cbd5e1" stroke="#0f172a" stroke-width="2.5" />
+  <circle cx="150" cy="150" r="25" fill="#94a3b8" stroke="#0f172a" stroke-width="2" />
+  <circle cx="250" cy="150" r="25" fill="#94a3b8" stroke="#0f172a" stroke-width="2" />
+  <rect x="90" y="15" width="220" height="24" rx="4" fill="#0f172a" />
+  <text x="200" y="31" fill="#fbbf24" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">CAT 424 KING PIN SET · 207-6842</text>
+  <text x="200" y="275" fill="#64748b" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">Forged Alloy Steel · Complete Axle Overhaul Kit</text>
+</svg>

@@ -1,0 +1,116 @@
+<!-- src/views/pages/country-detail.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 3.5rem 0; background: #0f172a; color: #ffffff;">
+  <div class="container">
+    <div style="max-width: 820px;">
+      <span class="badge badge-brand" style="margin-bottom: 1rem;"><%= country.region %></span>
+      <h1 style="font-size: 2.25rem; color: #ffffff; margin-bottom: 1rem;">
+        Heavy Equipment Spare Parts Exporter to <%= country.name %>
+      </h1>
+      <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+        <%= country.marketContext %>
+      </p>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="/rfq?country=<%= encodeURIComponent(country.name) %>" class="btn btn-primary">
+          Request CIF / FOB Quote to <%= country.name %>
+        </a>
+        <a href="<%= whatsAppUrl %>" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          WhatsApp Export Specialist
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Shipping & Maritime Logistics Overview -->
+<section style="padding: 3.5rem 0; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
+      
+      <!-- Port Logistics -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2rem;">
+        <h2 style="font-size: 1.35rem; margin-bottom: 1rem; color: #0f172a;">
+          Maritime Transit & Port Information
+        </h2>
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: #64748b;">Primary Destination Ports:</div>
+          <div style="font-size: 1.05rem; font-weight: 600; color: #0f172a;"><%= (country.majorPorts || []).join(' · ') %></div>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.85rem; font-weight: 700; color: #64748b;">Estimated Sea Freight Sailing Time:</div>
+          <div style="font-size: 1.15rem; font-weight: 700; color: #d97706;"><%= country.transitTime %></div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-top: 0.25rem;">Direct container sailings from Nhava Sheva (JNPT) or Mundra Port, West Coast India.</div>
+        </div>
+        <div>
+          <div style="font-size: 0.85rem; font-weight: 700; color: #64748b; margin-bottom: 0.5rem;">Popular Brands Sourced:</div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <% (country.popularBrands || []).forEach(b => { %>
+              <span class="badge badge-brand"><%= b %></span>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customs Documentation -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2rem;">
+        <h2 style="font-size: 1.35rem; margin-bottom: 1rem; color: #0f172a;">
+          Export Documentation for <%= country.name %> Customs Clearance
+        </h2>
+        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
+          Every consignment from RRE International is prepared strictly in compliance with import regulations:
+        </p>
+        <ul style="list-style: none; padding-left: 0; font-size: 0.9rem; color: #334155; line-height: 1.8;">
+          <% (country.customsRequirements || []).forEach(req => { %>
+            <li style="display: flex; align-items: flex-start; gap: 0.5rem;">
+              <span style="color: #10b981; font-weight: bold;">✓</span>
+              <span><%= req %></span>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Country FAQs -->
+<% if (country.faqs && country.faqs.length > 0) { %>
+  <section style="padding: 4rem 0; background: #f8fafc;">
+    <div class="container" style="max-width: 860px;">
+      <h2 style="font-size: 1.75rem; margin-bottom: 1.5rem; text-align: center;">Frequently Asked Shipping & Export Questions</h2>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <% country.faqs.forEach(faq => { %>
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #0f172a;"><%= faq.question %></h3>
+            <p style="color: #475569; font-size: 0.95rem; line-height: 1.6;"><%= faq.answer %></p>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+<% } %>
+
+<!-- Fast-Moving Products for Country -->
+<section style="padding: 4rem 0;">
+  <div class="container">
+    <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">Recommended Spares for Export to <%= country.name %></h2>
+    <div class="grid-cards">
+      <% internalLinks.topProducts.forEach(prod => { %>
+        <article class="card">
+          <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 0.85rem; margin-bottom: 0.5rem;">
+            PN: <%= prod.partNumber %>
+          </span>
+          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">
+            <a href="<%= prod.url %>"><%= prod.name %></a>
+          </h3>
+          <p class="card-desc"><%= prod.categoryName %></p>
+          <a href="<%= prod.url %>" class="btn btn-outline" style="margin-top: auto; font-size: 0.85rem;">
+            View Part Specs →
+          </a>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>

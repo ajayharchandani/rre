@@ -1,0 +1,221 @@
+<!-- src/views/pages/rfq.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 3rem 0; background: #0f172a; color: #ffffff;">
+  <div class="container" style="max-width: 860px; text-align: center;">
+    <span class="badge badge-brand" style="margin-bottom: 0.75rem;">Wholesale Export Quotation</span>
+    <h1 style="font-size: clamp(2rem, 3.5vw, 2.75rem); color: #ffffff; margin-bottom: 0.75rem;">
+      Request for Quotation (RFQ)
+    </h1>
+    <p style="color: #cbd5e1; font-size: 1.05rem; max-width: 680px; margin: 0 auto;">
+      Submit single part inquiries or upload a full Bill of Materials (BOM). Our export engineering team responds with formal CIF / FOB proforma quotation within 24 hours.
+    </p>
+  </div>
+</section>
+
+<section style="padding: 4rem 0; background: #f8fafc;">
+  <div class="container" style="max-width: 780px;">
+    
+    <!-- 4-Step Progress Indicator Header -->
+    <div style="display: flex; justify-content: space-between; margin-bottom: 2.5rem; position: relative;">
+      <div class="rfq-step-indicator active" style="text-align: center; flex: 1; border-bottom: 3px solid #f59e0b; padding-bottom: 0.5rem; font-size: 0.85rem; font-weight: 700; color: #f59e0b;">
+        1. Contact & Identity
+      </div>
+      <div class="rfq-step-indicator" style="text-align: center; flex: 1; border-bottom: 3px solid #cbd5e1; padding-bottom: 0.5rem; font-size: 0.85rem; font-weight: 700; color: #64748b;">
+        2. Parts & Model
+      </div>
+      <div class="rfq-step-indicator" style="text-align: center; flex: 1; border-bottom: 3px solid #cbd5e1; padding-bottom: 0.5rem; font-size: 0.85rem; font-weight: 700; color: #64748b;">
+        3. Shipping & Logistics
+      </div>
+      <div class="rfq-step-indicator" style="text-align: center; flex: 1; border-bottom: 3px solid #cbd5e1; padding-bottom: 0.5rem; font-size: 0.85rem; font-weight: 700; color: #64748b;">
+        4. Upload & Submit
+      </div>
+    </div>
+
+    <!-- RFQ Form Wizard -->
+    <form action="/rfq" method="POST" enctype="multipart/form-data" class="js-rfq-wizard" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+      
+      <!-- Anti-Spam Hidden Honeypot Field -->
+      <div style="display: none;">
+        <label for="website">Leave blank</label>
+        <input type="text" name="website" id="website" autocomplete="off">
+      </div>
+
+      <!-- STEP 1: Buyer Contact & Identity -->
+      <div class="rfq-step-panel" data-step="1" style="display: block;">
+        <h2 style="font-size: 1.35rem; margin-bottom: 1.5rem; color: #0f172a;">Step 1: Your Contact Information</h2>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Full Name *</label>
+          <input type="text" name="name" required class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="e.g. John Doe">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Company / Business Name</label>
+            <input type="text" name="company" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="e.g. Apex Heavy Machinery Trading">
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Business Type</label>
+            <select name="buyer_type" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; background: #ffffff;">
+              <option value="distributor">Spare Parts Distributor / Stockist</option>
+              <option value="dealer">Equipment Dealer / Importer</option>
+              <option value="contractor">Earthmoving / Mining Contractor</option>
+              <option value="fleet_owner">Plant Hire / Fleet Owner</option>
+              <option value="workshop">Repair Workshop Chain</option>
+              <option value="other">Other Commercial Buyer</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Corporate Email *</label>
+            <input type="email" name="email" required class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="name@company.com">
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">WhatsApp / Mobile Number *</label>
+            <input type="tel" name="whatsapp" required class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="+971 50 123 4567">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Destination Country / Port *</label>
+          <select name="country" required class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; background: #ffffff;">
+            <option value="">Select Destination Country...</option>
+            <% allCountries.forEach(cnt => { %>
+              <option value="<%= cnt.name %>" <%= prefill.country === cnt.name ? 'selected' : '' %>><%= cnt.name %> (<%= cnt.region %>)</option>
+            <% }) %>
+            <option value="United States">United States</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="Australia">Australia</option>
+            <option value="Other">Other Global Destination</option>
+          </select>
+        </div>
+
+        <div style="text-align: right;">
+          <button type="button" class="btn btn-primary js-rfq-next" style="padding: 0.75rem 2rem;">
+            Continue to Parts Details →
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Machinery & Requirement -->
+      <div class="rfq-step-panel" data-step="2" style="display: none;">
+        <h2 style="font-size: 1.35rem; margin-bottom: 1.5rem; color: #0f172a;">Step 2: Machinery & Parts Requirement</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Machinery Brand</label>
+            <select name="machine_brand" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; background: #ffffff;">
+              <option value="JCB">JCB</option>
+              <option value="Caterpillar">Caterpillar</option>
+              <option value="Case">Case</option>
+              <option value="Komatsu">Komatsu</option>
+              <option value="Volvo">Volvo</option>
+              <option value="Other">Other Brand</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Machine Model (e.g. JCB 3DX)</label>
+            <input type="text" name="machine_model" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="e.g. JCB 3DX 2014 Model" value="<%= prefill.machineModel %>">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Part Number(s)</label>
+            <input type="text" name="part_number" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="e.g. 335/Y1459, 991/00147" value="<%= prefill.partNumber %>">
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Quantity (Pieces)</label>
+            <input type="number" name="quantity" min="1" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="1" value="<%= prefill.quantity %>">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Part Description / Notes</label>
+          <textarea name="description" rows="3" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="Describe component, cylinder dimensions, or specific requirements..."><%= prefill.productName %></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <button type="button" class="btn btn-outline js-rfq-prev">
+            ← Back
+          </button>
+          <button type="button" class="btn btn-primary js-rfq-next" style="padding: 0.75rem 2rem;">
+            Continue to Logistics →
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Shipping & Logistics -->
+      <div class="rfq-step-panel" data-step="3" style="display: none;">
+        <h2 style="font-size: 1.35rem; margin-bottom: 1.5rem; color: #0f172a;">Step 3: Shipping Preference & Urgency</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Preferred Shipping Method</label>
+            <select name="shipping_method" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; background: #ffffff;">
+              <option value="sea_freight_lcl">Sea Freight (LCL Pallet Consolidation)</option>
+              <option value="sea_freight_fcl">Sea Freight (Full Container FCL)</option>
+              <option value="air_freight">Air Freight (Express Courier / DHL / FedEx)</option>
+              <option value="fob_india">FOB Indian Port (Buyer handles freight)</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Purchase Urgency</label>
+            <select name="urgency" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; background: #ffffff;">
+              <option value="asap">Immediate / Urgent Breakdown</option>
+              <option value="within_week">Within 1-2 Weeks</option>
+              <option value="within_month" selected>Standard Stock Order (Within 30 Days)</option>
+              <option value="project_planning">Planning Future Project</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Specific Destination Port / Airport</label>
+          <input type="text" name="destination_port" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="e.g. Jebel Ali Port, Dubai / Jeddah Islamic Port">
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <button type="button" class="btn btn-outline js-rfq-prev">
+            ← Back
+          </button>
+          <button type="button" class="btn btn-primary js-rfq-next" style="padding: 0.75rem 2rem;">
+            Continue to Upload & Submit →
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Upload BOM & Submit -->
+      <div class="rfq-step-panel" data-step="4" style="display: none;">
+        <h2 style="font-size: 1.35rem; margin-bottom: 1.5rem; color: #0f172a;">Step 4: Attach Parts List (Optional) & Submit</h2>
+
+        <div style="background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 2rem; text-align: center; margin-bottom: 1.5rem;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📁</div>
+          <div style="font-weight: 700; color: #0f172a; margin-bottom: 0.25rem;">Attach Bill of Materials (BOM) / Parts List</div>
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">
+            Upload Excel (.xlsx, .xls), CSV, PDF parts list, or machine photos. Max 5 files (10MB total).
+          </p>
+          <input type="file" name="attachments" multiple accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png" style="font-size: 0.9rem;">
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem;">Additional Notes / Incoterm Preferences (FOB / CIF / CFR)</label>
+          <textarea name="message" rows="3" class="search-input" style="border: 1px solid #cbd5e1; border-radius: 6px; width: 100%;" placeholder="Specify any special packaging, customized branding, or certification requirements..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
+          <button type="button" class="btn btn-outline js-rfq-prev">
+            ← Back
+          </button>
+          <button type="submit" class="btn btn-primary" style="padding: 0.85rem 2.5rem; font-size: 1.05rem;">
+            🚀 Submit Official RFQ
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>

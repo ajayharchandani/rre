@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" fill="#f8fafc" rx="8" />
+  <rect x="120" y="90" width="160" height="120" rx="8" fill="#475569" stroke="#0f172a" stroke-width="2.5" />
+  <ellipse cx="200" cy="150" rx="40" ry="40" fill="#0f172a" stroke="#94a3b8" stroke-width="3" />
+  <rect x="80" y="15" width="240" height="24" rx="4" fill="#0f172a" />
+  <text x="200" y="31" fill="#fbbf24" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">KOMATSU TRACK BUSH · 20Y-32-11140</text>
+  <text x="200" y="275" fill="#64748b" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">Komatsu PC200/PC210 Track Chain Wear Bushing (60 HRC)</text>
+</svg>

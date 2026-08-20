@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="puBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="nbrBlack" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="#f8fafc" rx="8" />
+  <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
+    <circle cx="200" cy="150" r="110" fill="none" />
+  </g>
+  <!-- Main 90mm Piston Seal Outer -->
+  <circle cx="200" cy="140" r="85" fill="none" stroke="url(#puBlue)" stroke-width="14" />
+  <!-- Inner NBR Energizer Ring -->
+  <circle cx="200" cy="140" r="70" fill="none" stroke="url(#nbrBlack)" stroke-width="8" />
+  <!-- 50mm Rod Seal (U-Cup) -->
+  <circle cx="140" cy="140" r="45" fill="none" stroke="#0284c7" stroke-width="10" />
+  <!-- Double Lip Wiper Ring -->
+  <circle cx="260" cy="140" r="45" fill="none" stroke="#f59e0b" stroke-width="8" />
+  <!-- Dual POM Wear Strips -->
+  <rect x="70" y="220" width="110" height="12" rx="4" fill="#94a3b8" stroke="#475569" stroke-width="1.5" />
+  <rect x="220" y="220" width="110" height="12" rx="4" fill="#94a3b8" stroke="#475569" stroke-width="1.5" />
+  <!-- Label -->
+  <rect x="130" y="15" width="140" height="24" rx="4" fill="#0f172a" />
+  <text x="200" y="31" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">BOOM SEAL KIT · 991/00147</text>
+  <text x="200" y="275" fill="#64748b" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">90mm Bore × 50mm Rod · 93 Shore A PU + NBR</text>
+</svg>

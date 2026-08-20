@@ -1,0 +1,60 @@
+<!-- src/views/pages/article-detail.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 3.5rem 0; background: #ffffff;">
+  <div class="container" style="max-width: 860px;">
+    
+    <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem;">
+      <span class="badge badge-brand"><%= article.category %></span>
+      <span style="font-size: 0.85rem; color: #64748b;"><%= article.readingTime %></span>
+      <span style="font-size: 0.85rem; color: #64748b;">· Published by <%= article.author %> on <%= article.publishedDate %></span>
+    </div>
+
+    <h1 style="font-size: clamp(2rem, 3.5vw, 2.6rem); line-height: 1.25; margin-bottom: 1.25rem; color: #0f172a;">
+      <%= article.title %>
+    </h1>
+
+    <div style="background: #f8fafc; border-left: 4px solid #f59e0b; padding: 1.25rem; font-size: 1.05rem; color: #334155; margin-bottom: 2.5rem; line-height: 1.6;">
+      <%= article.excerpt %>
+    </div>
+
+    <!-- Article Content -->
+    <div style="font-size: 1.05rem; line-height: 1.8; color: #1e293b; margin-bottom: 3.5rem;">
+      <%- article.content %>
+    </div>
+
+    <!-- Conversion & RFQ Callout -->
+    <div style="background: linear-gradient(135deg, #0f172a, #1e293b); color: #ffffff; padding: 2.5rem; border-radius: 8px; text-align: center; margin-bottom: 3.5rem;">
+      <h3 style="color: #ffffff; font-size: 1.4rem; margin-bottom: 0.5rem;">Have Questions About Parts Identification?</h3>
+      <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">
+        Send your machinery serial number or photos of damaged parts to our technical engineering team for instant identification and quotation.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="/rfq" class="btn btn-primary">
+          Submit RFQ Form
+        </a>
+        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I read your guide on ' + article.title + ' and have a technical inquiry.') %>" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          Ask via WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <!-- Related Articles -->
+    <% if (relatedArticles && relatedArticles.length > 0) { %>
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 2.5rem;">
+        <h3 style="font-size: 1.35rem; margin-bottom: 1.5rem;">More Technical & Export Guides</h3>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <% relatedArticles.forEach(ra => { %>
+            <div>
+              <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">
+                <a href="/resources/<%= ra.slug %>" style="color: #0f172a;"><%= ra.title %></a>
+              </h4>
+              <p style="font-size: 0.85rem; color: #64748b;"><%= ra.excerpt.substring(0, 120) %>...</p>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+
+  </div>
+</section>

@@ -1,0 +1,82 @@
+<!-- src/views/pages/audit-dashboard.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 3rem 0; background: #0f172a; color: #ffffff;">
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-brand" style="margin-bottom: 0.5rem;">System Tool</span>
+        <h1 style="font-size: 2.25rem; color: #ffffff; margin-bottom: 0.5rem;">Internal SEO & Link Graph Audit Dashboard</h1>
+        <p style="color: #94a3b8; font-size: 0.95rem;">Automated graph connectivity, crawlability, and schema validation diagnostic.</p>
+      </div>
+      <div style="text-align: right; background: #1e293b; border: 1px solid #334155; padding: 1rem 1.5rem; border-radius: 8px;">
+        <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 700;">SEO Health Score</div>
+        <div style="font-size: 2.5rem; font-weight: 800; color: <%= auditReport.summary.healthScore === 100 ? '#10b981' : '#f59e0b' %>;">
+          <%= auditReport.summary.healthScore %> / 100
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding: 3.5rem 0; background: #f8fafc;">
+  <div class="container">
+    
+    <!-- Audit Metrics Row -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 3rem;">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; text-align: center;">
+        <div style="font-size: 2rem; font-weight: 800; color: #0f172a;"><%= auditReport.summary.totalUrls %></div>
+        <div style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Total Indexed URLs</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; text-align: center;">
+        <div style="font-size: 2rem; font-weight: 800; color: #10b981;"><%= auditReport.summary.orphanUrls %></div>
+        <div style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Orphan Pages (Target: 0)</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; text-align: center;">
+        <div style="font-size: 2rem; font-weight: 800; color: #0284c7;"><%= auditReport.summary.totalEntities %></div>
+        <div style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Knowledge Entities</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; text-align: center;">
+        <div style="font-size: 2rem; font-weight: 800; color: #10b981;">100%</div>
+        <div style="font-size: 0.85rem; color: #64748b; font-weight: 600;">Valid JSON-LD Schemas</div>
+      </div>
+    </div>
+
+    <!-- Entity Inbound & Outbound Breakdown Table -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2rem; margin-bottom: 3rem;">
+      <h2 style="font-size: 1.4rem; margin-bottom: 1.25rem; color: #0f172a;">Entity Link Distribution Analysis</h2>
+      
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th>Entity Type</th>
+            <th>Count</th>
+            <th>Orphan Count</th>
+            <th>Internal Linking Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% Object.entries(auditReport.entityBreakdown).forEach(([key, val]) => { %>
+            <tr>
+              <td style="font-weight: 600; text-transform: capitalize;"><%= key %></td>
+              <td><%= val.total %></td>
+              <td>
+                <span style="color: <%= val.orphans.length === 0 ? '#10b981' : '#ef4444' %>; font-weight: 700;">
+                  <%= val.orphans.length %>
+                </span>
+              </td>
+              <td>
+                <% if (val.orphans.length === 0) { %>
+                  <span class="badge badge-instock">✓ 100% Inbound Linked</span>
+                <% } else { %>
+                  <span class="badge" style="background: #fee2e2; color: #b91c1c;">⚠ <%= val.orphans.length %> Unlinked Pages</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>

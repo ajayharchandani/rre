@@ -1,0 +1,46 @@
+<!-- src/views/pages/rfq-confirmation.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 5rem 0; background: #f8fafc; text-align: center;">
+  <div class="container" style="max-width: 680px;">
+    
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 3.5rem 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+      
+      <div style="width: 72px; height: 72px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem; border: 2px solid #bbf7d0;">
+        ✓
+      </div>
+
+      <h1 style="font-size: 2rem; color: #0f172a; margin-bottom: 0.75rem;">
+        Quotation Request Submitted Successfully
+      </h1>
+
+      <p style="color: #64748b; font-size: 1rem; line-height: 1.6; margin-bottom: 2rem;">
+        Thank you for submitting your requirement. Our export engineering desk has received your details and is preparing a formal proforma quotation.
+      </p>
+
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 1.25rem; margin-bottom: 2rem; display: inline-block; width: 100%;">
+        <span style="font-size: 0.85rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.25rem;">RFQ Reference Tracking Code:</span>
+        <span style="font-family: monospace; font-size: 1.5rem; font-weight: 800; color: #0f172a;"><%= refId %></span>
+      </div>
+
+      <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px; padding: 1.25rem; text-align: left; margin-bottom: 2rem; font-size: 0.9rem; color: #065f46;">
+        <strong>Next Steps:</strong>
+        <ul style="padding-left: 1.25rem; margin-top: 0.5rem; line-height: 1.7;">
+          <li>• Formal Proforma Invoice (PI) with HSN codes & dispatch timelines within 24 hours.</li>
+          <li>• For immediate assistance, share reference <strong><%= refId %></strong> on WhatsApp.</li>
+        </ul>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="/" class="btn btn-primary">
+          ← Return to Home
+        </a>
+        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I submitted RFQ Reference ' + refId + '. Please expedite my quotation.') %>" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          Follow Up on WhatsApp
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</section>

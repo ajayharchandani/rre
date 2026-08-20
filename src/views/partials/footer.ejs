@@ -1,0 +1,95 @@
+<!-- src/views/partials/footer.ejs -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      
+      <!-- Company Overview -->
+      <div>
+        <a href="/" class="footer-logo-link" aria-label="RRE International Homepage">
+          <div class="footer-logo-wrap">
+            <img 
+              src="/images/rre-logo.jpg" 
+              alt="RRE International" 
+              class="footer-logo-img"
+              width="64"
+              height="64"
+              style="width:64px;height:64px;object-fit:contain;display:block;"
+            >
+          </div>
+        </a>
+        <p style="font-size: 0.9rem; margin-bottom: 1.25rem; line-height: 1.6;">
+          <%= organization.tagline %><br>
+          ISO 9001:2015 Certified Manufacturer & Exporter of high-durability replacement spare parts for earthmoving and heavy construction machinery since 1984.
+        </p>
+        <div style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.7;">
+          <p><strong>Head Office Address:</strong><br><%= organization.address.street %>, <%= organization.address.city %>-<%= organization.address.postalCode %>, <%= organization.address.country %></p>
+          <p style="margin-top: 0.5rem;"><strong>Export WhatsApp:</strong> <a href="https://wa.me/<%= organization.contact.whatsappNumber %>" style="color: #25d366; font-weight: 700;"><%= organization.contact.phoneDisplay %></a></p>
+          <p><strong>Support Phone:</strong> <span style="color: #f59e0b;"><%= organization.contact.alternatePhone %></span></p>
+          <p><strong>Export Email:</strong> <a href="mailto:<%= organization.contact.email %>" style="color: #fbbf24;"><%= organization.contact.email %></a></p>
+        </div>
+      </div>
+
+      <!-- Product Categories -->
+      <div>
+        <h3 class="footer-heading">Product Categories</h3>
+        <ul class="footer-links">
+          <% allCategories.slice(0, 7).forEach(cat => { %>
+            <li><a href="/products/<%= cat.slug %>"><%= cat.name %></a></li>
+          <% }) %>
+          <li><a href="/products" style="color: #fbbf24; font-weight: 700;">View All 12 Categories →</a></li>
+        </ul>
+      </div>
+
+      <!-- Supported Brands & Machines -->
+      <div>
+        <h3 class="footer-heading">Machinery Platforms</h3>
+        <ul class="footer-links">
+          <li><a href="/machines/jcb-3dx">JCB 3DX Backhoe Parts</a></li>
+          <li><a href="/machines/jcb-4dx">JCB 4DX Heavy Backhoe</a></li>
+          <li><a href="/machines/jcb-js200">JCB JS200 / JS210 Excavator</a></li>
+          <li><a href="/machines/caterpillar-424">Caterpillar 424 / 424B Parts</a></li>
+          <li><a href="/machines/case-770">Case 770 / 770EX Spares</a></li>
+          <li><a href="/machines/komatsu-pc200">Komatsu PC200 Track Bushes</a></li>
+          <li><a href="/brands/jcb">JCB Replacement Catalog</a></li>
+        </ul>
+      </div>
+
+      <!-- Export Markets & Resources -->
+      <div>
+        <h3 class="footer-heading">Export & Resources</h3>
+        <ul class="footer-links">
+          <li><a href="/export/uae">Spare Parts Exporter to UAE</a></li>
+          <li><a href="/export/saudi-arabia">Parts Exporter to Saudi Arabia</a></li>
+          <li><a href="/export/nigeria">Parts Exporter to Nigeria</a></li>
+          <li><a href="/export/kenya">Parts Exporter to Kenya</a></li>
+          <li><a href="/export-process">Container Shipping & Incoterms</a></li>
+          <li><a href="/resources">Technical & Sourcing Guides</a></li>
+          <li><a href="/rfq">Submit Bill of Materials (RFQ)</a></li>
+          <li><a href="/audit" style="color: #64748b; font-size: 0.8rem;">Internal SEO Audit Tool</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Legal & Trademark Disclaimer Box -->
+    <div class="disclaimer-box">
+      <p style="font-weight: 700; color: #94a3b8; margin-bottom: 0.5rem;">TRADEMARK & COMPATIBILITY REFERENCE DISCLAIMER</p>
+      <p><%= organization.disclaimer %></p>
+    </div>
+
+    <!-- Copyright & Compliance -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; font-size: 0.85rem; border-top: 1px solid #1e293b; padding-top: 1.5rem;">
+      <div>
+        © <%= new Date().getFullYear() %> <%= organization.name %>. All Rights Reserved. ISO 9001:2015 Cert. No: <%= organization.certification.certificateNumber %>.
+      </div>
+      <div style="display: flex; gap: 1.25rem;">
+        <a href="/privacy" style="color: #94a3b8;">Privacy Policy</a>
+        <a href="/terms" style="color: #94a3b8;">Terms of Sale</a>
+        <a href="/disclaimer" style="color: #94a3b8;">Disclaimer</a>
+        <a href="/sitemap.xml" style="color: #94a3b8;">XML Sitemap</a>
+        <a href="/robots.txt" style="color: #94a3b8;">Robots.txt</a>
+      </div>
+    </div>
+
+  </div>
+</footer>

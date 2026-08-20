@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="metalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569" />
+      <stop offset="50%" stop-color="#94a3b8" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+    <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="#f8fafc" rx="8" />
+  <g stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4">
+    <line x1="40" y1="20" x2="40" y2="280" />
+    <line x1="360" y1="20" x2="360" y2="280" />
+    <line x1="20" y1="150" x2="380" y2="150" />
+  </g>
+  <!-- Pump Body -->
+  <rect x="130" y="80" width="140" height="140" rx="12" fill="url(#metalGrad)" stroke="#1e293b" stroke-width="3" />
+  <!-- Front Flange -->
+  <rect x="105" y="70" width="25" height="160" rx="4" fill="#334155" stroke="#0f172a" stroke-width="2" />
+  <!-- Bolt holes on flange -->
+  <circle cx="117" cy="85" r="4" fill="#f8fafc" stroke="#0f172a" stroke-width="1.5" />
+  <circle cx="117" cy="215" r="4" fill="#f8fafc" stroke="#0f172a" stroke-width="1.5" />
+  <!-- Splined Drive Shaft -->
+  <rect x="50" y="135" width="55" height="30" fill="#64748b" stroke="#1e293b" stroke-width="2" />
+  <line x1="55" y1="135" x2="55" y2="165" stroke="#1e293b" stroke-width="2" />
+  <line x1="65" y1="135" x2="65" y2="165" stroke="#1e293b" stroke-width="2" />
+  <line x1="75" y1="135" x2="75" y2="165" stroke="#1e293b" stroke-width="2" />
+  <line x1="85" y1="135" x2="85" y2="165" stroke="#1e293b" stroke-width="2" />
+  <line x1="95" y1="135" x2="95" y2="165" stroke="#1e293b" stroke-width="2" />
+  <!-- Rear Second Pump Section (Tandem) -->
+  <rect x="270" y="95" width="60" height="110" rx="8" fill="#475569" stroke="#1e293b" stroke-width="2.5" />
+  <!-- Hydraulic Ports -->
+  <circle cx="190" cy="115" r="16" fill="#1e293b" stroke="url(#goldAccent)" stroke-width="3" />
+  <circle cx="190" cy="185" r="14" fill="#1e293b" stroke="url(#goldAccent)" stroke-width="3" />
+  <circle cx="295" cy="150" r="12" fill="#1e293b" stroke="url(#goldAccent)" stroke-width="2.5" />
+  <!-- Quality Stamp -->
+  <rect x="145" y="142" width="90" height="16" rx="3" fill="#0f172a" />
+  <text x="190" y="154" fill="#fbbf24" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">PN: 335/Y1459</text>
+  <!-- Technical Dimensions Label -->
+  <text x="200" y="270" fill="#64748b" font-size="11" font-family="sans-serif" font-weight="bold" text-anchor="middle">Tandem Hydraulic Pump (36cc + 29cc) · 250 Bar</text>
+</svg>

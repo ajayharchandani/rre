@@ -1,0 +1,99 @@
+<!-- src/views/pages/machine-detail.ejs -->
+<%- include('../partials/breadcrumbs') %>
+
+<section style="padding: 3.5rem 0; background: #0f172a; color: #ffffff;">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: center;">
+      <div>
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center;">
+          <span class="badge badge-brand"><%= machine.brandSlug.toUpperCase() %></span>
+          <span class="badge" style="background: #1e293b; color: #94a3b8;"><%= machine.type %></span>
+        </div>
+        <h1 style="font-size: 2.35rem; color: #ffffff; margin-bottom: 1rem; line-height: 1.2;">
+          <%= machine.name %> Spare Parts Catalog
+        </h1>
+        <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.75rem;">
+          <%= machine.description %>
+        </p>
+
+        <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+          <a href="/rfq?machine=<%= encodeURIComponent(machine.name) %>" class="btn btn-primary">
+            📋 Submit <%= machine.name %> RFQ
+          </a>
+          <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I need parts for ' + machine.name + '.') %>" class="btn btn-whatsapp" target="_blank" rel="noopener">
+            💬 WhatsApp Specialist (<%= organization.contact.phoneDisplay %>)
+          </a>
+        </div>
+      </div>
+
+      <!-- Machine Image Card -->
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-xl);">
+        <img src="<%= machine.image || '/images/machines/jcb-3dx.jpg' %>" alt="<%= machine.name %>" style="width: 100%; height: 260px; object-fit: cover;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Model Iterations by Year / Engine -->
+<section style="padding: 4rem 0; background: #ffffff;">
+  <div class="container">
+    <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: #0f172a;"><%= machine.name %> Production Year & Engine Variants</h2>
+    <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 2.5rem;">
+      Spare parts such as hydraulic seal kits, tandem pumps, and King Pins differ by production year and engine series. Select your machine iteration below:
+    </p>
+
+    <div class="grid-cards" style="margin-bottom: 4rem;">
+      <% models.forEach(mod => { %>
+        <div class="card" style="border-left: 4px solid #f59e0b; border-radius: 8px;">
+          <span style="font-size: 0.8rem; font-weight: 700; color: #d97706; margin-bottom: 0.25rem;"><%= mod.yearRange %></span>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">
+            <a href="/machines/<%= mod.brandSlug %>/<%= mod.slug %>" style="color: #0f172a;"><%= mod.name %></a>
+          </h3>
+          <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem;">
+            <div><strong>Engine:</strong> <%= mod.engineVariant %></div>
+            <div><strong>Hydraulics:</strong> <%= mod.hydraulicVariant %></div>
+          </div>
+          <p class="card-desc"><%= mod.description %></p>
+          <a href="/machines/<%= mod.brandSlug %>/<%= mod.slug %>" class="btn btn-outline" style="margin-top: auto; font-size: 0.85rem;">
+            View Variant Specific Parts →
+          </a>
+        </div>
+      <% }) %>
+    </div>
+
+    <!-- Machine Products -->
+    <h2 style="font-size: 1.75rem; margin-bottom: 2rem; color: #0f172a;">Fast-Moving Spare Parts for <%= machine.name %></h2>
+    <div class="grid-cards">
+      <% machineProducts.forEach(prod => { %>
+        <article class="product-card">
+          <div class="product-card-img-wrap">
+            <span style="position: absolute; top: 10px; left: 10px; z-index: 2;" class="badge badge-brand">
+              <%= prod.brandName %>
+            </span>
+            <img src="<%= prod.image || '/images/products/hydraulic-pump.jpg' %>" alt="<%= prod.name %>" loading="lazy">
+          </div>
+          <div class="product-card-body">
+            <div style="font-family: monospace; font-weight: 800; color: #0f172a; font-size: 0.95rem; margin-bottom: 0.35rem;">
+              PN: <%= prod.partNumber %>
+            </div>
+            <h3 class="product-card-title">
+              <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
+            </h3>
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 1.25rem; flex: 1; line-height: 1.45;">
+              <%= prod.description.substring(0, 110) %>...
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.5rem; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
+              <a href="/products/<%= prod.slug %>" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.45rem;">
+                Specs
+              </a>
+              <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, please share price for Part No. ' + prod.partNumber) %>" class="btn btn-whatsapp" style="font-size: 0.82rem; padding: 0.45rem;" target="_blank" rel="noopener">
+                💬 WhatsApp
+              </a>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+
+  </div>
+</section>
