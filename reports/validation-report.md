@@ -1,6 +1,6 @@
 # RRE International — Full Validation Report
 
-Generated: 2026-08-20T21:02:09.387Z
+Generated: 2026-08-20T21:21:14.789Z
 
 ## Counts
 
@@ -17,9 +17,9 @@ Generated: 2026-08-20T21:02:09.387Z
 
 | Status | Count |
 |---|---|
-| source_image | 0 |
-| placeholder_image | 0 |
-| image_pending | 85150 |
+| source_image | 817 |
+| placeholder_image | 84333 |
+| image_pending | 0 |
 | generated_image | 0 |
 
 ## Result
