@@ -1,0 +1,289 @@
+[
+  {
+    "code": "HLN",
+    "name": "HLN",
+    "slug": "hln",
+    "count": 37618,
+    "verified": false
+  },
+  {
+    "code": "BHL",
+    "name": "BHL",
+    "slug": "bhl",
+    "count": 18903,
+    "verified": false
+  },
+  {
+    "code": "TRD",
+    "name": "TRD",
+    "slug": "trd",
+    "count": 13908,
+    "verified": false
+  },
+  {
+    "code": "ATT",
+    "name": "ATT",
+    "slug": "att",
+    "count": 4912,
+    "verified": false
+  },
+  {
+    "code": "GEN",
+    "name": "GEN",
+    "slug": "gen",
+    "count": 4590,
+    "verified": false
+  },
+  {
+    "code": "ENG",
+    "name": "ENG",
+    "slug": "eng",
+    "count": 2151,
+    "verified": false
+  },
+  {
+    "code": "SSL",
+    "name": "SSL",
+    "slug": "ssl",
+    "count": 1153,
+    "verified": false
+  },
+  {
+    "code": "TH",
+    "name": "TH",
+    "slug": "th",
+    "count": 725,
+    "verified": false
+  },
+  {
+    "code": "528",
+    "name": "528",
+    "slug": "528",
+    "count": 545,
+    "verified": false
+  },
+  {
+    "code": "3DX",
+    "name": "3DX",
+    "slug": "3dx",
+    "count": 166,
+    "verified": false
+  },
+  {
+    "code": "ACS",
+    "name": "ACS",
+    "slug": "acs",
+    "count": 109,
+    "verified": false
+  },
+  {
+    "code": "530",
+    "name": "530",
+    "slug": "530",
+    "count": 101,
+    "verified": false
+  },
+  {
+    "code": "455",
+    "name": "455",
+    "slug": "455",
+    "count": 43,
+    "verified": false
+  },
+  {
+    "code": "UNCATEGORIZED",
+    "name": "UNCATEGORIZED",
+    "slug": "uncategorized",
+    "count": 31,
+    "verified": false
+  },
+  {
+    "code": "LUB",
+    "name": "LUB",
+    "slug": "lub",
+    "count": 28,
+    "verified": false
+  },
+  {
+    "code": "ATH",
+    "name": "ATH",
+    "slug": "ath",
+    "count": 25,
+    "verified": false
+  },
+  {
+    "code": "210",
+    "name": "210",
+    "slug": "210",
+    "count": 22,
+    "verified": false
+  },
+  {
+    "code": "130",
+    "name": "130",
+    "slug": "130",
+    "count": 21,
+    "verified": false
+  },
+  {
+    "code": "G1",
+    "name": "G1",
+    "slug": "g1",
+    "count": 21,
+    "verified": false
+  },
+  {
+    "code": "LOD",
+    "name": "LOD",
+    "slug": "lod",
+    "count": 19,
+    "verified": false
+  },
+  {
+    "code": "205",
+    "name": "205",
+    "slug": "205",
+    "count": 9,
+    "verified": false
+  },
+  {
+    "code": "3CX",
+    "name": "3CX",
+    "slug": "3cx",
+    "count": 7,
+    "verified": false
+  },
+  {
+    "code": "506",
+    "name": "506",
+    "slug": "506",
+    "count": 5,
+    "verified": false
+  },
+  {
+    "code": "VMX",
+    "name": "VMX",
+    "slug": "vmx",
+    "count": 5,
+    "verified": false
+  },
+  {
+    "code": "J81",
+    "name": "J81",
+    "slug": "j81",
+    "count": 5,
+    "verified": false
+  },
+  {
+    "code": "432",
+    "name": "432",
+    "slug": "432",
+    "count": 4,
+    "verified": false
+  },
+  {
+    "code": "WLS",
+    "name": "WLS",
+    "slug": "wls",
+    "count": 4,
+    "verified": false
+  },
+  {
+    "code": "J30",
+    "name": "J30",
+    "slug": "j30",
+    "count": 3,
+    "verified": false
+  },
+  {
+    "code": "J20",
+    "name": "J20",
+    "slug": "j20",
+    "count": 3,
+    "verified": false
+  },
+  {
+    "code": "G20",
+    "name": "G20",
+    "slug": "g20",
+    "count": 3,
+    "verified": false
+  },
+  {
+    "code": "3DE",
+    "name": "3DE",
+    "slug": "3de",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "P92",
+    "name": "P92",
+    "slug": "p92",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "4DX",
+    "name": "4DX",
+    "slug": "4dx",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "V37",
+    "name": "V37",
+    "slug": "v37",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "J25",
+    "name": "J25",
+    "slug": "j25",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "ACC",
+    "name": "ACC",
+    "slug": "acc",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "2DX",
+    "name": "2DX",
+    "slug": "2dx",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "43X",
+    "name": "43X",
+    "slug": "43x",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "140",
+    "name": "140",
+    "slug": "140",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "430",
+    "name": "430",
+    "slug": "430",
+    "count": 1,
+    "verified": false
+  },
+  {
+    "code": "3D",
+    "name": "3D",
+    "slug": "3d",
+    "count": 1,
+    "verified": false
+  }
+]
