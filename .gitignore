@@ -6,3 +6,4 @@ scratch/
 *.log
 scripts/__pycache__/
 scripts/.pdf-image-staging/
+.claude/
