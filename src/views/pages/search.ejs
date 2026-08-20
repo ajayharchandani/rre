@@ -11,17 +11,16 @@
       <% } %>
     </h1>
     <p style="color: #64748b; font-size: 0.95rem;">
-      Found <strong><%= searchResults.totalResults %></strong> matching spare parts and reference components.
+      Found <strong><%= searchResults.totalResults %></strong> matching spare parts.
     </p>
 
-    <!-- Search Box for Refined Query -->
     <div style="max-width: 640px; margin-top: 1.25rem;">
       <form action="/search" method="GET" class="search-input-group">
-        <input 
-          type="text" 
-          name="q" 
-          class="search-input js-search-input" 
-          placeholder="Search by Part No., OE reference, or machine..."
+        <input
+          type="text"
+          name="q"
+          class="search-input js-search-input"
+          placeholder="Search by Part No. or description..."
           value="<%= query %>"
           autocomplete="off"
         >
@@ -35,65 +34,49 @@
 
 <section style="padding: 3rem 0;">
   <div class="container">
-    
-    <% if (searchResults.exactPartMatch) { %>
-      <!-- Exact Part Number Match Callout Banner -->
+
+    <% if (searchResults.exactMatch) { %>
       <div style="background: #ecfdf5; border: 2px solid #10b981; border-radius: 8px; padding: 1.5rem; margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
         <div>
           <div style="font-size: 0.8rem; font-weight: 700; color: #047857; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">
             ✓ Exact Part Number Match Found
           </div>
           <h2 style="font-size: 1.35rem; color: #065f46; margin-bottom: 0.25rem;">
-            Part No. <%= searchResults.exactPartMatch.partNumber %> — <%= searchResults.exactPartMatch.name %>
+            Part No. <%= searchResults.exactMatch.part_number %> — <%= searchResults.exactMatch.description %>
           </h2>
           <div style="font-size: 0.9rem; color: #047857;">
-            Machine Fit: <strong><%= searchResults.exactPartMatch.machineName %></strong> · Category: <%= searchResults.exactPartMatch.categoryName %>
+            Category: <%= searchResults.exactMatch.category_name %>
           </div>
         </div>
-        <div style="display: flex; gap: 0.75rem;">
-          <a href="/parts/<%= searchResults.exactPartMatch.normalizedPartNumber %>" class="btn btn-primary" style="font-size: 0.9rem;">
-            View Dedicated Part Specs →
-          </a>
-          <a href="/products/<%= searchResults.exactPartMatch.slug %>" class="btn btn-outline" style="font-size: 0.9rem; background: #ffffff;">
-            Product Details
-          </a>
-        </div>
+        <a href="/products/<%= searchResults.exactMatch.slug %>" class="btn btn-primary" style="font-size: 0.9rem;">
+          View Product Details →
+        </a>
       </div>
     <% } %>
 
     <% if (searchResults.totalResults > 0) { %>
-      <!-- Search Results Grid -->
       <div class="grid-cards">
         <% searchResults.results.forEach(prod => { %>
           <article class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div style="margin-bottom: 0.5rem;">
               <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 0.85rem; background: #f1f5f9; padding: 0.2rem 0.5rem; border-radius: 4px;">
-                PN: <%= prod.partNumber %>
-              </span>
-              <span class="badge <%= prod.availability === 'in_stock' ? 'badge-instock' : 'badge-request' %>">
-                <%= prod.availability === 'in_stock' ? 'In Stock' : 'Request Availability' %>
+                PN: <%= prod.part_number %>
               </span>
             </div>
 
             <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">
-              <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
+              <a href="/products/<%= prod.slug %>"><%= prod.description %></a>
             </h3>
 
             <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.75rem;">
-              <div><strong>Machine:</strong> <%= prod.machineName %></div>
-              <div><strong>Category:</strong> <%= prod.categoryName %></div>
-              <% if (prod.matchType) { %>
-                <div style="margin-top: 0.25rem; font-size: 0.75rem; color: #0284c7;">
-                  Match: <%= prod.matchType %>
-                </div>
-              <% } %>
+              <div><strong>Category:</strong> <%= prod.category_name %></div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
               <a href="/products/<%= prod.slug %>" class="btn btn-outline" style="font-size: 0.8rem; padding: 0.4rem;">
-                Specs & Draw
+                Details
               </a>
-              <a href="/rfq?part=<%= encodeURIComponent(prod.partNumber) %>&product=<%= encodeURIComponent(prod.name) %>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem;">
+              <a href="/rfq?part=<%= encodeURIComponent(prod.part_number) %>&product=<%= encodeURIComponent(prod.description) %>" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem;">
                 Request Quote
               </a>
             </div>
@@ -102,12 +85,11 @@
       </div>
 
     <% } else { %>
-      <!-- Zero Results Empty State with Direct Human Export Desk Fallback -->
       <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 3.5rem 1.5rem; text-align: center; max-width: 680px; margin: 0 auto;">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
-        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">No exact catalog match found for "<%= query %>"</h2>
+        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">No catalog match found for "<%= query %>"</h2>
         <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.6;">
-          Our offline internal price list holds over <strong>85,150 JCB, Caterpillar, Case, and Komatsu part numbers</strong>. If your part number is unlisted online, our export engineering desk can verify warehouse stock and pricing immediately.
+          Our price list holds over <strong>85,150 part numbers</strong>. If your part number is unlisted online, our export desk can verify pricing and availability directly.
         </p>
 
         <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">

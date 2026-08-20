@@ -179,52 +179,44 @@ class SeoService {
 
   /**
    * Schema 4: Product Schema
+   * Built only from verified fields on the normalized product record
+   * (src/data/generated/products.json). No brand/availability/rating
+   * claims are made — those don't exist in the source data.
    */
   static getProductSchema(product) {
     const baseUrl = this.getBaseUrl();
     const productUrl = `${baseUrl}/products/${product.slug}`;
+    const imageUrl = product.image_url
+      ? (product.image_url.startsWith('http') ? product.image_url : `${baseUrl}${product.image_url}`)
+      : null;
 
-    return {
+    const schema = {
       "@context": "https://schema.org",
       "@type": "Product",
       "@id": `${productUrl}#product`,
-      "name": product.name,
-      "description": product.description,
-      "sku": product.sku || product.partNumber,
-      "mpn": product.partNumber,
-      "brand": {
-        "@type": "Brand",
-        "name": product.brandName || "RRE International (OE-Compatible Replacement)"
-      },
+      "name": product.description,
+      "description": product.meta_description || product.description,
+      "sku": product.part_number,
+      "mpn": product.part_number,
       "manufacturer": {
         "@id": `${baseUrl}/#organization`
       },
-      "category": product.categoryName,
-      "image": `${baseUrl}/images/products/${product.partNumber.replace(/[\/\s]/g, '-')}.jpg`,
-      "itemCondition": "https://schema.org/NewCondition",
-      "offers": {
+      "category": product.category_name
+    };
+
+    if (imageUrl) schema.image = imageUrl;
+
+    if (product.show_price && product.mrp) {
+      schema.offers = {
         "@type": "Offer",
         "url": productUrl,
-        "priceCurrency": "USD",
-        "price": "0.00",
-        "priceSpecification": {
-          "@type": "PriceSpecification",
-          "priceCurrency": "USD",
-          "description": "Export wholesale quotation available on request based on order quantity and destination Incoterms (FOB/CIF)."
-        },
-        "availability": product.availability === 'in_stock' 
-          ? "https://schema.org/InStock" 
-          : "https://schema.org/PreOrder",
-        "seller": {
-          "@id": `${baseUrl}/#organization`
-        }
-      },
-      "additionalProperty": Object.entries(product.specifications || {}).map(([key, val]) => ({
-        "@type": "PropertyValue",
-        "name": key,
-        "value": String(val)
-      }))
-    };
+        "priceCurrency": "INR",
+        "price": String(product.mrp),
+        "seller": { "@id": `${baseUrl}/#organization` }
+      };
+    }
+
+    return schema;
   }
 
   /**

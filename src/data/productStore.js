@@ -117,6 +117,63 @@ const ProductStore = {
       totalProducts: state.products.length,
       totalCategories: state.categories.length
     };
+  },
+
+  /** Chunk of products for sitemap generation (0-indexed page). */
+  getProductsChunk(chunkIndex, chunkSize = 10000) {
+    const start = chunkIndex * chunkSize;
+    return state.products.slice(start, start + chunkSize);
+  },
+
+  getProductChunkCount(chunkSize = 10000) {
+    return Math.max(1, Math.ceil(state.products.length / chunkSize));
+  },
+
+  /**
+   * Lightweight search across part number (exact/normalized/prefix) and
+   * description. No brand/machine dimensions — those don't exist in the
+   * real product data. Exact part-number matches are always ranked first.
+   */
+  search(rawQuery, { category = null, limit = 60 } = {}) {
+    const query = (rawQuery || '').trim();
+    if (!query) return { query: '', totalResults: 0, results: [], exactMatch: null };
+
+    const normalizedQuery = PartNumberNormalizer.normalize(query);
+    const queryLower = query.toLowerCase();
+    const scored = [];
+    let exactMatch = null;
+
+    for (const p of state.products) {
+      if (category && p.category_code !== category) continue;
+      let score = 0;
+
+      if (p.part_number.toLowerCase() === queryLower) {
+        score = 1000;
+        if (!exactMatch) exactMatch = p;
+      } else if (normalizedQuery && p.part_number_normalized === normalizedQuery) {
+        score = 900;
+        if (!exactMatch) exactMatch = p;
+      } else if (normalizedQuery.length >= 3 && p.part_number_normalized.startsWith(normalizedQuery)) {
+        score = 400;
+      } else if (normalizedQuery.length >= 3 && p.part_number_normalized.includes(normalizedQuery)) {
+        score = 250;
+      } else if (p.description.toLowerCase().includes(queryLower)) {
+        score = 150;
+      } else if (p.category_name.toLowerCase().includes(queryLower) || p.category_code.toLowerCase() === queryLower) {
+        score = 80;
+      }
+
+      if (score > 0) scored.push({ product: p, score });
+    }
+
+    scored.sort((a, b) => b.score - a.score);
+
+    return {
+      query,
+      totalResults: scored.length,
+      results: scored.slice(0, limit).map(s => s.product),
+      exactMatch
+    };
   }
 };
 

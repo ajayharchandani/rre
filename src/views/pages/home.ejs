@@ -194,16 +194,12 @@
       <a href="/products" class="btn btn-outline">View All 85,000+ SKUs →</a>
     </div>
 
-    <!-- Category Filter Tabs -->
+    <!-- Category Filter Tabs (real Cat 1 codes from the master price list) -->
     <div class="category-tabs" id="product-tabs">
-      <button class="cat-tab active js-cat-tab" data-cat="all" id="tab-all">All Fast-Moving</button>
-      <button class="cat-tab js-cat-tab" data-cat="hydraulic-pumps-valves" id="tab-pumps">Hydraulic Pumps</button>
-      <button class="cat-tab js-cat-tab" data-cat="hydraulic-seal-kits" id="tab-seals">Seal Kits</button>
-      <button class="cat-tab js-cat-tab" data-cat="pins-and-bushes" id="tab-pins">Pins & Bushes</button>
-      <button class="cat-tab js-cat-tab" data-cat="transmission-drivetrain" id="tab-transmission">Drivetrain</button>
-      <button class="cat-tab js-cat-tab" data-cat="engine-cooling" id="tab-engine">Engine & Cooling</button>
-      <button class="cat-tab js-cat-tab" data-cat="brakes-chassis" id="tab-brakes">Brakes</button>
-      <button class="cat-tab js-cat-tab" data-cat="electrical-solenoid" id="tab-electrical">Electrical</button>
+      <button class="cat-tab active js-cat-tab" data-cat="all" id="tab-all">All</button>
+      <% featuredCategories.forEach(cat => { %>
+        <button class="cat-tab js-cat-tab" data-cat="<%= cat.slug %>" id="tab-<%= cat.slug %>"><%= cat.shortName %></button>
+      <% }) %>
     </div>
 
     <div class="products-grid" id="products-grid">
@@ -211,15 +207,11 @@
         <article class="prod-card js-prod-card" data-cat="<%= prod.categorySlug %>" style="animation-delay: <%= (idx % 8) * 60 %>ms">
 
           <div class="prod-card-img-wrap">
-            <span class="prod-badge brand-badge"><%= prod.brandName %></span>
-            <% if (prod.availability === 'in_stock') { %>
-              <span class="prod-badge stock-badge">In Stock</span>
-            <% } %>
             <img
-              src="<%= prod.image || '/images/products/hydraulic-pump.jpg' %>"
+              src="<%= prod.image || '/images/products/rre-image-coming-soon.svg' %>"
               alt="<%= prod.name %> — Part No <%= prod.partNumber %>"
               loading="lazy"
-              onerror="this.src='/images/products/hydraulic-pump.jpg'"
+              onerror="this.src='/images/products/rre-image-coming-soon.svg'"
             >
           </div>
 
@@ -232,11 +224,6 @@
             <h3 class="prod-card-title">
               <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
             </h3>
-
-            <div class="prod-meta-row">
-              <span>🏗️ <%= prod.machineName %></span>
-              <span>📦 MOQ: <%= prod.moq %></span>
-            </div>
 
             <p class="prod-card-desc"><%= prod.description.substring(0, 105) %>...</p>
 
@@ -335,7 +322,7 @@
             <span class="cat-icon">⚙️</span>
           </div>
           <h3 class="cat-title">
-            <a href="/products/<%= cat.slug %>"><%= cat.name %></a>
+            <a href="/parts/<%= cat.slug %>"><%= cat.name %></a>
           </h3>
           <p class="cat-desc"><%= cat.description.substring(0, 120) %>...</p>
           <div class="cat-sub-tags">
@@ -343,7 +330,7 @@
               <span class="cat-sub-tag"><%= sub %></span>
             <% }) %>
           </div>
-          <a href="/products/<%= cat.slug %>" class="cat-browse-link">Browse <%= cat.shortName %> →</a>
+          <a href="/parts/<%= cat.slug %>" class="cat-browse-link">Browse <%= cat.shortName %> →</a>
         </article>
       <% }) %>
     </div>

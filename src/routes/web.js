@@ -6,8 +6,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { organization, categories, brands, machines, machineModels, products, countries, resources } = require('../data/catalog');
-const SearchService = require('../services/searchService');
-const PartNumberNormalizer = require('../services/partNumberNormalizer');
+const ProductStore = require('../data/productStore');
 const SeoService = require('../services/seoService');
 const InternalLinkingService = require('../services/internalLinkingService');
 const SitemapService = require('../services/sitemapService');
@@ -88,14 +87,36 @@ router.get('/', (req, res) => {
     ]
   });
 
+  // Real category/product data for the homepage showcase (replaces the
+  // fictional 13-category/14-product catalog.js taxonomy previously used
+  // here). Fields not present in the source Excel (brand, availability,
+  // machine fit, MOQ) are intentionally omitted rather than fabricated —
+  // see src/views/pages/home.ejs for how the template handles their absence.
+  const realCategories = ProductStore.getAllCategories().slice(0, 7);
+  const realFeaturedProducts = ProductStore.getAllProducts().slice(0, 8).map(p => ({
+    id: p.product_id,
+    partNumber: p.part_number,
+    name: p.description,
+    slug: p.slug,
+    categorySlug: p.category_code.toLowerCase(),
+    hsnCode: p.hsn,
+    image: p.image_url,
+    description: p.description
+  }));
+
   res.render('pages/home', {
     ...getGlobalContext(req),
     seo,
-    featuredCategories: categories.slice(0, 6),
+    featuredCategories: realCategories.map(c => ({
+      slug: c.slug,
+      name: c.name,
+      shortName: c.code,
+      description: `${c.count.toLocaleString('en-IN')} spare part listings under category code ${c.code} in RRE International's master price list.`
+    })),
     featuredBrands: brands,
     featuredMachines: machines,
-    featuredProducts: products,
-    products: products,
+    featuredProducts: realFeaturedProducts,
+    products: realFeaturedProducts,
     featuredCountries: countries,
     recentResources: resources.slice(0, 3)
   });
@@ -146,18 +167,22 @@ router.get('/sitemap.xml', (req, res) => {
   res.type('application/xml').send(SitemapService.getMasterSitemapIndex());
 });
 
+router.get('/sitemaps/products-:chunk.xml', (req, res, next) => {
+  const chunk = parseInt(req.params.chunk, 10);
+  if (!Number.isInteger(chunk) || chunk < 1) return next();
+  res.type('application/xml').send(SitemapService.getProductsSitemapChunk(chunk));
+});
+
 router.get('/sitemaps/:sitemap.xml', (req, res, next) => {
   const name = req.params.sitemap;
   let xml = null;
 
   switch (name) {
     case 'main': xml = SitemapService.getMainSitemap(); break;
-    case 'products': xml = SitemapService.getProductsSitemap(); break;
     case 'categories': xml = SitemapService.getCategoriesSitemap(); break;
     case 'brands': xml = SitemapService.getBrandsSitemap(); break;
     case 'machines': xml = SitemapService.getMachinesSitemap(); break;
     case 'models': xml = SitemapService.getModelsSitemap(); break;
-    case 'parts': xml = SitemapService.getPartsSitemap(); break;
     case 'countries': xml = SitemapService.getCountriesSitemap(); break;
     case 'resources': xml = SitemapService.getResourcesSitemap(); break;
     default: return next();
@@ -203,14 +228,11 @@ Contact: ${organization.contact.email} / WhatsApp: ${organization.contact.phoneD
 // ----------------------------------------------------
 router.get('/search', (req, res) => {
   const query = req.query.q || '';
-  const searchResults = SearchService.search(query, {
-    category: req.query.category,
-    brand: req.query.brand
-  });
+  const searchResults = ProductStore.search(query, { category: req.query.category });
 
   const seo = SeoService.getMeta({
     title: query ? `Search: "${query}" — Part Numbers & Spare Parts` : "Search Spare Parts & Part Numbers",
-    description: "Search 85,000+ heavy equipment spare parts by part number, OE reference, machine model, or product name.",
+    description: "Search 85,000+ heavy equipment spare parts by part number or description.",
     path: req.originalUrl,
     robots: 'noindex, follow',
     breadcrumbs: [{ name: query ? `Search: ${query}` : "Search", url: "/search" }]
@@ -228,9 +250,11 @@ router.get('/search', (req, res) => {
 // 6. PRODUCTS & CATEGORIES HUB
 // ----------------------------------------------------
 router.get('/products', (req, res) => {
+  const realCategories = ProductStore.getAllCategories();
+
   const seo = SeoService.getMeta({
-    title: "Heavy Equipment Spare Parts Categories & Catalog",
-    description: "Browse heavy earthmoving equipment replacement spare parts by category: Hydraulic Seal Kits, Pivot Pins, Bushes, Gears, Pumps, and Axle components.",
+    title: "Spare Parts Categories & Catalog",
+    description: `Browse ${ProductStore.getCounts().totalProducts.toLocaleString('en-IN')} heavy earthmoving equipment replacement spare parts across ${realCategories.length} categories.`,
     path: '/products',
     breadcrumbs: [{ name: "Products", url: "/products" }],
     schema: [
@@ -241,117 +265,96 @@ router.get('/products', (req, res) => {
   res.render('pages/products-hub', {
     ...getGlobalContext(req),
     seo,
-    categories,
-    featuredProducts: products
+    realCategories
   });
 });
 
 // ----------------------------------------------------
-// 7. DYNAMIC CATEGORY OR PRODUCT DETAIL
+// 7. PRODUCT DETAIL — single canonical URL per product
 // ----------------------------------------------------
 router.get('/products/:slug', (req, res, next) => {
-  const slug = req.params.slug;
+  const product = ProductStore.getProductBySlug(req.params.slug);
+  if (!product) return next();
 
-  // Check if it matches a Category
-  const category = categories.find(c => c.slug === slug);
-  if (category) {
-    const categoryProducts = products.filter(p => p.categorySlug === category.slug);
-    const internalLinks = InternalLinkingService.getLinksForCategory(category);
+  const category = ProductStore.getCategoryByCode(product.category_code);
+  const relatedProducts = ProductStore.getRelatedProducts(product, 4);
 
-    const seo = SeoService.getMeta({
-      title: category.metaTitle,
-      description: category.metaDescription,
-      path: `/products/${category.slug}`,
-      breadcrumbs: BreadcrumbService.forCategory(category)
-    });
+  const internalLinks = {
+    categoryLink: category ? { name: category.name, url: `/parts/${category.slug}` } : null,
+    relatedProducts: relatedProducts.map(p => ({
+      name: p.description,
+      partNumber: p.part_number,
+      url: `/products/${p.slug}`
+    }))
+  };
 
-    return res.render('pages/category-detail', {
-      ...getGlobalContext(req),
-      seo,
-      category,
-      categoryProducts,
-      internalLinks
-    });
-  }
-
-  // Check if it matches a Product
-  const product = products.find(p => p.slug === slug);
-  if (product) {
-    const internalLinks = InternalLinkingService.getLinksForProduct(product);
-    const whatsAppUrl = WhatsAppService.buildUrl({
-      productName: product.name,
-      partNumber: product.partNumber,
-      machineModel: product.machineName,
-      sourceUrl: SeoService.buildCanonical(`/products/${product.slug}`)
-    });
-
-    const seo = SeoService.getMeta({
-      title: product.metaTitle,
-      description: product.metaDescription,
-      path: `/products/${product.slug}`,
-      breadcrumbs: BreadcrumbService.forProduct(product),
-      schema: [
-        SeoService.getProductSchema(product),
-        SeoService.getFaqSchema(product.faqs)
-      ].filter(Boolean)
-    });
-
-    return res.render('pages/product-detail', {
-      ...getGlobalContext(req),
-      seo,
-      product,
-      internalLinks,
-      whatsAppUrl
-    });
-  }
-
-  next();
-});
-
-// ----------------------------------------------------
-// 8. DEDICATED PART NUMBER PAGES (/parts/:slug)
-// ----------------------------------------------------
-router.get('/parts/:partSlug', (req, res, next) => {
-  const partSlug = req.params.partSlug.toLowerCase();
-  const normalizedSlug = PartNumberNormalizer.normalize(partSlug);
-
-  // Find product with matching part number
-  const product = products.find(p => 
-    PartNumberNormalizer.toSlug(p.partNumber) === partSlug ||
-    p.normalizedPartNumber === normalizedSlug ||
-    (p.alternativePartNumbers || []).some(alt => PartNumberNormalizer.normalize(alt.partNumber) === normalizedSlug)
-  );
-
-  if (!product) {
-    return next();
-  }
-
-  const internalLinks = InternalLinkingService.getLinksForProduct(product);
   const whatsAppUrl = WhatsAppService.buildUrl({
-    productName: product.name,
-    partNumber: product.partNumber,
-    machineModel: product.machineName,
-    sourceUrl: SeoService.buildCanonical(`/parts/${PartNumberNormalizer.toSlug(product.partNumber)}`),
-    intent: 'rfq_quick'
+    productName: product.description,
+    partNumber: product.part_number,
+    sourceUrl: SeoService.buildCanonical(product.canonical_url)
   });
 
   const seo = SeoService.getMeta({
-    title: `Part No. ${product.partNumber} — ${product.name} | RRE International`,
-    description: `Detailed technical specifications, machine compatibility and export availability for Part Number ${product.partNumber} (${product.name}). Compatible with ${product.machineName}.`,
-    path: `/parts/${PartNumberNormalizer.toSlug(product.partNumber)}`,
-    breadcrumbs: BreadcrumbService.forPart(product),
-    schema: [
-      SeoService.getProductSchema(product),
-      SeoService.getFaqSchema(product.faqs)
-    ].filter(Boolean)
+    title: product.seo_title,
+    description: product.meta_description,
+    path: product.canonical_url,
+    robots: product.indexable ? 'index, follow' : 'noindex, follow',
+    breadcrumbs: [
+      { name: "Products", url: "/products" },
+      ...(category ? [{ name: category.name, url: `/parts/${category.slug}` }] : []),
+      { name: product.description, url: product.canonical_url }
+    ],
+    schema: [SeoService.getProductSchema(product)]
   });
 
-  res.render('pages/part-detail', {
+  res.render('pages/product-detail', {
     ...getGlobalContext(req),
     seo,
     product,
+    category,
     internalLinks,
     whatsAppUrl
+  });
+});
+
+// ----------------------------------------------------
+// 8. CATEGORY LISTING PAGES — /parts/{category-code}, server-side paginated
+// ----------------------------------------------------
+router.get('/parts/:categorySlug', (req, res, next) => {
+  const categorySlug = req.params.categorySlug.toLowerCase();
+  const category = ProductStore.getCategoryBySlug(categorySlug);
+  if (!category) return next();
+
+  const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+  const { products: categoryProducts, total, totalPages } = ProductStore.getProductsByCategory(category.code, { page, pageSize: 48 });
+
+  const canonicalPath = page > 1 ? `/parts/${category.slug}?page=${page}` : `/parts/${category.slug}`;
+  const otherCategories = ProductStore.getAllCategories().filter(c => c.code !== category.code).slice(0, 8);
+
+  const seo = SeoService.getMeta({
+    title: `${category.name} Spare Parts (${total.toLocaleString('en-IN')} listings)`,
+    description: `Browse ${total.toLocaleString('en-IN')} spare part listings under category ${category.name} from RRE International's master price list.`,
+    path: canonicalPath,
+    robots: 'index, follow',
+    breadcrumbs: [
+      { name: "Products", url: "/products" },
+      { name: category.name, url: `/parts/${category.slug}` }
+    ],
+    schema: [
+      SeoService.getBreadcrumbSchema([
+        { name: "Products", url: "/products" },
+        { name: category.name, url: `/parts/${category.slug}` }
+      ])
+    ]
+  });
+
+  res.render('pages/category-detail', {
+    ...getGlobalContext(req),
+    seo,
+    category,
+    categoryProducts,
+    pagination: { page, totalPages, total, baseUrl: `/parts/${category.slug}` },
+    internalLinks: { otherCategories: otherCategories.map(c => ({ name: c.name, url: `/parts/${c.slug}` })) }
   });
 });
 
@@ -768,7 +771,16 @@ router.get('/audit', (req, res) => {
 // ----------------------------------------------------
 router.get('/api/search/autocomplete', (req, res) => {
   const query = req.query.q || '';
-  const suggestions = SearchService.autocomplete(query);
+  if (!query || query.trim().length < 2) return res.json({ query, suggestions: [] });
+
+  const { results } = ProductStore.search(query, {});
+  const suggestions = results.slice(0, 8).map(p => ({
+    type: 'part',
+    title: `${p.part_number} — ${p.description}`,
+    subtitle: p.category_name,
+    url: `/products/${p.slug}`,
+    partNumber: p.part_number
+  }));
   res.json({ query, suggestions });
 });
 

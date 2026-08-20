@@ -4,3 +4,5 @@ storage/rfq-uploads/*
 test-results/
 scratch/
 *.log
+scripts/__pycache__/
+scripts/.pdf-image-staging/

@@ -4,17 +4,17 @@
 <section style="padding: 3.5rem 0; background: #0f172a; color: #ffffff;">
   <div class="container">
     <div style="max-width: 860px;">
-      <span class="badge badge-brand" style="margin-bottom: 1rem;">Component Taxonomy</span>
+      <span class="badge badge-brand" style="margin-bottom: 1rem;">Category <%= category.code %></span>
       <h1 style="font-size: 2.25rem; color: #ffffff; margin-bottom: 1rem;"><%= category.name %></h1>
       <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
-        <%= category.description %>
+        <%= pagination.total.toLocaleString('en-IN') %> spare part listings under category code <%= category.code %> in RRE International's master price list.
       </p>
-      
+
       <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
         <a href="/rfq" class="btn btn-primary">
           Request <%= category.name %> Quotation
         </a>
-        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I need price and availability for ' + category.name + '.') %>" class="btn btn-whatsapp" target="_blank" rel="noopener">
+        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I need price and availability for category ' + category.name + '.') %>" class="btn btn-whatsapp" target="_blank" rel="noopener">
           WhatsApp Fast Quote (<%= organization.contact.phoneDisplay %>)
         </a>
       </div>
@@ -22,64 +22,37 @@
   </div>
 </section>
 
-<!-- Sub-categories Chips -->
-<% if (category.subcategories && category.subcategories.length > 0) { %>
-  <section style="padding: 1.5rem 0; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-    <div class="container">
-      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-        <span style="font-size: 0.85rem; font-weight: 700; color: #64748b;">Sub-categories:</span>
-        <% category.subcategories.forEach(sub => { %>
-          <span style="background: #ffffff; border: 1px solid #cbd5e1; padding: 0.3rem 0.75rem; border-radius: 9999px; font-size: 0.85rem; color: #334155; font-weight: 600;">
-            <%= sub %>
-          </span>
-        <% }) %>
-      </div>
-    </div>
-  </section>
-<% } %>
-
 <!-- Category Products Grid -->
 <section style="padding: 4rem 0;">
   <div class="container">
-    <h2 style="font-size: 1.85rem; margin-bottom: 2rem; color: #0f172a;">Available <%= category.name %> in Stock & Production</h2>
+    <h2 style="font-size: 1.85rem; margin-bottom: 0.5rem; color: #0f172a;"><%= category.name %> Parts</h2>
+    <p style="color: #64748b; margin-bottom: 2rem;">
+      Showing <%= categoryProducts.length %> of <%= pagination.total.toLocaleString('en-IN') %> — page <%= pagination.page %> of <%= pagination.totalPages %>
+    </p>
 
     <% if (categoryProducts && categoryProducts.length > 0) { %>
       <div class="grid-cards">
         <% categoryProducts.forEach(prod => { %>
           <article class="product-card">
-            
+
             <div class="product-card-img-wrap">
-              <span style="position: absolute; top: 10px; left: 10px; z-index: 2;" class="badge badge-brand">
-                <%= prod.brandName %>
-              </span>
-              <span style="position: absolute; top: 10px; right: 10px; z-index: 2;" class="badge badge-instock">
-                In Stock
-              </span>
-              <img src="<%= prod.image || '/images/products/hydraulic-pump-335y1459.svg' %>" alt="<%= prod.name %>" loading="lazy">
+              <img src="<%= prod.image_url || '/images/products/rre-image-coming-soon.svg' %>" alt="<%= prod.description %>" loading="lazy">
             </div>
 
             <div class="product-card-body">
               <div style="font-family: monospace; font-weight: 800; color: #0f172a; font-size: 0.95rem; margin-bottom: 0.35rem;">
-                PN: <%= prod.partNumber %>
+                PN: <%= prod.part_number %>
               </div>
 
               <h3 class="product-card-title">
-                <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
+                <a href="/products/<%= prod.slug %>"><%= prod.description %></a>
               </h3>
-
-              <div style="font-size: 0.82rem; color: #64748b; margin-bottom: 0.75rem;">
-                <div><strong>Machine Fit:</strong> <%= prod.machineName %></div>
-              </div>
-
-              <p style="font-size: 0.85rem; color: #475569; margin-bottom: 1.25rem; flex: 1; line-height: 1.45;">
-                <%= prod.description.substring(0, 110) %>...
-              </p>
 
               <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.5rem; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
                 <a href="/products/<%= prod.slug %>" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.45rem;">
-                  Specs
+                  Details
                 </a>
-                <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, please share price & availability for Part No. ' + prod.partNumber + ' (' + prod.name + ').') %>" class="btn btn-whatsapp" style="font-size: 0.82rem; padding: 0.45rem;" target="_blank" rel="noopener">
+                <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, please share price & availability for Part No. ' + prod.part_number + ' (' + prod.description + ').') %>" class="btn btn-whatsapp" style="font-size: 0.82rem; padding: 0.45rem;" target="_blank" rel="noopener">
                   💬 WhatsApp
                 </a>
               </div>
@@ -88,20 +61,33 @@
           </article>
         <% }) %>
       </div>
+
+      <!-- Pagination -->
+      <% if (pagination.totalPages > 1) { %>
+        <nav aria-label="Category pagination" style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem; flex-wrap: wrap;">
+          <% if (pagination.page > 1) { %>
+            <a href="<%= pagination.baseUrl %>?page=<%= pagination.page - 1 %>" class="btn btn-outline" style="font-size: 0.85rem;">← Previous</a>
+          <% } %>
+          <span style="align-self: center; font-size: 0.9rem; color: #64748b;">Page <%= pagination.page %> of <%= pagination.totalPages %></span>
+          <% if (pagination.page < pagination.totalPages) { %>
+            <a href="<%= pagination.baseUrl %>?page=<%= pagination.page + 1 %>" class="btn btn-outline" style="font-size: 0.85rem;">Next →</a>
+          <% } %>
+        </nav>
+      <% } %>
     <% } else { %>
       <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 3rem; text-align: center;">
         <p style="color: #64748b; font-size: 1rem; margin-bottom: 1.5rem;">
-          Our offline manufacturing catalog contains hundreds of additional <%= category.name %> part numbers for JCB, CAT, Case, and Komatsu.
+          No listings currently published under this category.
         </p>
         <a href="/rfq" class="btn btn-primary">
-          Submit Requirements for <%= category.name %>
+          Submit Requirements
         </a>
       </div>
     <% } %>
 
     <!-- Internal Linking Navigation -->
     <div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid #e2e8f0;">
-      <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Related Spare Parts Categories</h3>
+      <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Other Spare Parts Categories</h3>
       <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
         <% internalLinks.otherCategories.forEach(c => { %>
           <a href="<%= c.url %>" class="btn btn-outline" style="font-size: 0.85rem;">

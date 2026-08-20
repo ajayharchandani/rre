@@ -1,7 +1,9 @@
 // src/services/sitemapService.js
-const { categories, brands, machines, machineModels, products, countries, resources } = require('../data/catalog');
-const PartNumberNormalizer = require('./partNumberNormalizer');
+const { brands, machines, machineModels, countries, resources } = require('../data/catalog');
+const ProductStore = require('../data/productStore');
 const SeoService = require('./seoService');
+
+const PRODUCTS_CHUNK_SIZE = 10000;
 
 class SitemapService {
   static getBaseUrl() {
@@ -19,14 +21,16 @@ class SitemapService {
     const baseUrl = this.getBaseUrl();
     const today = this.getToday();
 
+    const productChunkCount = ProductStore.getProductChunkCount(PRODUCTS_CHUNK_SIZE);
+    const productSitemaps = Array.from({ length: productChunkCount }, (_, i) => `${baseUrl}/sitemaps/products-${i + 1}.xml`);
+
     const sitemaps = [
       `${baseUrl}/sitemaps/main.xml`,
-      `${baseUrl}/sitemaps/products.xml`,
+      ...productSitemaps,
       `${baseUrl}/sitemaps/categories.xml`,
       `${baseUrl}/sitemaps/brands.xml`,
       `${baseUrl}/sitemaps/machines.xml`,
       `${baseUrl}/sitemaps/models.xml`,
-      `${baseUrl}/sitemaps/parts.xml`,
       `${baseUrl}/sitemaps/countries.xml`,
       `${baseUrl}/sitemaps/resources.xml`
     ];
@@ -86,18 +90,21 @@ class SitemapService {
   }
 
   /**
-   * Products Sitemap: /sitemaps/products.xml
+   * Chunked Products Sitemap: /sitemaps/products-{n}.xml (1-indexed)
+   * Chunked because 85,150+ product URLs exceed the practical/spec-limit
+   * size for a single sitemap file.
    */
-  static getProductsSitemap() {
+  static getProductsSitemapChunk(chunkNumber1Indexed) {
     const baseUrl = this.getBaseUrl();
     const today = this.getToday();
 
-    const urls = products
-      .filter(p => p.isIndexable !== false)
+    const chunk = ProductStore.getProductsChunk(chunkNumber1Indexed - 1, PRODUCTS_CHUNK_SIZE);
+    const urls = chunk
+      .filter(p => p.indexable !== false)
       .map(product => ({
-        loc: `${baseUrl}/products/${product.slug}`,
-        priority: '0.9',
-        changefreq: 'weekly',
+        loc: `${baseUrl}${product.canonical_url}`,
+        priority: '0.7',
+        changefreq: 'monthly',
         lastmod: today
       }));
 
@@ -105,14 +112,14 @@ class SitemapService {
   }
 
   /**
-   * Categories Sitemap: /sitemaps/categories.xml
+   * Categories Sitemap: /sitemaps/categories.xml — real Cat 1 codes at /parts/{code}
    */
   static getCategoriesSitemap() {
     const baseUrl = this.getBaseUrl();
     const today = this.getToday();
 
-    const urls = categories.map(cat => ({
-      loc: `${baseUrl}/products/${cat.slug}`,
+    const urls = ProductStore.getAllCategories().map(cat => ({
+      loc: `${baseUrl}/parts/${cat.slug}`,
       priority: '0.8',
       changefreq: 'weekly',
       lastmod: today
@@ -168,25 +175,6 @@ class SitemapService {
       changefreq: 'weekly',
       lastmod: today
     }));
-
-    return this.formatUrlSet(urls);
-  }
-
-  /**
-   * Dedicated Part Numbers Sitemap: /sitemaps/parts.xml
-   */
-  static getPartsSitemap() {
-    const baseUrl = this.getBaseUrl();
-    const today = this.getToday();
-
-    const urls = products
-      .filter(p => p.isIndexable !== false)
-      .map(product => ({
-        loc: `${baseUrl}/parts/${PartNumberNormalizer.toSlug(product.partNumber)}`,
-        priority: '0.9',
-        changefreq: 'weekly',
-        lastmod: today
-      }));
 
     return this.formatUrlSet(urls);
   }

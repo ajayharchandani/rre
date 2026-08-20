@@ -4,7 +4,7 @@
  * Prevents 404s on legacy URL structures, old part number URLs, and non-canonical part slugs
  */
 
-const { products } = require('../data/catalog');
+const ProductStore = require('../data/productStore');
 const PartNumberNormalizer = require('../services/partNumberNormalizer');
 
 const redirectMap = {
@@ -31,24 +31,30 @@ module.exports = function redirectMiddleware(req, res, next) {
     return res.redirect(301, redirectMap[path]);
   }
 
-  // Canonical Part Slug Redirect Check for /parts/:slug
+  // /parts/{code} is now the real category listing URL. But an older
+  // per-part-number URL scheme (/parts/{part-number-slug}) may have been
+  // linked/indexed previously — if the slug isn't a real category code but
+  // does resolve to a real part number, send it to the current canonical
+  // product URL instead of 404ing.
   if (path.startsWith('/parts/')) {
-    const rawSlug = path.substring('/parts/'.length);
-    if (rawSlug) {
+    const rawSlug = path.substring('/parts/'.length).toLowerCase();
+    if (rawSlug && !ProductStore.getCategoryBySlug(rawSlug)) {
       const normalized = PartNumberNormalizer.normalize(rawSlug);
-      
-      // Look up matching product to find canonical slug
-      const matchedProduct = products.find(p => 
-        p.normalizedPartNumber === normalized ||
-        PartNumberNormalizer.toSlug(p.partNumber) === rawSlug.toLowerCase()
-      );
-
+      const matchedProduct = ProductStore.getProductByPartNumber(normalized);
       if (matchedProduct) {
-        const canonicalSlug = PartNumberNormalizer.toSlug(matchedProduct.partNumber);
-        if (rawSlug !== canonicalSlug) {
-          return res.redirect(301, `/parts/${canonicalSlug}`);
-        }
+        return res.redirect(301, matchedProduct.canonical_url);
       }
+    }
+  }
+
+  // Old ambiguous /products/{category-slug} URLs are gone now that
+  // categories live at /parts/{code}; if the slug happens to match a real
+  // category code, forward it there instead of 404ing.
+  if (path.startsWith('/products/')) {
+    const rawSlug = path.substring('/products/'.length).toLowerCase();
+    const category = ProductStore.getCategoryBySlug(rawSlug);
+    if (category && !ProductStore.getProductBySlug(rawSlug)) {
+      return res.redirect(301, `/parts/${category.slug}`);
     }
   }
 

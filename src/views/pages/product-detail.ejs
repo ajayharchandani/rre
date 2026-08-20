@@ -4,120 +4,90 @@
 <section style="padding: 3.5rem 0; background: #ffffff;">
   <div class="container">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; align-items: start;">
-      
-      <!-- Product Header & Visual Media -->
+
+      <!-- Product Image -->
       <div>
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
-          <span class="badge badge-brand"><%= product.brandName %></span>
-          <span class="badge badge-instock"><%= product.availabilityText || 'In Stock' %></span>
-          <span class="badge" style="background: #f1f5f9; color: #475569;">HSN: <%= product.hsnCode %></span>
+          <% if (category) { %>
+            <span class="badge badge-brand"><%= category.name %></span>
+          <% } %>
+          <span class="badge" style="background: #f1f5f9; color: #475569;">HSN: <%= product.hsn %></span>
+          <span class="badge" style="background: #f1f5f9; color: #475569;">GST: <%= product.gst %>%</span>
         </div>
 
         <h1 style="font-size: 2.1rem; margin-bottom: 0.75rem; line-height: 1.25; color: #0f172a;">
-          <%= product.name %>
+          <%= product.description %>
         </h1>
 
-        <!-- Product Image / Technical Schematic -->
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; text-align: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
-          <img src="<%= product.image || '/images/products/hydraulic-pump-335y1459.svg' %>" alt="<%= product.name %>" style="max-height: 240px; margin: 0 auto; object-fit: contain;">
-          <div style="font-size: 0.8rem; color: #64748b; margin-top: 0.75rem; font-weight: 600;">
-            100% CMM Inspected · VCI Anti-Rust Oceanic Packaging
-          </div>
+          <img src="<%= product.image_url || '/images/products/rre-image-coming-soon.svg' %>" alt="<%= product.description %>" style="max-height: 240px; margin: 0 auto; object-fit: contain;">
+          <% if (product.image_status === 'source_image') { %>
+            <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.75rem;">Photo from RRE International's product catalogue</div>
+          <% } else { %>
+            <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.75rem;">Photograph not yet available for this part</div>
+          <% } %>
         </div>
 
         <!-- Part Number Display Box -->
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase;">Primary OE Reference:</span>
-            <a href="/parts/<%= product.normalizedPartNumber %>" style="color: #0284c7; font-size: 0.82rem; font-weight: 700; text-decoration: underline;">
-              Dedicated Part Page →
-            </a>
-          </div>
+          <div style="font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem;">Part Number</div>
           <div style="font-family: monospace; font-size: 1.75rem; font-weight: 800; color: #0f172a; letter-spacing: 0.05em;">
-            <%= product.partNumber %>
+            <%= product.part_number %>
           </div>
-          <% if (product.sku) { %>
-            <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">
-              RRE Internal SKU: <strong><%= product.sku %></strong>
-            </div>
-          <% } %>
         </div>
-
-        <!-- Alternative & Cross-reference Numbers -->
-        <% if (product.alternativePartNumbers && product.alternativePartNumbers.length > 0) { %>
-          <div style="margin-bottom: 1.5rem;">
-            <div style="font-size: 0.85rem; font-weight: 700; color: #64748b; margin-bottom: 0.5rem; text-transform: uppercase;">
-              Alternative & Cross-Reference Numbers:
-            </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-              <% product.alternativePartNumbers.forEach(alt => { %>
-                <span style="background: #ffffff; border: 1px solid #cbd5e1; font-family: monospace; font-size: 0.85rem; padding: 0.25rem 0.6rem; border-radius: 4px; color: #334155;">
-                  <strong><%= alt.partNumber %></strong> <span style="font-size: 0.75rem; color: #64748b;">(<%= alt.type %>)</span>
-                </span>
-              <% }) %>
-            </div>
-          </div>
-        <% } %>
 
         <!-- Conversion CTAs -->
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
-          <a href="/rfq?part=<%= encodeURIComponent(product.partNumber) %>&product=<%= encodeURIComponent(product.name) %>&machine=<%= encodeURIComponent(product.machineName) %>" class="btn btn-primary" style="padding: 0.85rem 1.75rem; font-size: 1rem; flex: 1;">
+          <a href="/rfq?part=<%= encodeURIComponent(product.part_number) %>&product=<%= encodeURIComponent(product.description) %>" class="btn btn-primary" style="padding: 0.85rem 1.75rem; font-size: 1rem; flex: 1;">
             📋 Request Export Quote (RFQ)
           </a>
           <a href="<%= whatsAppUrl %>" class="btn btn-whatsapp" style="padding: 0.85rem 1.75rem; font-size: 1rem; flex: 1;" target="_blank" rel="noopener">
             💬 WhatsApp (<%= organization.contact.phoneDisplay %>)
           </a>
         </div>
-
-        <!-- Trust Signals Checklist -->
-        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 1.25rem; font-size: 0.88rem; color: #065f46;">
-          <div style="font-weight: 800; margin-bottom: 0.4rem;">✓ RRE International Quality & Export Guarantee:</div>
-          <ul style="list-style: none; padding-left: 0; line-height: 1.65;">
-            <li>• 100% CMM dimensional verification against OEM drawings</li>
-            <li>• ISO 9001:2015 certified factory (Cert No: <%= organization.certification.certificateNumber %>)</li>
-            <li>• VCI anti-corrosion barrier packaging for 30+ days sea freight</li>
-            <li>• Direct FOB / CIF export documentation with Certificate of Origin</li>
-          </ul>
-        </div>
-
       </div>
 
-      <!-- Description & Technical Specifications -->
+      <!-- Details -->
       <div>
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 2rem; box-shadow: var(--shadow-sm);">
-          
-          <h2 style="font-size: 1.4rem; margin-bottom: 1rem; border-bottom: 2px solid #f59e0b; padding-bottom: 0.5rem; color: #0f172a;">
-            Product Overview & Engineering Details
-          </h2>
-          <p style="color: #334155; line-height: 1.7; margin-bottom: 1.5rem;">
-            <%= product.description %>
-          </p>
 
-          <!-- Specifications Table -->
-          <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem; color: #0f172a;">Technical Specifications</h3>
+          <h2 style="font-size: 1.4rem; margin-bottom: 1rem; border-bottom: 2px solid #f59e0b; padding-bottom: 0.5rem; color: #0f172a;">
+            Product Details
+          </h2>
+
           <table class="spec-table">
             <tbody>
-              <% Object.entries(product.specifications || {}).forEach(([key, val]) => { %>
-                <tr>
-                  <th style="width: 40%; font-weight: 600;"><%= key %></th>
-                  <td style="color: #0f172a;"><%= val %></td>
-                </tr>
-              <% }) %>
               <tr>
-                <th>Minimum Order Qty (MOQ)</th>
-                <td><%= product.moq %> piece(s) (Container consolidation available)</td>
+                <th style="width: 40%; font-weight: 600;">Part Number</th>
+                <td style="color: #0f172a; font-family: monospace;"><%= product.part_number %></td>
               </tr>
+              <tr>
+                <th style="font-weight: 600;">Description</th>
+                <td style="color: #0f172a;"><%= product.description %></td>
+              </tr>
+              <tr>
+                <th style="font-weight: 600;">Category</th>
+                <td style="color: #0f172a;"><% if (category) { %><a href="/parts/<%= category.slug %>"><%= category.name %></a><% } else { %><%= product.category_name %><% } %></td>
+              </tr>
+              <tr>
+                <th style="font-weight: 600;">HSN Code</th>
+                <td style="color: #0f172a;"><%= product.hsn %></td>
+              </tr>
+              <tr>
+                <th style="font-weight: 600;">GST Rate</th>
+                <td style="color: #0f172a;"><%= product.gst %>%</td>
+              </tr>
+              <% if (product.show_price && product.mrp) { %>
+                <tr>
+                  <th style="font-weight: 600;">MRP</th>
+                  <td style="color: #0f172a;">₹<%= product.mrp.toLocaleString('en-IN') %></td>
+                </tr>
+              <% } %>
             </tbody>
           </table>
 
-          <!-- Compatible Machine Models Table -->
-          <h3 style="font-size: 1.15rem; margin-top: 1.75rem; margin-bottom: 0.75rem; color: #0f172a;">Machine Model Compatibility</h3>
-          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
-            <% internalLinks.compatibleModels.forEach(cm => { %>
-              <a href="<%= cm.url %>" style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 0.4rem 0.75rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; color: #0f172a;">
-                🚜 <%= cm.name %>
-              </a>
-            <% }) %>
+          <div style="margin-top: 1.5rem; padding: 1.25rem; background: #f8fafc; border-radius: 8px; font-size: 0.9rem; color: #334155;">
+            Pricing shown in our master price list is for domestic reference only. For export FOB / CIF pricing based on destination and order quantity, please request a quote via WhatsApp or the RFQ form.
           </div>
 
         </div>
@@ -125,25 +95,10 @@
 
     </div>
 
-    <!-- Product FAQ Section -->
-    <% if (product.faqs && product.faqs.length > 0) { %>
-      <div style="margin-top: 4.5rem; max-width: 860px;">
-        <h2 style="font-size: 1.75rem; margin-bottom: 1.5rem; color: #0f172a;">Frequently Asked Technical & Procurement Questions</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-          <% product.faqs.forEach(faq => { %>
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem;">
-              <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #0f172a;"><%= faq.question %></h3>
-              <p style="color: #475569; font-size: 0.95rem; line-height: 1.6;"><%= faq.answer %></p>
-            </div>
-          <% }) %>
-        </div>
-      </div>
-    <% } %>
-
     <!-- Related Products -->
     <% if (internalLinks.relatedProducts && internalLinks.relatedProducts.length > 0) { %>
       <div style="margin-top: 4.5rem; border-top: 1px solid #e2e8f0; padding-top: 3.5rem;">
-        <h2 style="font-size: 1.75rem; margin-bottom: 2rem; color: #0f172a;">Related <%= product.categoryName %> Components</h2>
+        <h2 style="font-size: 1.75rem; margin-bottom: 2rem; color: #0f172a;">Related <%= category ? category.name : 'Parts' %></h2>
         <div class="grid-cards">
           <% internalLinks.relatedProducts.forEach(rel => { %>
             <article class="card">
@@ -154,7 +109,7 @@
                 <a href="<%= rel.url %>"><%= rel.name %></a>
               </h3>
               <a href="<%= rel.url %>" class="btn btn-outline" style="margin-top: auto; font-size: 0.85rem;">
-                View Part Specs →
+                View Part Details →
               </a>
             </article>
           <% }) %>
