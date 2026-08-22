@@ -1,6 +1,6 @@
 # RRE International — Full Validation Report
 
-Generated: 2026-08-20T21:21:14.789Z
+Generated: 2026-08-22T06:37:13.398Z
 
 ## Counts
 
@@ -9,7 +9,10 @@ Generated: 2026-08-20T21:21:14.789Z
 | Excel data rows | 85150 |
 | Products published | 85150 |
 | Products excluded | 0 |
-| Distinct categories | 41 |
+| Distinct internal Cat 1 codes | 41 |
+| Customer-facing catalogue categories | 26 |
+| Products categorized | 28314 |
+| Products needing review (published, uncategorized) | 56836 |
 | Duplicate slugs | 0 |
 | Duplicate canonical URLs | 0 |
 

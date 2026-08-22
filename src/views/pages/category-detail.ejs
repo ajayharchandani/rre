@@ -4,10 +4,10 @@
 <section style="padding: 3.5rem 0; background: #0f172a; color: #ffffff;">
   <div class="container">
     <div style="max-width: 860px;">
-      <span class="badge badge-brand" style="margin-bottom: 1rem;">Category <%= category.code %></span>
+      <span class="badge badge-brand" style="margin-bottom: 1rem;">Category</span>
       <h1 style="font-size: 2.25rem; color: #ffffff; margin-bottom: 1rem;"><%= category.name %></h1>
       <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
-        <%= pagination.total.toLocaleString('en-IN') %> spare part listings under category code <%= category.code %> in RRE International's master price list.
+        <%= pagination.total.toLocaleString('en-IN') %> <%= category.name %> spare part listings from RRE International's master price list.
       </p>
 
       <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">

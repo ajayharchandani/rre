@@ -31,14 +31,23 @@ module.exports = function redirectMiddleware(req, res, next) {
     return res.redirect(301, redirectMap[path]);
   }
 
-  // /parts/{code} is now the real category listing URL. But an older
-  // per-part-number URL scheme (/parts/{part-number-slug}) may have been
-  // linked/indexed previously — if the slug isn't a real category code but
-  // does resolve to a real part number, send it to the current canonical
-  // product URL instead of 404ing.
+  // /parts/{catalogue-category-slug} is the real category listing URL. Three
+  // older URL shapes can still arrive here and must never resolve as a live
+  // page (no duplicate/thin category pages, no internal codes surfaced):
+  //   1. A legacy internal Cat 1 code slug (/parts/hln, /parts/bhl, ...) —
+  //      301 to whichever single catalogue category most of that code's
+  //      products landed in, or to /products when the code fans out across
+  //      many categories (see legacy-category-redirects.json).
+  //   2. An old per-part-number URL (/parts/{part-number-slug}) that may
+  //      still be linked/indexed — send it to the canonical product URL.
   if (path.startsWith('/parts/')) {
     const rawSlug = path.substring('/parts/'.length).toLowerCase();
     if (rawSlug && !ProductStore.getCategoryBySlug(rawSlug)) {
+      const legacyTarget = ProductStore.getLegacyRedirectTarget(rawSlug);
+      if (legacyTarget) {
+        return res.redirect(301, legacyTarget);
+      }
+
       const normalized = PartNumberNormalizer.normalize(rawSlug);
       const matchedProduct = ProductStore.getProductByPartNumber(normalized);
       if (matchedProduct) {

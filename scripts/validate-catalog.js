@@ -15,6 +15,7 @@ const ROOT = path.join(__dirname, '..');
 const SOURCE_XLSX = path.join(ROOT, 'JCB Price list month of June 2026.xlsx');
 const PRODUCTS_PATH = path.join(ROOT, 'src', 'data', 'generated', 'products.json');
 const CATEGORIES_PATH = path.join(ROOT, 'src', 'data', 'generated', 'categories.json');
+const CATALOGUE_CATEGORIES_PATH = path.join(ROOT, 'src', 'data', 'generated', 'catalogue-categories.json');
 const PUBLIC_DIR = path.join(ROOT, 'src', 'public');
 const REPORT_PATH = path.join(ROOT, 'reports', 'validation-report.md');
 
@@ -74,6 +75,39 @@ function main() {
   const emptyCategories = categories.filter(c => c.count === 0);
   if (emptyCategories.length) warnings.push(`${emptyCategories.length} categor(ies) have 0 products (would be an unreachable/orphan category page): ${emptyCategories.map(c => c.code).join(', ')}`);
 
+  // 4b. Customer-facing catalogue-category referential integrity (Cat 1 -> real category migration)
+  let catalogueCategories = [];
+  let categorizedCount = 0, needsReviewCount = 0, orphanCatalogueCategoryRefs = 0, badCategoryStatus = 0;
+  if (!fs.existsSync(CATALOGUE_CATEGORIES_PATH)) {
+    failures.push('catalogue-categories.json not found — run "node scripts/build-category-mapping.js".');
+  } else {
+    catalogueCategories = JSON.parse(fs.readFileSync(CATALOGUE_CATEGORIES_PATH, 'utf8'));
+    const catalogueIds = new Set(catalogueCategories.map(c => c.id));
+    const liveCounts = new Map(catalogueCategories.map(c => [c.id, 0]));
+
+    for (const p of products) {
+      if (p.category_status === 'categorized') {
+        categorizedCount++;
+        if (!p.catalogue_category_id || !catalogueIds.has(p.catalogue_category_id)) {
+          orphanCatalogueCategoryRefs++;
+        } else {
+          liveCounts.set(p.catalogue_category_id, liveCounts.get(p.catalogue_category_id) + 1);
+        }
+      } else if (p.category_status === 'needs_review') {
+        needsReviewCount++;
+      } else {
+        badCategoryStatus++;
+      }
+    }
+
+    if (orphanCatalogueCategoryRefs) failures.push(`${orphanCatalogueCategoryRefs} product(s) marked categorized but reference a catalogue_category_id not present in catalogue-categories.json.`);
+    if (badCategoryStatus) failures.push(`${badCategoryStatus} product(s) have an invalid/missing category_status (expected 'categorized' or 'needs_review').`);
+    if (categorizedCount + needsReviewCount !== products.length) failures.push(`Category status counts (${categorizedCount} categorized + ${needsReviewCount} needs_review = ${categorizedCount + needsReviewCount}) do not add up to total products (${products.length}).`);
+
+    const staleCounts = catalogueCategories.filter(c => c.count !== liveCounts.get(c.id));
+    if (staleCounts.length) failures.push(`${staleCounts.length} categor(ies) in catalogue-categories.json have a stale count vs. actual product data: ${staleCounts.map(c => c.name).join(', ')}. Re-run build-category-mapping.js.`);
+  }
+
   // 5. Image status + broken file check
   const statusCounts = { source_image: 0, placeholder_image: 0, image_pending: 0, generated_image: 0 };
   let brokenImageFiles = 0;
@@ -106,7 +140,10 @@ function main() {
     `| Excel data rows | ${excelRowCount} |`,
     `| Products published | ${products.length} |`,
     `| Products excluded | ${excluded} |`,
-    `| Distinct categories | ${categories.length} |`,
+    `| Distinct internal Cat 1 codes | ${categories.length} |`,
+    `| Customer-facing catalogue categories | ${catalogueCategories.length} |`,
+    `| Products categorized | ${categorizedCount} |`,
+    `| Products needing review (published, uncategorized) | ${needsReviewCount} |`,
     `| Duplicate slugs | ${dupSlugs.length} |`,
     `| Duplicate canonical URLs | ${dupCanonicals.length} |`,
     '',

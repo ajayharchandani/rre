@@ -112,7 +112,7 @@ class SitemapService {
   }
 
   /**
-   * Categories Sitemap: /sitemaps/categories.xml — real Cat 1 codes at /parts/{code}
+   * Categories Sitemap: /sitemaps/categories.xml — customer-facing catalogue categories at /parts/{slug}
    */
   static getCategoriesSitemap() {
     const baseUrl = this.getBaseUrl();

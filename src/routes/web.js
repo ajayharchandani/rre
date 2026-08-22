@@ -98,7 +98,7 @@ router.get('/', (req, res) => {
     partNumber: p.part_number,
     name: p.description,
     slug: p.slug,
-    categorySlug: p.category_code.toLowerCase(),
+    categorySlug: p.catalogue_category_slug,
     hsnCode: p.hsn,
     image: p.image_url,
     description: p.description
@@ -110,8 +110,8 @@ router.get('/', (req, res) => {
     featuredCategories: realCategories.map(c => ({
       slug: c.slug,
       name: c.name,
-      shortName: c.code,
-      description: `${c.count.toLocaleString('en-IN')} spare part listings under category code ${c.code} in RRE International's master price list.`
+      shortName: c.name,
+      description: `${c.count.toLocaleString('en-IN')} spare part listings in RRE International's ${c.name} category.`
     })),
     featuredBrands: brands,
     featuredMachines: machines,
@@ -276,7 +276,7 @@ router.get('/products/:slug', (req, res, next) => {
   const product = ProductStore.getProductBySlug(req.params.slug);
   if (!product) return next();
 
-  const category = ProductStore.getCategoryByCode(product.category_code);
+  const category = product.catalogue_category_slug ? ProductStore.getCategoryBySlug(product.catalogue_category_slug) : null;
   const relatedProducts = ProductStore.getRelatedProducts(product, 4);
 
   const internalLinks = {
@@ -318,7 +318,7 @@ router.get('/products/:slug', (req, res, next) => {
 });
 
 // ----------------------------------------------------
-// 8. CATEGORY LISTING PAGES — /parts/{category-code}, server-side paginated
+// 8. CATEGORY LISTING PAGES — /parts/{catalogue-category-slug}, server-side paginated
 // ----------------------------------------------------
 router.get('/parts/:categorySlug', (req, res, next) => {
   const categorySlug = req.params.categorySlug.toLowerCase();
@@ -326,10 +326,10 @@ router.get('/parts/:categorySlug', (req, res, next) => {
   if (!category) return next();
 
   const page = Math.max(1, parseInt(req.query.page, 10) || 1);
-  const { products: categoryProducts, total, totalPages } = ProductStore.getProductsByCategory(category.code, { page, pageSize: 48 });
+  const { products: categoryProducts, total, totalPages } = ProductStore.getProductsByCategory(category.slug, { page, pageSize: 48 });
 
   const canonicalPath = page > 1 ? `/parts/${category.slug}?page=${page}` : `/parts/${category.slug}`;
-  const otherCategories = ProductStore.getAllCategories().filter(c => c.code !== category.code).slice(0, 8);
+  const otherCategories = ProductStore.getAllCategories().filter(c => c.slug !== category.slug).slice(0, 8);
 
   const seo = SeoService.getMeta({
     title: `${category.name} Spare Parts (${total.toLocaleString('en-IN')} listings)`,
