@@ -15,18 +15,21 @@
   <div class="container">
     <div class="grid-cards">
       <% realCategories.forEach(cat => { %>
-        <article class="card">
-          <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem;">
-            <span style="font-size: 1.25rem;">⚙️</span>
-          </div>
-          <h2 style="font-size: 1.3rem; margin-bottom: 0.5rem;">
-            <a href="/parts/<%= cat.slug %>"><%= cat.name %></a>
-          </h2>
-          <p class="card-desc"><%= cat.count.toLocaleString('en-IN') %> part listings</p>
-
-          <a href="/parts/<%= cat.slug %>" class="btn btn-primary" style="margin-top: auto; font-size: 0.85rem;">
-            View <%= cat.name %> Catalog →
+        <article class="card cat-hub-card" style="display: flex; flex-direction: column; overflow: hidden; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: transform 0.2s ease, box-shadow 0.2s ease;">
+          <a href="/parts/<%= cat.slug %>" style="display: block; width: 100%; aspect-ratio: 4/3; background: #f8fafc; overflow: hidden; border-bottom: 1px solid #f1f5f9;">
+            <img src="<%= cat.image_url || '/images/categories/' + cat.slug + '.webp' %>" alt="<%= cat.image_alt || (cat.name + ' JCB Spare Parts') %>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease;">
           </a>
+          <div style="padding: 1.25rem; display: flex; flex-direction: column; flex: 1;">
+            <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.35rem; line-height: 1.35;">
+              <a href="/parts/<%= cat.slug %>" style="color: #0f172a; text-decoration: none;"><%= cat.name %></a>
+            </h2>
+            <p class="card-desc" style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.25rem;">
+              <%= cat.count.toLocaleString('en-IN') %> part listings
+            </p>
+            <a href="/parts/<%= cat.slug %>" class="btn btn-primary" style="margin-top: auto; font-size: 0.88rem; text-align: center; justify-content: center; width: 100%; padding: 0.6rem 1rem; border-radius: 6px;">
+              View Catalog →
+            </a>
+          </div>
         </article>
       <% }) %>
     </div>

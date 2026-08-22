@@ -111,6 +111,8 @@ router.get('/', (req, res) => {
       slug: c.slug,
       name: c.name,
       shortName: c.name,
+      image_url: c.image_url || `/images/categories/${c.slug}.webp`,
+      image_alt: c.image_alt || `${c.name} JCB Spare Parts`,
       description: `${c.count.toLocaleString('en-IN')} spare part listings in RRE International's ${c.name} category.`
     })),
     featuredBrands: brands,
@@ -786,6 +788,31 @@ router.get('/api/search/autocomplete', (req, res) => {
 
 router.get('/api/audit/orphans', (req, res) => {
   res.json(OrphanAuditService.runFullAudit());
+});
+
+// ----------------------------------------------------
+// 17. INTERNAL IMAGE PIPELINE QA REVIEW (NOINDEX)
+// ----------------------------------------------------
+router.get('/qa/image-review', (req, res) => {
+  res.set('X-Robots-Tag', 'noindex, nofollow');
+  const productImagesPath = path.join(__dirname, '../data/generated/product-images.json');
+  const allImages = fs.existsSync(productImagesPath)
+    ? JSON.parse(fs.readFileSync(productImagesPath, 'utf8'))
+    : [];
+
+  const categories = ProductStore.getAllCategories();
+  const enhanced = allImages.filter(p => p.image_status === 'enhanced');
+  const batch500 = enhanced.slice(0, 500);
+  const pilot100 = allImages.slice(0, 100);
+
+  res.render('pages/qa-image-review', {
+    layout: false,
+    categories,
+    batch500,
+    pilot100,
+    totalCatalogCount: ProductStore.getCounts().totalProducts,
+    enhancedCount: enhanced.length
+  });
 });
 
 module.exports = router;
