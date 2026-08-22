@@ -7,3 +7,6 @@ scratch/
 scripts/__pycache__/
 scripts/.pdf-image-staging/
 .claude/
+
+# MCP server config — contains the Hostinger API token, never commit
+.mcp.json
