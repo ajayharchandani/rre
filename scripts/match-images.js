@@ -138,7 +138,7 @@ function main() {
     const confidence = p.image_source ? p.image_source.confidence : '';
     const notes = p.image_source ? p.image_source.notes : (p.image_status === 'placeholder_image' ? 'No matching PDF entry found; standardized placeholder used.' : '');
     lines.push([
-      p.part_number, p.description, p.category_code,
+      p.part_number, p.description, p.internal_category_code,
       p.image_status === 'source_image' ? 'yes' : 'no',
       sourcePage, p.image_status, filename, 'no', confidence, notes
     ].map(csvEscape).join(','));

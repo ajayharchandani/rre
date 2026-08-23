@@ -162,8 +162,7 @@ function main() {
   let needsReview = 0;
 
   for (const p of products) {
-    const internalCode = p.category_code;
-    p.internal_category_code = internalCode;
+    const internalCode = p.internal_category_code;
 
     let categoryId = oeToCategory.get(p.part_number_normalized) || null;
     let source = null;

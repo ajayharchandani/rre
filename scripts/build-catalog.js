@@ -175,20 +175,16 @@ function main() {
       show_price: false,
       hsn: rawHsn === null || rawHsn === undefined ? '' : String(rawHsn).trim(),
       gst: rawGst === null || rawGst === undefined ? null : Number(rawGst),
-      category_code: categoryCode,
+      internal_category_code: categoryCode,
       category_name: categoryName,
       slug,
       image_status: 'image_pending',
       image_url: null,
       image_source: null,
-      source: 'xlsx:JCB Price list month of June 2026.xlsx',
-      source_row: excelRowNum,
       seo_title: seoTitle,
       meta_description: metaDescription,
       canonical_url: canonicalUrl,
-      indexable: true,
-      created_at: null,
-      updated_at: null
+      indexable: true
     };
 
     products.push(product);
@@ -203,9 +199,7 @@ function main() {
     ]);
   }
 
-  // Timestamp all products with a single build time (deterministic per-run, not per-row)
   const now = new Date().toISOString();
-  for (const p of products) { p.created_at = now; p.updated_at = now; }
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   fs.mkdirSync(REPORTS_DIR, { recursive: true });

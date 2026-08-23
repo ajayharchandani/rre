@@ -69,9 +69,9 @@ function main() {
   const categoryCodes = new Set(categories.map(c => c.code));
   let orphanCategoryRefs = 0;
   for (const p of products) {
-    if (!categoryCodes.has(p.category_code)) orphanCategoryRefs++;
+    if (!categoryCodes.has(p.internal_category_code)) orphanCategoryRefs++;
   }
-  if (orphanCategoryRefs) failures.push(`${orphanCategoryRefs} product(s) reference a category_code not present in categories.json.`);
+  if (orphanCategoryRefs) failures.push(`${orphanCategoryRefs} product(s) reference an internal_category_code not present in categories.json.`);
   const emptyCategories = categories.filter(c => c.count === 0);
   if (emptyCategories.length) warnings.push(`${emptyCategories.length} categor(ies) have 0 products (would be an unreachable/orphan category page): ${emptyCategories.map(c => c.code).join(', ')}`);
 
