@@ -1,0 +1,152 @@
+[
+  {
+    "id": "1",
+    "name": "Axle & Wheel Parts",
+    "count": 133
+  },
+  {
+    "id": "2",
+    "name": "Bearings",
+    "count": 36
+  },
+  {
+    "id": "3",
+    "name": "Body Parts",
+    "count": 58
+  },
+  {
+    "id": "4",
+    "name": "Brake Parts",
+    "count": 38
+  },
+  {
+    "id": "5",
+    "name": "Bucket Parts",
+    "count": 11
+  },
+  {
+    "id": "6",
+    "name": "Bushes/Bearing Liners",
+    "count": 91
+  },
+  {
+    "id": "7",
+    "name": "Cabin Parts",
+    "count": 55
+  },
+  {
+    "id": "8",
+    "name": "Cables",
+    "count": 26
+  },
+  {
+    "id": "9",
+    "name": "Column Switch",
+    "count": 17
+  },
+  {
+    "id": "10",
+    "name": "Electrical Part",
+    "count": 70
+  },
+  {
+    "id": "11",
+    "name": "Engine Parts",
+    "count": 103
+  },
+  {
+    "id": "12",
+    "name": "Filters",
+    "count": 55
+  },
+  {
+    "id": "13",
+    "name": "Gasket",
+    "count": 17
+  },
+  {
+    "id": "14",
+    "name": "Greasing",
+    "count": 6
+  },
+  {
+    "id": "15",
+    "name": "Hoses",
+    "count": 43
+  },
+  {
+    "id": "16",
+    "name": "Hydraulic/Pump Drive",
+    "count": 29
+  },
+  {
+    "id": "17",
+    "name": "JS200 Excavator Parts",
+    "count": 0
+  },
+  {
+    "id": "18",
+    "name": "Light & Lenses",
+    "count": 10
+  },
+  {
+    "id": "19",
+    "name": "Mini Digger Parts",
+    "count": 0
+  },
+  {
+    "id": "20",
+    "name": "Pins- CAT",
+    "count": 0
+  },
+  {
+    "id": "21",
+    "name": "Pins- JCB",
+    "count": 71
+  },
+  {
+    "id": "22",
+    "name": "Seals & Seals Kit",
+    "count": 128
+  },
+  {
+    "id": "23",
+    "name": "Shim/ Spacer/Washer",
+    "count": 41
+  },
+  {
+    "id": "24",
+    "name": "Solenoid",
+    "count": 17
+  },
+  {
+    "id": "25",
+    "name": "Torque Converter",
+    "count": 12
+  },
+  {
+    "id": "26",
+    "name": "Transmission & Gear Parts",
+    "count": 47
+  },
+  {
+    "id": "27",
+    "name": "Transmission & Pumps",
+    "count": 5
+  },
+  {
+    "id": "28",
+    "name": "U. J. Cross /Spider Kit",
+    "count": 11
+  },
+  {
+    "id": "29",
+    "name": "Wear Pads & Wear Plates- CAT",
+    "count": 0
+  },
+  {
+    "id": "30",
+    "name": "Wear Pads & Wear Slides- JCB",
+    "count": 19
+  }
+]

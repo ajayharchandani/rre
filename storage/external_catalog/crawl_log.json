@@ -1,0 +1,11 @@
+{
+  "started_at": "2026-08-24T18:48:31.900Z",
+  "categories_found": 30,
+  "pages_crawled": 161,
+  "products_extracted": 1213,
+  "unique_part_numbers_discovered": 1354,
+  "unique_images_discovered": 1181,
+  "errors": [],
+  "completed_at": "2026-08-24T18:50:31.413Z",
+  "duration_seconds": 120
+}
