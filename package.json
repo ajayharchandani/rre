@@ -23,11 +23,13 @@
   "type": "commonjs",
   "dependencies": {
     "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
     "express-ejs-layouts": "^2.5.1",
     "lucide-static": "^1.33.0",
     "multer": "^2.2.0",
+    "nodemailer": "^9.0.5",
     "sharp": "^0.35.3",
     "xlsx": "^0.18.5"
   }

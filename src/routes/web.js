@@ -11,6 +11,7 @@ const SeoService = require('../services/seoService');
 const InternalLinkingService = require('../services/internalLinkingService');
 const SitemapService = require('../services/sitemapService');
 const WhatsAppService = require('../services/whatsAppService');
+const EmailService = require('../services/emailService');
 const LeadScoringService = require('../services/leadScoringService');
 const OrphanAuditService = require('../services/orphanAuditService');
 const BreadcrumbService = require('../services/breadcrumbService');
@@ -114,16 +115,29 @@ router.get('/', (req, res) => {
   // machine fit, MOQ) are intentionally omitted rather than fabricated —
   // see src/views/pages/home.ejs for how the template handles their absence.
   const realCategories = ProductStore.getAllCategories().slice(0, 7);
-  const realFeaturedProducts = ProductStore.getAllProducts().slice(0, 8).map(p => ({
-    id: p.product_id,
-    partNumber: p.part_number,
-    name: p.description,
-    slug: p.slug,
-    categorySlug: p.catalogue_category_slug,
-    hsnCode: p.hsn,
-    image: p.image_url,
-    description: p.description
-  }));
+
+  // One product per featured category (preferring one with a real photo
+  // over a placeholder) so the homepage's category filter tabs each show
+  // something — picking blindly from the front of the full catalog left
+  // 7 of 8 sample products uncategorized, since ~two-thirds of the real
+  // catalog has no catalogue_category assigned yet, so almost every tab
+  // filtered down to an empty grid.
+  const realFeaturedProducts = realCategories
+    .map(cat => {
+      const { products: inCategory } = ProductStore.getProductsByCategory(cat.slug, { page: 1, pageSize: 48 });
+      return inCategory.find(p => p.image_status !== 'placeholder_image') || inCategory[0];
+    })
+    .filter(Boolean)
+    .map(p => ({
+      id: p.product_id,
+      partNumber: p.part_number,
+      name: p.description,
+      slug: p.slug,
+      categorySlug: p.catalogue_category_slug,
+      hsnCode: p.hsn,
+      image: p.image_url,
+      description: p.description
+    }));
 
   // Hand-picked, verified-real part numbers for the hero "Fast-Moving SKUs"
   // chips — looked up live against the actual catalog so the chips never
@@ -678,9 +692,17 @@ router.post('/rfq', upload.array('attachments', 5), (req, res) => {
       message: body.message
     },
     files: files.map(f => ({ originalName: f.originalname, size: f.size })),
+    filePaths: files.map(f => f.path),
     score: scoreData,
     attribution: req.attribution || {}
   };
+
+  // Email the export desk. Fire-and-forget: sendRfqNotification never
+  // throws (a delivery problem is logged, not surfaced to the buyer), and
+  // the buyer shouldn't wait on an SMTP round-trip to see their confirmation.
+  EmailService.sendRfqNotification(rfqRecord).catch(err => {
+    console.error(`[rfq] Unexpected error emailing RFQ ${refId}:`, err);
+  });
 
   // Redirect to confirmation with reference code
   res.redirect(`/rfq/confirmation?ref=${refId}&score=${scoreData.score}&band=${scoreData.band}`);

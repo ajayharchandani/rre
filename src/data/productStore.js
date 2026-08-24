@@ -66,6 +66,19 @@ function load() {
     }
   }
 
+  // Within each category, products with a real (or studio-generated) photo
+  // sort ahead of ones still on the placeholder — so a buyer browsing a
+  // category sees actual parts first instead of a page of "coming soon"
+  // placeholders with the occasional real photo mixed in. Stable sort
+  // preserves each group's original relative order.
+  for (const categoryProducts of byCatalogueCategorySlug.values()) {
+    categoryProducts.sort((a, b) => {
+      const aHasImage = a.image_status !== 'placeholder_image' ? 0 : 1;
+      const bHasImage = b.image_status !== 'placeholder_image' ? 0 : 1;
+      return aHasImage - bHasImage;
+    });
+  }
+
   return { products, catalogueCategories, internalCategoryCodes, legacyRedirects, bySlug, byPartNumberNormalized, byCatalogueCategorySlug };
 }
 

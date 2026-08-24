@@ -1090,6 +1090,18 @@ footer { background: var(--primary); color: #cbd5e1; }
   .nav-menu { display: none; }
   .header-desktop-search { display: none; }
   .header-mobile-search { display: block; padding-bottom: 0.75rem; }
+  /* The trust strip alone was 205px tall on mobile (24% of a 375x812
+     viewport) — the ISO badge, export-countries claim, WhatsApp link and
+     email link were each wrapping onto their own line. Keep only the ISO
+     badge and WhatsApp link (the two that matter most at a glance); the
+     export-countries claim and email are still one tap away via the About
+     page / footer / floating WhatsApp button, so nothing is lost, just
+     decluttered off the very top of every page. */
+  .top-trust-strip { padding: 0.4rem 0; font-size: 0.76rem; }
+  .trust-strip-export-claim,
+  .trust-strip-email,
+  .trust-strip-iso-suffix { display: none; }
+  .top-trust-inner { justify-content: center; gap: 0.5rem 1rem; }
   /* With white-space:nowrap and no room to shrink next to the hamburger
      toggle, this button pushed the toggle past the header's right edge —
      clipped and unreachable by .header-main's overflow:hidden. The mobile

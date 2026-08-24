@@ -55,15 +55,15 @@
   <div class="top-trust-strip">
     <div class="container top-trust-inner">
       <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-        <span><strong style="color: #fbbf24;">★ ISO 9001:2015 Certified</strong> Manufacturer & Exporter (Delhi, India)</span>
-        <span style="color: #475569;">|</span>
-        <span>Exporting to <strong>45+ Countries</strong> (UAE, Saudi, Africa, Worldwide)</span>
+        <span class="trust-strip-iso"><strong style="color: #fbbf24;">★ ISO 9001:2015 Certified</strong> <span class="trust-strip-iso-suffix">Manufacturer &amp; Exporter (Delhi, India)</span></span>
+        <span class="trust-strip-export-claim" style="color: #475569;">|</span>
+        <span class="trust-strip-export-claim">Exporting to <strong>45+ Countries</strong> (UAE, Saudi, Africa, Worldwide)</span>
       </div>
       <div style="display: flex; align-items: center; gap: 1.25rem;">
-        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I need price and availability for earthmoving spare parts.') %>" style="color: #25d366; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" target="_blank" rel="noopener">
+        <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I need price and availability for earthmoving spare parts.') %>" class="trust-strip-whatsapp" style="color: #25d366; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;" target="_blank" rel="noopener">
           <span>💬 WhatsApp: <%= organization.contact.phoneDisplay %></span>
         </a>
-        <a href="mailto:<%= organization.contact.email %>" style="color: #cbd5e1;">
+        <a href="mailto:<%= organization.contact.email %>" class="trust-strip-email" style="color: #cbd5e1;">
           ✉️ <%= organization.contact.email %>
         </a>
       </div>
