@@ -17,7 +17,7 @@
       <% realCategories.forEach(cat => { %>
         <article class="card cat-hub-card" style="display: flex; flex-direction: column; overflow: hidden; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: transform 0.2s ease, box-shadow 0.2s ease;">
           <a href="/parts/<%= cat.slug %>" style="display: block; width: 100%; aspect-ratio: 4/3; background: #f8fafc; overflow: hidden; border-bottom: 1px solid #f1f5f9;">
-            <img src="<%= cat.image_url || '/images/categories/' + cat.slug + '.webp' %>" alt="<%= cat.image_alt || (cat.name + ' JCB Spare Parts') %>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease;">
+            <img src="<%= cat.image_url || '/images/categories/' + cat.slug + '.webp' %>" alt="<%= cat.image_alt || (cat.name + ' JCB Spare Parts') %>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease;" onerror="this.style.display='none';">
           </a>
           <div style="padding: 1.25rem; display: flex; flex-direction: column; flex: 1;">
             <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.35rem; line-height: 1.35;">

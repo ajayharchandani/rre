@@ -78,13 +78,47 @@ function buildPdfCategoryMap() {
     }
   }
 
-  // Manual overrides for the two confirmed sections whose PDF pages carry
-  // no OCR'd heading row of their own (see categoryTaxonomy.js header
-  // comment) — evidenced directly by the product descriptions on those
-  // pages (BUCKET 12/18/24/30, TOOTH POINT, SIDE CUTTER on page 22;
-  // HEADLAMP, INDICATOR LIGHT LENS, REAR LIGHT on page 66).
+  // Manual overrides for confirmed sections whose PDF pages carry no OCR'd
+  // heading row of their own — each evidenced directly by the product
+  // descriptions on those pages (see reports/category-migration-report.md
+  // for the full page-level trail). Without these, pageToCategory's
+  // "carry the last-seen header forward" logic silently bleeds the
+  // PREVIOUS section's category onto these pages' products, since it has
+  // no way to detect a section boundary the OCR missed.
+  //
+  //   - Page 22: BUCKET 12/18/24/30, TOOTH POINT, SIDE CUTTER
+  //     (was defaulting to the prior section, "Brake Parts")
+  //   - Page 66: HEADLAMP, INDICATOR LIGHT LENS, REAR LIGHT
+  //     (was defaulting to "Hydraulic / Pump Drive")
+  //   - Pages 30-32: WINDOW HANDLE, DOOR LATCH, DOOR HANDLE, GAS STRUT,
+  //     CABIN MOUNTING SET, BATTERY ISOLATOR SWITCH — this is the true
+  //     start of the Cabin Parts section; the OCR'd "CABIN PARTS" header
+  //     wasn't captured until page 33, so these 3 pages were defaulting to
+  //     the prior section, "Bushes / Bearing Liners" (confirmed via
+  //     src/data/generated/products.json: 17 products described purely as
+  //     door/window/cabin hardware were tagged bushes-bearing-liners).
+  //   - Pages 73-74: OIL PUMP SEAL, KING POST CARRIAGE SEAL, DOWTY SEAL,
+  //     WIPER SEAL, SEAL KIT VALVE STEERING — the true start of the
+  //     Seals/O-Rings/Seal Kits section; the OCR'd header wasn't captured
+  //     until page 75, so these 2 pages were defaulting to the prior
+  //     section, "Pins" (this is the exact "Pins category contains
+  //     unrelated seals" defect reported for Phase 3 — 17 products
+  //     described purely as SEAL/SEAL KIT/O-RING were tagged `pins`).
+  //   - Pages 90-91: TRANSMISSION FRICTION PLATE, LAYSHAFT, GEAR 3RD,
+  //     COUNTER PLATE — the true start of the Transmission & Gear Parts
+  //     section; the OCR'd header wasn't captured until page 92, so these
+  //     2 pages were defaulting to the prior section, "Torque Converter"
+  //     (confirmed: 14 transmission gear/friction-plate products were
+  //     tagged torque-converter).
   pageToCategory.set(22, 'bucket-parts');
   pageToCategory.set(66, 'light-lenses');
+  pageToCategory.set(30, 'cabin-parts');
+  pageToCategory.set(31, 'cabin-parts');
+  pageToCategory.set(32, 'cabin-parts');
+  pageToCategory.set(73, 'seals-seal-kits');
+  pageToCategory.set(74, 'seals-seal-kits');
+  pageToCategory.set(90, 'transmission-gear-parts');
+  pageToCategory.set(91, 'transmission-gear-parts');
 
   const oeToCategory = new Map();
   let conflicts = 0;
@@ -218,16 +252,34 @@ function main() {
   fs.writeFileSync(PRODUCTS_PATH, JSON.stringify(products));
 
   // --- Write catalogue-categories.json (dynamic counts) ---
+  // This file also carries image metadata (image_url/image_source/
+  // image_status/image_alt/created_at) added later by the image pipeline —
+  // fields this script has no knowledge of. Merge into the existing file by
+  // id instead of overwriting wholesale, so re-running the category mapping
+  // never clobbers image work done since the last run.
+  const categoriesOutPath = path.join(OUT_DIR, 'catalogue-categories.json');
+  const existingCategories = fs.existsSync(categoriesOutPath)
+    ? JSON.parse(fs.readFileSync(categoriesOutPath, 'utf8'))
+    : [];
+  const existingById = new Map(existingCategories.map(c => [c.id, c]));
+
+  const nowIso = new Date().toISOString();
   const catalogueCategories = CATEGORIES
-    .map(c => ({
-      id: c.id,
-      name: c.name,
-      slug: c.id,
-      description: c.description,
-      count: categoryCounts.get(c.id)
-    }))
+    .map(c => {
+      const existing = existingById.get(c.id) || {};
+      const count = categoryCounts.get(c.id);
+      return {
+        ...existing,
+        id: c.id,
+        name: c.name,
+        slug: c.id,
+        description: c.description,
+        count,
+        updated_at: existing.count === count ? existing.updated_at : nowIso
+      };
+    })
     .sort((a, b) => b.count - a.count);
-  fs.writeFileSync(path.join(OUT_DIR, 'catalogue-categories.json'), JSON.stringify(catalogueCategories, null, 2));
+  fs.writeFileSync(categoriesOutPath, JSON.stringify(catalogueCategories, null, 2));
 
   // --- Legacy internal-code -> redirect target map ---
   const legacyRedirects = {};

@@ -335,7 +335,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .search-btn:hover { background: var(--accent-dark); }
 .header-mobile-search { display: none; }
 .mobile-menu-btn { display: none; }
-.js-mobile-nav-drawer { display: none !important; }
+/* No !important here (unlike a prior version of this rule) — main.js
+   toggles this open via mobileDrawer.style.display = 'block', and an
+   !important base rule permanently wins over that inline style, which
+   silently broke the mobile menu: the hamburger icon would flip to '✕'
+   but the drawer itself could never actually appear. */
+.js-mobile-nav-drawer { display: none; }
 
 /* HERO SECTION */
 .hero-section-light {
@@ -794,6 +799,24 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .machine-catalog-link { color: var(--accent-dark); font-weight: 700; font-size: 0.88rem; }
 .machine-catalog-link:hover { text-decoration: underline; }
 
+/* MACHINES HUB — /machines listing cards. Same image-card pattern as
+   .machine-card above: fixed-height, positioned container so the
+   absolutely-positioned brand badge anchors to the card, not the page. */
+.machine-platform-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.machine-platform-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+.machine-platform-card-img { position: relative; height: 200px; overflow: hidden; background: var(--bg-slate); }
+.machine-platform-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.machine-platform-card:hover .machine-platform-card-img img { transform: scale(1.04); }
+.machine-platform-card-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-faint); font-size: 0.8rem; }
+
 /* CATEGORIES SECTION */
 .categories-section { padding: 4rem 0; background: #fff; }
 .featured-category-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
@@ -1067,6 +1090,12 @@ footer { background: var(--primary); color: #cbd5e1; }
   .nav-menu { display: none; }
   .header-desktop-search { display: none; }
   .header-mobile-search { display: block; padding-bottom: 0.75rem; }
+  /* With white-space:nowrap and no room to shrink next to the hamburger
+     toggle, this button pushed the toggle past the header's right edge —
+     clipped and unreachable by .header-main's overflow:hidden. The mobile
+     sticky bar and floating WhatsApp button already cover RFQ access on
+     mobile, so hide the redundant header button instead of the toggle. */
+  .header-rfq-btn { display: none; }
   .mobile-menu-btn { display: flex; }
   .hero-section-light { min-height: 560px; }
   .hero-content-wrap { padding: 2.5rem 1rem; }
@@ -1080,8 +1109,18 @@ footer { background: var(--primary); color: #cbd5e1; }
   .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   .featured-category-row { grid-template-columns: 1fr 1fr; }
   .rfq-cta-card { flex-direction: column; padding: 2rem; }
-  .rfq-cta-actions { width: 100%; flex-direction: row; }
+  /* Both CTA buttons' own text needs ~830px combined at this size — wider
+     than the 768px breakpoint itself — so a row layout can never fit them;
+     it just overflows the page horizontally. Stay in the base column
+     layout (see .rfq-cta-actions above) instead of forcing a row here. */
+  .rfq-cta-actions { width: 100%; }
   .footer-grid { grid-template-columns: 1fr; }
+  /* The sticky bar is position:fixed at the viewport bottom, so the page's
+     natural max-scroll (footer bottom = viewport bottom) leaves the bar
+     covering the last ~68px of the footer — including the Privacy/Terms/
+     Disclaimer/Sitemap links row — permanently, with no way to scroll past
+     it. Reserve that space so the real page bottom clears the bar. */
+  body { padding-bottom: 76px; }
   #mobile-sticky-bar { display: flex; }
   .floating-whatsapp-btn { bottom: 5.5rem; }
   .manufacturing-capabilities-grid { grid-template-columns: 1fr; }

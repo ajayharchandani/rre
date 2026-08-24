@@ -1,6 +1,6 @@
 # RRE International — Category Migration Report
 
-Generated: 2026-08-22T06:33:38.496Z
+Generated: 2026-08-24T18:26:19.487Z
 Sources: JCB Price list month of June 2026.xlsx (master), Jcb catalogue E.pdf (category evidence, via reports/pdf-extract.jsonl)
 
 ## 1. Mapping Method Summary
@@ -16,18 +16,18 @@ Sources: JCB Price list month of June 2026.xlsx (master), Jcb catalogue E.pdf (c
 | Category | Internal Cat 1 Codes Contributing | Product Count | With Real Image | Without Image (placeholder) |
 |---|---|---|---|---|
 | Hoses | 130, 210, 3CX, 3DX, 455, 506, 528, 530, ACS, ATH, ATT, BHL, ENG, G1, GEN, HLN, J81, LOD, SSL, TH, TRD, UNCATEGORIZED, VMX | 6695 | 21 | 6674 |
-| Seals & Seal Kits | 210, 3D, 455, 506, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 3544 | 74 | 3470 |
+| Seals & Seal Kits | 210, 3D, 455, 506, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 3565 | 95 | 3470 |
 | Shim / Spacer / Washer | 130, 3DX, 455, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 2824 | 39 | 2785 |
 | Electrical Parts | 3DX, 430, 455, 506, 528, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1906 | 64 | 1842 |
-| Cabin Parts | 130, 3DX, 528, 530, ACS, ATH, ATT, BHL, ENG, G1, G20, GEN, HLN, LOD, SSL, TH, TRD | 1622 | 11 | 1611 |
+| Cabin Parts | 130, 3DX, 528, 530, ACS, ATH, ATT, BHL, ENG, G1, G20, GEN, HLN, LOD, SSL, TH, TRD | 1640 | 29 | 1611 |
 | Engine Parts | 3DX, 528, ACS, ATT, BHL, ENG, GEN, HLN, LUB, SSL, TH, TRD, WLS | 1546 | 96 | 1450 |
 | Filters | 3CX, 3DX, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1515 | 39 | 1476 |
-| Pins | 455, 528, 530, ATH, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1273 | 82 | 1191 |
+| Pins | 455, 528, 530, ATH, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1252 | 61 | 1191 |
 | Gasket | 528, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 1052 | 16 | 1036 |
 | Cables | 3DX, 528, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 941 | 25 | 916 |
-| Bushes / Bearing Liners | 205, 528, ACS, ATT, BHL, ENG, GEN, HLN, J20, SSL, TH, TRD, UNCATEGORIZED | 849 | 95 | 754 |
+| Bushes / Bearing Liners | 205, 528, ACS, ATT, BHL, ENG, GEN, HLN, J20, SSL, TH, TRD, UNCATEGORIZED | 831 | 77 | 754 |
 | Bearings | 210, 528, ACS, ATH, ATT, BHL, ENG, GEN, HLN, SSL, TRD | 697 | 33 | 664 |
-| Transmission & Gear Parts | 3DX, 432, 528, ATT, BHL, ENG, GEN, HLN, LUB, SSL, TH, TRD, UNCATEGORIZED | 660 | 16 | 644 |
+| Transmission & Gear Parts | 3DX, 432, 528, ATT, BHL, ENG, GEN, HLN, LUB, SSL, TH, TRD, UNCATEGORIZED | 682 | 38 | 644 |
 | Hydraulic / Pump Drive | 3DX, 528, 530, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 484 | 12 | 472 |
 | Bucket Parts | 43X, 528, 530, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 476 | 3 | 473 |
 | Greasing | 3DX, 455, 528, ATT, BHL, ENG, GEN, HLN, TH, TRD, UNCATEGORIZED | 364 | 5 | 359 |
@@ -38,8 +38,8 @@ Sources: JCB Price list month of June 2026.xlsx (master), Jcb catalogue E.pdf (c
 | Solenoid | 528, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 250 | 10 | 240 |
 | Wear Pads / Wear Plates | ACS, ATT, BHL, ENG, HLN, LOD, TH, TRD | 202 | 13 | 189 |
 | U.J. Cross / Spider Kit | BHL, HLN, TRD | 54 | 10 | 44 |
-| Torque Converter | BHL, HLN, TRD | 35 | 28 | 7 |
 | Column Switch | 528, BHL, HLN, TRD | 27 | 12 | 15 |
+| Torque Converter | BHL, HLN, TRD | 13 | 6 | 7 |
 | Transmission & Pumps | BHL, HLN, SSL, TRD | 8 | 3 | 5 |
 
 ## 3. PRODUCT REPORT
@@ -75,7 +75,7 @@ Sources: JCB Price list month of June 2026.xlsx (master), Jcb catalogue E.pdf (c
 | Product lines | 1146 |
 | Product lines with an OE reference | 1291 |
 | Distinct part numbers resolved to a category from the PDF | 1248 |
-| Conflicting OE-to-category mappings (kept first-seen) | 16 |
+| Conflicting OE-to-category mappings (kept first-seen) | 15 |
 
 ## 6. Internal Code -> Category Distribution
 

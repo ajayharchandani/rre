@@ -95,20 +95,25 @@
 <!-- Fast-Moving Products for Country -->
 <section style="padding: 4rem 0;">
   <div class="container">
-    <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">Recommended Spares for Export to <%= country.name %></h2>
+    <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">Popular Spare Parts We Export to <%= country.name %></h2>
     <div class="grid-cards">
       <% internalLinks.topProducts.forEach(prod => { %>
-        <article class="card">
-          <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 0.85rem; margin-bottom: 0.5rem;">
-            PN: <%= prod.partNumber %>
-          </span>
-          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">
-            <a href="<%= prod.url %>"><%= prod.name %></a>
-          </h3>
-          <p class="card-desc"><%= prod.categoryName %></p>
-          <a href="<%= prod.url %>" class="btn btn-outline" style="margin-top: auto; font-size: 0.85rem;">
-            View Part Specs →
-          </a>
+        <article class="product-card">
+          <div class="product-card-img-wrap">
+            <img src="<%= prod.image || '/images/products/rre-image-coming-soon.png' %>" alt="<%= prod.name %> — JCB Part No. <%= prod.partNumber %>" loading="lazy" onerror="this.onerror=null;this.src='/images/products/rre-image-coming-soon.png';">
+          </div>
+          <div class="product-card-body">
+            <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 0.85rem; margin-bottom: 0.5rem;">
+              PN: <%= prod.partNumber %>
+            </span>
+            <h3 style="font-size: 1.1rem; margin: 0.35rem 0;">
+              <a href="<%= prod.url %>"><%= prod.name %></a>
+            </h3>
+            <p class="card-desc"><%= prod.categoryName %></p>
+            <a href="<%= prod.url %>" class="btn btn-outline" style="margin-top: auto; font-size: 0.85rem;">
+              View Details →
+            </a>
+          </div>
         </article>
       <% }) %>
     </div>

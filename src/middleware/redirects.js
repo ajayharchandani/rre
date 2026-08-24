@@ -5,7 +5,6 @@
  */
 
 const ProductStore = require('../data/productStore');
-const PartNumberNormalizer = require('../services/partNumberNormalizer');
 
 const redirectMap = {
   // Legacy paths
@@ -48,8 +47,11 @@ module.exports = function redirectMiddleware(req, res, next) {
         return res.redirect(301, legacyTarget);
       }
 
-      const normalized = PartNumberNormalizer.normalize(rawSlug);
-      const matchedProduct = ProductStore.getProductByPartNumber(normalized);
+      // Pass the raw slug (not the fully-stripped normalized form) so that
+      // when several distinct real part numbers collapse to the same
+      // normalized key, getProductByPartNumber can still disambiguate using
+      // separator position (see productStore.js).
+      const matchedProduct = ProductStore.getProductByPartNumber(rawSlug);
       if (matchedProduct) {
         return res.redirect(301, matchedProduct.canonical_url);
       }

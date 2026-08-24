@@ -50,23 +50,34 @@
     </div>
 
     <!-- Featured Products for Brand -->
-    <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">Fast-Moving <%= brand.name %> Replacement Parts</h2>
-    <div class="grid-cards">
-      <% brandProducts.forEach(prod => { %>
-        <article class="card">
-          <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 0.85rem; margin-bottom: 0.5rem;">
-            PN: <%= prod.partNumber %>
-          </span>
-          <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">
-            <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
-          </h3>
-          <p class="card-desc"><%= prod.description.substring(0, 120) %>...</p>
-          <a href="/products/<%= prod.slug %>" class="btn btn-primary" style="margin-top: auto; font-size: 0.85rem;">
-            View Part Specs →
-          </a>
-        </article>
-      <% }) %>
-    </div>
+    <% if (brandProducts.length > 0) { %>
+      <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">Fast-Moving <%= brand.name %> Replacement Parts</h2>
+      <div class="grid-cards">
+        <% brandProducts.forEach(prod => { %>
+          <article class="product-card">
+            <div class="product-card-img-wrap">
+              <img src="<%= prod.image || '/images/products/rre-image-coming-soon.png' %>" alt="<%= prod.name %> — JCB Part No. <%= prod.partNumber %>" loading="lazy" onerror="this.onerror=null;this.src='/images/products/rre-image-coming-soon.png';">
+            </div>
+            <div class="product-card-body">
+              <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 0.85rem; margin-bottom: 0.5rem;">
+                PN: <%= prod.partNumber %>
+              </span>
+              <h3 style="font-size: 1.1rem; margin: 0.35rem 0;">
+                <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
+              </h3>
+              <a href="/products/<%= prod.slug %>" class="btn btn-primary" style="margin-top: auto; font-size: 0.85rem;">
+                View Details →
+              </a>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">Browse Our <%= brand.name %> Spare Parts</h2>
+      <p style="color: #475569; max-width: 640px; margin-bottom: 1.5rem;">
+        Our digitized online catalog is currently JCB-only. For <%= brand.name %> part numbers, WhatsApp our export desk or submit an RFQ — our engineering team will confirm pricing and availability directly.
+      </p>
+    <% } %>
 
   </div>
 </section>

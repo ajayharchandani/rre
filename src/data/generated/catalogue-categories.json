@@ -6,24 +6,24 @@
     "description": "Oil cooler, water, and hydraulic hoses with associated adaptors and clamps.",
     "count": 6695,
     "image_url": "/images/categories/hoses.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB hydraulic hoses — high pressure hydraulic hoses, oil cooler hoses and crimped fittings",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:28.709Z"
+    "updated_at": "2026-08-24T18:56:13.166Z"
   },
   {
     "id": "seals-seal-kits",
     "name": "Seals & Seal Kits",
     "slug": "seals-seal-kits",
     "description": "O-rings, Dowty seals, oil seals, and hydraulic cylinder seal kits.",
-    "count": 3544,
+    "count": 3565,
     "image_url": "/images/categories/seals-seal-kits.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB hydraulic seals and seal kits — cylinder seal kits, piston seals, rod seals and O-rings",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:29.008Z"
+    "updated_at": "2026-08-24T18:56:13.185Z"
   },
   {
     "id": "shim-spacer-washer",
@@ -32,11 +32,11 @@
     "description": "Shims, spacers, thrust washers, and circlips.",
     "count": 2824,
     "image_url": "/images/categories/shim-spacer-washer.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB shims, spacers and washers — precision steel shims, thrust washers and circlips",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:29.299Z"
+    "updated_at": "2026-08-24T18:56:13.185Z"
   },
   {
     "id": "electrical-parts",
@@ -45,24 +45,24 @@
     "description": "Sensors, relays, fuses, solenoid coils, connectors, and general electrical components.",
     "count": 1906,
     "image_url": "/images/categories/electrical-parts.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB electrical parts — starter relays, temperature sensors, pressure switches and harnesses",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:29.466Z"
+    "updated_at": "2026-08-24T18:56:13.185Z"
   },
   {
     "id": "cabin-parts",
     "name": "Cabin Parts",
     "slug": "cabin-parts",
     "description": "Door handles, latches, window mechanisms, wipers, and cabin hardware.",
-    "count": 1622,
+    "count": 1640,
     "image_url": "/images/categories/cabin-parts.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB cabin parts — door lock assembly, door handles, latches and wiper mechanisms",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:29.607Z"
+    "updated_at": "2026-08-24T18:56:13.186Z"
   },
   {
     "id": "engine-parts",
@@ -71,11 +71,11 @@
     "description": "Crankshaft pulleys, water pumps, thermostats, gaskets-in-place, and other engine components.",
     "count": 1546,
     "image_url": "/images/categories/engine-parts.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB diesel engine spare parts — pistons, connecting rods, water pumps and thermostats",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:29.770Z"
+    "updated_at": "2026-08-24T18:56:13.186Z"
   },
   {
     "id": "filters",
@@ -84,24 +84,24 @@
     "description": "Oil, fuel, hydraulic, and air pre-cleaner filters and strainers.",
     "count": 1515,
     "image_url": "/images/categories/filters.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB filters — engine oil filters, fuel filters, hydraulic strainers and air filter elements",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:29.947Z"
+    "updated_at": "2026-08-24T18:56:13.186Z"
   },
   {
     "id": "pins",
     "name": "Pins",
     "slug": "pins",
     "description": "Pivot pins, cotter pins, and general linkage pins.",
-    "count": 1273,
+    "count": 1252,
     "image_url": "/images/categories/pins.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB linkage pins — induction hardened kingpins, pivot pins and boom pins",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:30.170Z"
+    "updated_at": "2026-08-24T18:56:13.186Z"
   },
   {
     "id": "gasket",
@@ -110,11 +110,11 @@
     "description": "Cylinder head, manifold, thermostat housing, and tank gaskets.",
     "count": 1052,
     "image_url": "/images/categories/gasket.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB engine gaskets — cylinder head gaskets, manifold gaskets and seal kits",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:30.334Z"
+    "updated_at": "2026-08-24T18:56:13.188Z"
   },
   {
     "id": "cables",
@@ -123,24 +123,24 @@
     "description": "Throttle, brake, and bonnet-release control cables.",
     "count": 941,
     "image_url": "/images/categories/cables.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB control cables — heavy duty throttle, brake, and accelerator cables",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:30.462Z"
+    "updated_at": "2026-08-24T18:56:13.189Z"
   },
   {
     "id": "bushes-bearing-liners",
     "name": "Bushes / Bearing Liners",
     "slug": "bushes-bearing-liners",
     "description": "Pivot, spring, and repair bushes / bearing liners for boom, dipper, and bucket linkages.",
-    "count": 849,
+    "count": 831,
     "image_url": "/images/categories/bushes-bearing-liners.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB bushes and bearing liners — hardened spring bushes, pivot bushes and bronze liners",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:30.619Z"
+    "updated_at": "2026-08-24T18:56:13.189Z"
   },
   {
     "id": "bearings",
@@ -149,24 +149,24 @@
     "description": "Hub, thrust, transmission, and differential bearings for axle and drivetrain assemblies.",
     "count": 697,
     "image_url": "/images/categories/bearings.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB spare parts bearings — taper roller bearings, cylindrical and ball bearings",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:30.772Z"
+    "updated_at": "2026-08-24T18:56:13.190Z"
   },
   {
     "id": "transmission-gear-parts",
     "name": "Transmission & Gear Parts",
     "slug": "transmission-gear-parts",
     "description": "Transmission gears, clutch/friction plates, layshafts, and gear housing components.",
-    "count": 660,
+    "count": 682,
     "image_url": "/images/categories/transmission-gear-parts.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB transmission and gear parts — helical gears, synchronizer rings and clutch plates",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:31.012Z"
+    "updated_at": "2026-08-24T18:56:13.190Z"
   },
   {
     "id": "hydraulic-pump-drive",
@@ -175,11 +175,11 @@
     "description": "Main hydraulic pumps, pump drive components, relief valves, and valve blocks.",
     "count": 484,
     "image_url": "/images/categories/hydraulic-pump-drive.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB hydraulic pumps and pump drive components — main hydraulic pumps and relief valves",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:31.192Z"
+    "updated_at": "2026-08-24T18:56:13.190Z"
   },
   {
     "id": "bucket-parts",
@@ -188,11 +188,11 @@
     "description": "Bucket assemblies, tooth points, side cutters, and bucket mounting hardware.",
     "count": 476,
     "image_url": "/images/categories/bucket-parts.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB backhoe and excavator bucket parts — bucket teeth, adapters, side cutters and pins",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:31.371Z"
+    "updated_at": "2026-08-24T18:56:13.194Z"
   },
   {
     "id": "greasing",
@@ -201,11 +201,11 @@
     "description": "Grease nipples, grease guns, and greasing accessories.",
     "count": 364,
     "image_url": "/images/categories/greasing.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB greasing equipment and lubrication accessories — grease gun, brass grease nipples and fittings",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:31.640Z"
+    "updated_at": "2026-08-24T18:56:13.195Z"
   },
   {
     "id": "light-lenses",
@@ -214,11 +214,11 @@
     "description": "Headlamps, tail lights, indicator lenses, and working lights.",
     "count": 354,
     "image_url": "/images/categories/light-lenses.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB lights and lenses — headlamps, rear combination work lamps and indicator lenses",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:31.884Z"
+    "updated_at": "2026-08-24T18:56:13.196Z"
   },
   {
     "id": "body-parts",
@@ -227,11 +227,11 @@
     "description": "Fuel and hydraulic tank caps, grilles, clamp housings, and other machine body/chassis components.",
     "count": 344,
     "image_url": "/images/categories/body-parts.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB machine body parts — fuel and hydraulic tank caps, brackets and chassis hardware",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:32.041Z"
+    "updated_at": "2026-08-24T18:56:13.196Z"
   },
   {
     "id": "axle-wheel-parts",
@@ -240,11 +240,11 @@
     "description": "Front and rear axle assemblies, axle shafts, wheel hubs, wheel nuts/studs, kingpins, and differential components.",
     "count": 329,
     "image_url": "/images/categories/axle-wheel-parts.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB spare parts axle and wheel components — wheel hub, studs, nuts and axle shafts",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:32.207Z"
+    "updated_at": "2026-08-24T18:56:13.197Z"
   },
   {
     "id": "brake-parts",
@@ -253,11 +253,11 @@
     "description": "Brake master cylinders, reservoirs, friction plates, pipes, and pad assemblies.",
     "count": 263,
     "image_url": "/images/categories/brake-parts.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB brake parts — brake master cylinder, friction plates, counter plates and lines",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:32.399Z"
+    "updated_at": "2026-08-24T18:56:13.198Z"
   },
   {
     "id": "solenoid",
@@ -266,11 +266,11 @@
     "description": "Solenoid valves, coils, and pump cut-off solenoids.",
     "count": 250,
     "image_url": "/images/categories/solenoid.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB solenoid valves and coils — 12V/24V hydraulic solenoid valves and coils",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:32.619Z"
+    "updated_at": "2026-08-24T18:56:13.198Z"
   },
   {
     "id": "wear-pads-wear-plates",
@@ -279,11 +279,11 @@
     "description": "Wear pads, wear slides, and stabiliser wear plates.",
     "count": 202,
     "image_url": "/images/categories/wear-pads-wear-plates.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB wear pads and wear slides — nylon wear pads, bronze plates and stabiliser slides",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:32.833Z"
+    "updated_at": "2026-08-24T18:56:13.198Z"
   },
   {
     "id": "uj-cross-spider-kit",
@@ -292,24 +292,11 @@
     "description": "Universal joint kits, propshaft cross straps, and spider kit assemblies.",
     "count": 54,
     "image_url": "/images/categories/uj-cross-spider-kit.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB universal joint cross and spider kits — propshaft spider kits with bearing caps",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:33.084Z"
-  },
-  {
-    "id": "torque-converter",
-    "name": "Torque Converter",
-    "slug": "torque-converter",
-    "description": "Torque converter assemblies for transmission drivetrains.",
-    "count": 35,
-    "image_url": "/images/categories/torque-converter.webp",
-    "image_source": "rre_composite_catalog",
-    "image_status": "verified",
-    "image_alt": "JCB torque converter assemblies — heavy equipment drivetrain torque converters",
-    "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:33.294Z"
+    "updated_at": "2026-08-24T18:56:13.199Z"
   },
   {
     "id": "column-switch",
@@ -318,11 +305,24 @@
     "description": "Steering column forward/reverse, lights, and wiper switch assemblies.",
     "count": 27,
     "image_url": "/images/categories/column-switch.webp",
-    "image_source": "gemini_generated_representation",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB steering column switches — forward-reverse shuttle switch and indicator lever assembly",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:33.437Z"
+    "updated_at": "2026-08-24T18:56:13.202Z"
+  },
+  {
+    "id": "torque-converter",
+    "name": "Torque Converter",
+    "slug": "torque-converter",
+    "description": "Torque converter assemblies for transmission drivetrains.",
+    "count": 13,
+    "image_url": "/images/categories/torque-converter.webp",
+    "image_source": "rre_studio_catalog_photography",
+    "image_status": "verified",
+    "image_alt": "JCB torque converter assemblies — heavy equipment drivetrain torque converters",
+    "created_at": "2026-08-22T00:00:00.000Z",
+    "updated_at": "2026-08-24T18:56:13.203Z"
   },
   {
     "id": "transmission-pumps",
@@ -331,10 +331,10 @@
     "description": "Transmission oil pumps and related drive components.",
     "count": 8,
     "image_url": "/images/categories/transmission-pumps.webp",
-    "image_source": "rre_composite_catalog",
+    "image_source": "rre_studio_catalog_photography",
     "image_status": "verified",
     "image_alt": "JCB transmission oil pumps — hydraulic transmission pumps and drive shafts",
     "created_at": "2026-08-22T00:00:00.000Z",
-    "updated_at": "2026-08-22T07:57:33.633Z"
+    "updated_at": "2026-08-24T18:56:13.204Z"
   }
 ]

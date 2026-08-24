@@ -159,7 +159,7 @@
 ### Status: ✅ PASS
 
 * **Direct Answer Formatting:** Quick reference entity cards answer common AI queries immediately (What is it, What machine does it fit, What are alternative part numbers, How to order).
-* **Factual Integrity:** Cites verified ISO 9001:2015 certificate numbers, metallurgical grades (EN353, 20MnCr5, SAE 660 Phosphor Bronze, 93 Shore A Polyurethane), and in-house CNC machining capabilities.
+* **Factual Integrity:** Cites verified ISO 9001:2015 certificate numbers, metallurgical grades (EN9, EN18, EN19, 20MnCr5, SAE 660 Phosphor Bronze, 93 Shore A Polyurethane), and in-house CNC machining capabilities.
 
 ---
 

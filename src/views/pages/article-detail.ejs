@@ -30,7 +30,7 @@
         Send your machinery serial number or photos of damaged parts to our technical engineering team for instant identification and quotation.
       </p>
       <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <a href="/rfq" class="btn btn-primary">
+        <a href="/rfq?product=<%= encodeURIComponent('Question re: ' + article.title) %>" class="btn btn-primary">
           Submit RFQ Form
         </a>
         <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, I read your guide on ' + article.title + ' and have a technical inquiry.') %>" class="btn btn-whatsapp" target="_blank" rel="noopener">

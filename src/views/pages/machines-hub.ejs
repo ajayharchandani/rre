@@ -17,7 +17,11 @@
       <% machines.forEach(m => { %>
         <article class="machine-platform-card">
           <div class="machine-platform-card-img">
-            <img src="<%= m.image || '/images/machines/jcb-3dx.jpg' %>" alt="<%= m.name %>" loading="lazy">
+            <% if (m.image) { %>
+              <img src="<%= m.image %>" alt="<%= m.name %>" loading="lazy">
+            <% } else { %>
+              <div class="machine-platform-card-img-placeholder">Photo coming soon</div>
+            <% } %>
             <span style="position: absolute; top: 12px; left: 12px; z-index: 2;" class="badge badge-brand">
               <%= m.brandSlug.toUpperCase() %>
             </span>

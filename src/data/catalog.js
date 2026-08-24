@@ -62,7 +62,7 @@ const categories = [
     name: "Pins, Bushes & Linkages",
     slug: "pins-and-bushes",
     shortName: "Pins & Bushes",
-    description: "Induction hardened EN353 / 20MnCr5 steel pivot pins (58–62 HRC) and precision machined SAE 660 bronze / case-hardened steel bushes for king posts, dippers, and bucket linkages.",
+    description: "Induction hardened EN9, EN18 and EN19 alloy steel pivot pins (58–62 HRC) and precision machined SAE 660 bronze / case-hardened steel bushes for king posts, dippers, and bucket linkages.",
     subcategories: ["King Post Pivot Pins", "Dipper Arm Bushes", "Bucket Linkage Bushes", "Caterpillar 424 Link Pins", "Komatsu Excavator Track Bushes", "Bronze Flanged Bushings"],
     icon: "disc"
   },
@@ -175,7 +175,9 @@ const brands = [
     countryOfOrigin: "United Kingdom",
     overview: "RRE International is an established global manufacturer of precision aftermarket replacement parts for JCB 3DX, 3CX, 4DX, and JS-series excavators with over 85,000 reference SKUs.",
     verificationStatus: "100% In-House Verified",
-    disclaimer: "JCB is a registered trademark of J C Bamford Excavators Ltd. RRE International is an independent aftermarket supplier."
+    disclaimer: "JCB is a registered trademark of J C Bamford Excavators Ltd. RRE International is an independent aftermarket supplier.",
+    metaTitle: "JCB Spare Parts Manufacturer & Exporter | RRE International",
+    metaDescription: "Precision aftermarket replacement parts for JCB 3DX, 3CX, 4DX, and JS-series excavators with over 85,000 reference SKUs. ISO 9001:2015 certified manufacturer from India."
   },
   {
     id: "caterpillar",
@@ -184,7 +186,9 @@ const brands = [
     countryOfOrigin: "United States",
     overview: "High-durability replacement spare parts manufactured for Caterpillar 424, 424B, 424D backhoe loaders and CAT heavy excavation systems.",
     verificationStatus: "100% In-House Verified",
-    disclaimer: "Caterpillar and CAT are registered trademarks of Caterpillar Inc. RRE International is an independent aftermarket manufacturer."
+    disclaimer: "Caterpillar and CAT are registered trademarks of Caterpillar Inc. RRE International is an independent aftermarket manufacturer.",
+    metaTitle: "Caterpillar (CAT) Spare Parts Manufacturer & Exporter | RRE International",
+    metaDescription: "High-durability replacement spare parts for Caterpillar 424, 424B, 424D backhoe loaders and CAT heavy excavation systems. ISO 9001:2015 certified manufacturer from India."
   },
   {
     id: "case",
@@ -193,7 +197,9 @@ const brands = [
     countryOfOrigin: "United States",
     overview: "Comprehensive replacement components for Case 770, 770EX, 851EX backhoe loaders, including pivot pins, seal kits, and hydraulic pumps.",
     verificationStatus: "100% In-House Verified",
-    disclaimer: "Case is a registered trademark of CNH Industrial. RRE International is an independent aftermarket manufacturer."
+    disclaimer: "Case is a registered trademark of CNH Industrial. RRE International is an independent aftermarket manufacturer.",
+    metaTitle: "Case Construction Spare Parts Manufacturer & Exporter | RRE International",
+    metaDescription: "Comprehensive replacement components for Case 770, 770EX, 851EX backhoe loaders, including pivot pins, seal kits, and hydraulic pumps. ISO 9001:2015 certified manufacturer from India."
   },
   {
     id: "komatsu",
@@ -202,7 +208,9 @@ const brands = [
     countryOfOrigin: "Japan",
     overview: "Induction hardened track link bushes, pivot pins, and hydraulic cylinder replacement seals engineered for Komatsu PC200, PC210, and PC300 excavators.",
     verificationStatus: "Verified Scope: Undercarriage & Hydraulic Spares",
-    disclaimer: "Komatsu is a registered trademark of Komatsu Ltd. RRE International is an independent aftermarket manufacturer."
+    disclaimer: "Komatsu is a registered trademark of Komatsu Ltd. RRE International is an independent aftermarket manufacturer.",
+    metaTitle: "Komatsu Spare Parts Manufacturer & Exporter | RRE International",
+    metaDescription: "Induction hardened track link bushes, pivot pins, and hydraulic cylinder replacement seals engineered for Komatsu PC200, PC210, and PC300 excavators."
   }
 ];
 
@@ -224,7 +232,7 @@ const machines = [
     name: "JCB 4DX Heavy Backhoe",
     brandSlug: "jcb",
     type: "Heavy Backhoe Loader",
-    image: "/images/machines/jcb-3dx.jpg",
+    image: null, // no confirmed JCB 4DX photo yet — do not reuse the 3DX photo, it's a different machine
     description: "High-capacity heavy backhoe loader variant requiring heavy-duty hydraulic pumps, reinforced boom pins, and high-pressure cylinder seal kits.",
     metaTitle: "JCB 4DX Spare Parts Catalog & Exporter | RRE International",
     metaDescription: "High-capacity replacement spare parts for JCB 4DX loaders. Hydraulic tandem pumps, heavy pins, bushes, and transmission discs from India."
@@ -246,7 +254,7 @@ const machines = [
     name: "Caterpillar 424 / 424B Backhoe",
     brandSlug: "caterpillar",
     type: "Backhoe Loader",
-    image: "/images/machines/jcb-3dx.jpg",
+    image: null, // no confirmed Caterpillar 424 photo yet — do not reuse the JCB 3DX photo, it's a different brand and machine
     description: "Popular heavy-duty backhoe platform in export markets. RRE International provides precision King Pin assemblies, boom cylinder kits, and transmission components.",
     metaTitle: "Caterpillar 424 & 424B Spare Parts Exporter | RRE International",
     metaDescription: "Manufacturer of Caterpillar 424 / 424B backhoe replacement spare parts from India. Axle pins, bronze bushes, brake friction plates, hydraulic seals."
@@ -257,7 +265,7 @@ const machines = [
     name: "Case 770 / 770EX Loader",
     brandSlug: "case",
     type: "Backhoe Loader",
-    image: "/images/machines/jcb-3dx.jpg",
+    image: null, // no confirmed Case 770 photo yet — do not reuse the JCB 3DX photo, it's a different brand and machine
     description: "High-productivity loader requiring precision bronze bushings, tandem hydraulic pumps, and heavy-duty planetary gear reduction spares.",
     metaTitle: "Case 770 & 770EX Spare Parts Exporter | RRE International",
     metaDescription: "Replacement spare parts for Case 770 and 770EX backhoe loaders. Tandem hydraulic pumps, seal kits, pivot pins, bushes. ISO 9001:2015 certified."
@@ -268,7 +276,7 @@ const machines = [
     name: "Komatsu PC200 Series Excavator",
     brandSlug: "komatsu",
     type: "Tracked Hydraulic Excavator",
-    image: "/images/machines/jcb-js200.jpg",
+    image: null, // no confirmed Komatsu PC200 photo yet — do not reuse the JCB JS200 photo, it's a different brand and machine
     description: "Global benchmark tracked excavator. Supported with RRE induction-hardened track link bushes, bucket pivot pins, and cylinder seal kits.",
     metaTitle: "Komatsu PC200 Excavator Parts Exporter | RRE International",
     metaDescription: "Track bushings, bucket pins, hydraulic seal kits, and wear parts for Komatsu PC200 crawler excavators. Direct manufacturer pricing from Delhi, India."
@@ -514,14 +522,14 @@ const products = [
     specifications: {
       "Outer Diameter": "45.00 mm (+0.00 / -0.02 mm)",
       "Overall Length": "235.00 mm",
-      "Steel Grade": "EN353 Case-Hardening Alloy Steel",
+      "Steel Grade": "EN9 / EN18 / EN19 Alloy Steel",
       "Surface Hardness": "58 – 62 HRC (Case Depth: 2.5 – 3.0 mm)",
       "Core Hardness": "30 – 35 HRC (Tough Ductile Core)",
       "Surface Finish": "Ra 0.4 µm (Precision Cylindrical Ground)",
       "Lubrication": "Internal Cross-Drilled Grease Canal with Chamfered Outlet",
       "Weight": "2.85 kg"
     },
-    description: "High-tensile upper King Post (KPC) pivot pin manufactured in our Delhi facility from forged EN353 alloy steel. Induction hardened to 58-62 HRC surface hardness with a ductile shock-absorbing core to resist shearing forces during heavy backhoe slew operation.",
+    description: "High-tensile upper King Post (KPC) pivot pin manufactured in our Delhi facility, forged from EN9, EN18 and EN19 alloy steels. Induction hardened to 58-62 HRC surface hardness with a ductile shock-absorbing core to resist shearing forces during heavy backhoe slew operation.",
     faqs: [
       { question: "Which bush pairs with pin 123/06014?", answer: "This pin pairs with the King Post upper bronze/steel flanged bush part number 809/00125 (45mm inner diameter)." },
       { question: "How does RRE ensure the pin doesn't snap under shock loads?", answer: "We utilize controlled induction case hardening. Only the outer 2.5–3.0mm is hardened to 60 HRC for wear resistance, leaving the inner core ductile (32 HRC) to absorb heavy shock without fracturing." }
@@ -821,7 +829,7 @@ const products = [
     compatibleModels: ["cat-424b"],
     specifications: {
       "Kit Components": "2x King Pins, 4x Hardened Bushes, 2x Thrust Washers, 2x O-Rings",
-      "Steel Grade": "20MnCr5 Carburized Forged Steel",
+      "Pin Steel Grade": "EN9 / EN18 / EN19 Alloy Steel",
       "Surface Hardness": "60 ± 2 HRC",
       "Weight": "6.40 kg per Complete Axle Set"
     },
@@ -923,6 +931,8 @@ const countries = [
       "Packing List with Net/Gross weights and HSN codes"
     ],
     marketContext: "The UAE represents a major transshipment and operational hub for heavy earthmoving equipment across construction, infrastructure, and quarrying sectors. RRE International ships weekly LCL and FCL consignments from Nhava Sheva (JNPT) and Mundra to Jebel Ali Port with 3-5 days oceanic transit time.",
+    metaTitle: "Heavy Equipment Spare Parts Exporter to UAE | RRE International",
+    metaDescription: "Weekly LCL and FCL spare parts consignments from India to Jebel Ali Port, UAE — 3-5 days transit. JCB, Caterpillar & Komatsu parts with India-UAE CEPA Certificate of Origin.",
     faqs: [
       { question: "What is the typical shipping transit time from India to Dubai?", answer: "Direct container sailings from Mundra or Nhava Sheva (JNPT) to Jebel Ali take just 3 to 5 days." },
       { question: "Does RRE International provide India-UAE CEPA Certificate of Origin?", answer: "Yes. Under the India-UAE Comprehensive Economic Partnership Agreement (CEPA), we supply official COO documentation enabling preferential customs duty clearance for registered UAE importers." }
@@ -943,6 +953,8 @@ const countries = [
       "Strict Country of Origin Marking ('Made in India' on parts & packaging)"
     ],
     marketContext: "With massive infrastructure and giga-projects across Riyadh, NEOM, and the Red Sea corridor, Saudi contractors require high-durability replacement spare parts engineered for high ambient temperatures and silica sand abrasion. RRE International provides SABER-compliant shipments to Jeddah and Dammam ports.",
+    metaTitle: "Heavy Equipment Spare Parts Exporter to Saudi Arabia | RRE International",
+    metaDescription: "SABER-compliant spare parts shipments to Jeddah and Dammam ports. High-durability JCB, Caterpillar & Case parts engineered for Saudi heat and silica sand abrasion.",
     faqs: [
       { question: "How does RRE handle SABER certification for Saudi Arabia?", answer: "We assist Saudi importers by uploading test reports, ISO 9001:2015 certificates, and product datasheets directly to the SABER platform to generate the Shipment Conformity Certificate (SCoC) seamlessly." }
     ]
@@ -962,6 +974,8 @@ const countries = [
       "Detailed Packing List"
     ],
     marketContext: "Supplying infrastructure contractors and plant hire fleets operating across Doha and industrial zones with fast delivery via Hamad Port.",
+    metaTitle: "Heavy Equipment Spare Parts Exporter to Qatar | RRE International",
+    metaDescription: "Spare parts supply for infrastructure contractors and plant hire fleets in Doha and Qatar's industrial zones, with fast sea freight via Hamad Port and air cargo options.",
     faqs: [
       { question: "Can RRE dispatch urgent breakdown parts by air cargo to Doha?", answer: "Yes, urgent parts (hydraulic pumps, seal kits, electrical solenoids) can be dispatched via Indira Gandhi International Airport (DEL) to Hamad International Airport (DOH) with 24-48 hour arrival." }
     ]
@@ -981,6 +995,8 @@ const countries = [
       "Clean Report of Inspection (CRI)"
     ],
     marketContext: "Nigeria has one of the largest populations of JCB 3DX (both early Kirloskar and DieselMAX variants) and Caterpillar backhoes in West Africa. RRE International provides consolidated 20ft/40ft container consignments to Apapa and Tin Can Island ports with full SONCAP compliance.",
+    metaTitle: "Heavy Equipment Spare Parts Exporter to Nigeria | RRE International",
+    metaDescription: "SONCAP-compliant container consignments to Apapa and Tin Can Island ports, Lagos. JCB 3DX (Kirloskar & DieselMAX), Caterpillar & Case spare parts for West Africa's largest fleet population.",
     faqs: [
       { question: "How are spare parts protected during the 25-day sea transit to Lagos?", answer: "All metal parts undergo ultrasonic degreasing, heavy VCI rust-inhibitor oil coating, vacuum sealed barrier packaging, and are strapped in fumigated ISPM-15 wooden crates with internal desiccant bags to prevent salt-air humidity damage." }
     ]
@@ -1000,6 +1016,8 @@ const countries = [
       "Commercial Invoice with Incoterms"
     ],
     marketContext: "Mombasa Port serves as the gateway for construction equipment spare parts across Kenya, Uganda, Rwanda, and South Sudan. RRE International regularly supplies wholesale distributors in Nairobi and Mombasa.",
+    metaTitle: "Heavy Equipment Spare Parts Exporter to Kenya | RRE International",
+    metaDescription: "PVoC-compliant spare parts shipments via Mombasa Port, serving wholesale distributors across Kenya, Uganda, Rwanda, and South Sudan. JCB, Caterpillar & Komatsu parts from India.",
     faqs: [
       { question: "Can RRE arrange PVoC inspection for Kenya shipments?", answer: "Yes, we coordinate pre-shipment inspections through accredited bodies (SGS, Intertek, Bureau Veritas) at our Delhi works to issue the Certificate of Conformity (CoC) required by Kenya Bureau of Standards (KEBS)." }
     ]
@@ -1019,6 +1037,8 @@ const countries = [
       "DA59 Certificate of Origin where required"
     ],
     marketContext: "South African mining contractors and equipment rental fleets demand high-grade metallurgical pins, bushes, and hydraulic components capable of handling rugged granite and iron ore quarrying.",
+    metaTitle: "Heavy Equipment Spare Parts Exporter to South Africa | RRE International",
+    metaDescription: "High-grade metallurgical pins, bushes, and hydraulic components for South African mining and rental fleets. FOB Indian Port or CIF Durban shipping for JCB, Caterpillar & Komatsu parts.",
     faqs: [
       { question: "What are the Incoterms offered for South African buyers?", answer: "We quote on FOB Indian Port (Nhava Sheva/Mundra) or CIF Durban basis depending on buyer preference." }
     ]
@@ -1035,6 +1055,8 @@ const resources = [
     readingTime: "6 min read",
     category: "Technical Guide",
     excerpt: "Comprehensive guide to identifying JCB 3DX hydraulic cylinder seal kits across 1998–2026 production revisions. Includes cylinder bore/rod dimension charts and part number cross-references.",
+    metaTitle: "How to Identify the Correct JCB 3DX Hydraulic Seal Kit | RRE International",
+    metaDescription: "Comprehensive guide to identifying JCB 3DX hydraulic cylinder seal kits across 1998–2026 production revisions. Includes cylinder bore/rod dimension charts and part number cross-references.",
     content: `
       <h2>1. The Problem of Model Year Variations in JCB Hydraulic Cylinders</h2>
       <p>One of the most common procurement mistakes made by international fleet managers and spare parts stockists is ordering seal kits based solely on the generic model name <em>JCB 3DX</em>. JCB has evolved cylinder bore dimensions, rod diameters, and seal groove geometries across four major production eras.</p>
@@ -1109,9 +1131,11 @@ const resources = [
     readingTime: "8 min read",
     category: "Export & Logistics",
     excerpt: "How international spare parts distributors maximize margin by consolidating high-density pins, bushes, gears, and volumetric seal kits into 20ft and 40ft sea containers from India.",
+    metaTitle: "B2B Importer's Guide to Container Consolidation | RRE International",
+    metaDescription: "How international spare parts distributors maximize margin by consolidating high-density pins, bushes, gears, and volumetric seal kits into 20ft and 40ft sea containers from India.",
     content: `
       <h2>1. The Economics of High-Density vs High-Volume Spares Consolidation</h2>
-      <p>Earthmoving machinery spare parts present unique freight challenges. High-tensile pivot pins (EN353), bronze bushes, and crown wheel pinions are heavy and dense, quickly reaching the 28-tonne gross container payload limit. In contrast, seal kits, electrical solenoids, and filters take up volume without significant weight.</p>
+      <p>Earthmoving machinery spare parts present unique freight challenges. High-tensile pivot pins (EN9, EN18, EN19), bronze bushes, and crown wheel pinions are heavy and dense, quickly reaching the 28-tonne gross container payload limit. In contrast, seal kits, electrical solenoids, and filters take up volume without significant weight.</p>
       
       <h2>2. Optimal 20ft Container Mix Strategy</h2>
       <p>By balancing dense steel components with high-margin lightweight seal kits and filters, international importers minimize per-unit freight overheads while maintaining balanced warehouse stock.</p>
@@ -1122,19 +1146,21 @@ const resources = [
   },
   {
     id: "guide-king-pin-bush-metallurgy",
-    title: "Understanding King Pin & Pivot Bush Metallurgy: EN353 vs 20MnCr5 and Induction Hardening",
+    title: "Understanding King Pin & Pivot Bush Metallurgy: EN9, EN18 & EN19 and Induction Hardening",
     slug: "king-pin-pivot-bush-metallurgy-en353-20mncr5-induction-hardening",
     author: "RRE International Metallurgy & Quality Lab",
     publishedDate: "2026-08-05",
     readingTime: "7 min read",
     category: "Engineering & Quality",
     excerpt: "A deep dive into steel grades, case depth, core ductility, and why cheap through-hardened pivot pins fail under heavy slew forces.",
+    metaTitle: "King Pin & Pivot Bush Metallurgy Explained | RRE International",
+    metaDescription: "A deep dive into steel grades, case depth, core ductility, and why cheap through-hardened pivot pins fail under heavy slew forces.",
     content: `
       <h2>1. The Anatomy of Pivot Pin Failure</h2>
       <p>Under heavy backhoe excavation, pivot pins endure alternating bending fatigue and extreme shearing forces. Pins that are through-hardened become brittle and snap, while untreated pins wear out within weeks.</p>
       
       <h2>2. Why RRE Uses Controlled Induction Case Hardening</h2>
-      <p>At RRE International, we forge our pins from EN353 and 20MnCr5 alloy steels. Using high-frequency induction furnaces, we achieve a rock-hard outer case (58–62 HRC to 3.0mm depth) while preserving a ductile, shock-absorbing inner core (30–35 HRC).</p>
+      <p>We forge our pins from EN9, EN18 and EN19 alloy steels. Using high-frequency induction furnaces, we achieve a rock-hard outer case (58–62 HRC to 3.0mm depth) while preserving a ductile, shock-absorbing inner core (30–35 HRC).</p>
     `
   }
 ];

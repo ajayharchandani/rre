@@ -44,11 +44,32 @@ const upload = multer({
   }
 });
 
+// The digitized 85,000+ SKU catalog (ProductStore) currently covers JCB
+// only and carries no brand/machine/model tagging. Brand, Machine, and
+// Model pages used to fill their "products" sections from catalog.js's
+// small hand-written demo dataset instead — which meant a part number
+// shown there could belong to a completely different product than the
+// same part number's real catalog record. Real products are the only
+// ones guaranteed to match everywhere else (search, category, product
+// detail), so JCB pages sample real products here; non-JCB brands/machines
+// (Caterpillar, Case, Komatsu — not yet digitized) get none, rather than a
+// fabricated list.
+function getRealJcbProductSample(offset, count) {
+  return ProductStore.getAllProducts().slice(offset, offset + count).map(p => ({
+    partNumber: p.part_number,
+    name: p.description,
+    description: p.description,
+    slug: p.slug,
+    image: p.image_url,
+    brandName: 'JCB'
+  }));
+}
+
 // Helper to provide global template context
 function getGlobalContext(req) {
   return {
     organization,
-    allCategories: categories,
+    allCategories: ProductStore.getAllCategories(),
     allBrands: brands,
     allMachines: machines,
     allCountries: countries,
@@ -104,6 +125,14 @@ router.get('/', (req, res) => {
     description: p.description
   }));
 
+  // Hand-picked, verified-real part numbers for the hero "Fast-Moving SKUs"
+  // chips — looked up live against the actual catalog so the chips never
+  // link to a part that doesn't exist.
+  const heroParts = ['991/00147', '02/202480', '320/06047', '32/925346']
+    .map(pn => ProductStore.getProductByPartNumber(pn))
+    .filter(Boolean)
+    .map(p => ({ partNumber: p.part_number, name: p.description, slug: p.slug }));
+
   res.render('pages/home', {
     ...getGlobalContext(req),
     seo,
@@ -119,6 +148,7 @@ router.get('/', (req, res) => {
     featuredMachines: machines,
     featuredProducts: realFeaturedProducts,
     products: realFeaturedProducts,
+    heroParts,
     featuredCountries: countries,
     recentResources: resources.slice(0, 3)
   });
@@ -383,7 +413,9 @@ router.get('/brands/:slug', (req, res, next) => {
   if (!brand) return next();
 
   const brandMachines = machines.filter(m => m.brandSlug === brand.slug);
-  const brandProducts = products.filter(p => p.brandSlug === brand.slug);
+  // Real product data (see getRealJcbProductSample above) — only JCB is
+  // digitized today.
+  const brandProducts = brand.slug === 'jcb' ? getRealJcbProductSample(0, 8) : [];
   const internalLinks = InternalLinkingService.getLinksForBrand(brand);
 
   const seo = SeoService.getMeta({
@@ -426,7 +458,12 @@ router.get('/machines/:slug', (req, res, next) => {
   if (!machine) return next();
 
   const models = machineModels.filter(m => m.machineSlug === machine.slug);
-  const machineProducts = products.filter(p => p.machineSlug === machine.slug);
+  // Real product data — only JCB is digitized today. Each JCB machine page
+  // samples a different slice of the real catalog purely for variety; the
+  // real catalog carries no per-machine fitment data, so this is not a
+  // claim of model-specific compatibility.
+  const machineIndex = Math.max(0, machines.findIndex(m => m.slug === machine.slug));
+  const machineProducts = machine.brandSlug === 'jcb' ? getRealJcbProductSample(machineIndex * 8, 6) : [];
 
   const seo = SeoService.getMeta({
     title: machine.metaTitle,
@@ -769,7 +806,7 @@ router.get('/audit', (req, res) => {
 });
 
 // ----------------------------------------------------
-// 16. API ENDPOINTS
+// 16. API ENDPOINTS & CATALOG ASSET MANAGEMENT
 // ----------------------------------------------------
 router.get('/api/search/autocomplete', (req, res) => {
   const query = req.query.q || '';
@@ -788,6 +825,164 @@ router.get('/api/search/autocomplete', (req, res) => {
 
 router.get('/api/audit/orphans', (req, res) => {
   res.json(OrphanAuditService.runFullAudit());
+});
+
+router.get('/api/catalog/categories', (req, res) => {
+  const categories = ProductStore.getAllCategories();
+  res.json({
+    totalCategories: categories.length,
+    categories: categories.map(c => ({
+      id: c.id,
+      name: c.name,
+      slug: c.slug,
+      productCount: c.count,
+      imageUrl: c.image_url,
+      imageStatus: c.image_status || 'verified',
+      imageSource: c.image_source || 'rre_studio_catalog_photography'
+    }))
+  });
+});
+
+router.get('/api/catalog/products', (req, res) => {
+  const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+  const pageSize = Math.min(100, Math.max(1, parseInt(req.query.pageSize, 10) || 24));
+  const categorySlug = req.query.category || null;
+  const searchQuery = (req.query.q || '').trim();
+
+  if (searchQuery) {
+    const searchRes = ProductStore.search(searchQuery, { category: categorySlug, limit: pageSize });
+    return res.json({
+      page: 1,
+      pageSize,
+      total: searchRes.totalResults,
+      query: searchQuery,
+      products: searchRes.results.map(p => ({
+        productId: p.product_id,
+        partNumber: p.part_number,
+        description: p.description,
+        slug: p.slug,
+        category: p.category_name,
+        categorySlug: p.catalogue_category_slug,
+        imageUrl: p.image_url,
+        imageStatus: p.image_status,
+        canonicalUrl: p.canonical_url
+      }))
+    });
+  }
+
+  if (categorySlug) {
+    const catData = ProductStore.getProductsByCategory(categorySlug, { page, pageSize });
+    return res.json({
+      page: catData.page,
+      pageSize: catData.pageSize,
+      total: catData.total,
+      totalPages: catData.totalPages,
+      categorySlug,
+      products: catData.products.map(p => ({
+        productId: p.product_id,
+        partNumber: p.part_number,
+        description: p.description,
+        slug: p.slug,
+        category: p.category_name,
+        categorySlug: p.catalogue_category_slug,
+        imageUrl: p.image_url,
+        imageStatus: p.image_status,
+        canonicalUrl: p.canonical_url
+      }))
+    });
+  }
+
+  const all = ProductStore.getAllProducts();
+  const total = all.length;
+  const totalPages = Math.ceil(total / pageSize);
+  const start = (page - 1) * pageSize;
+  const slice = all.slice(start, start + pageSize);
+
+  res.json({
+    page,
+    pageSize,
+    total,
+    totalPages,
+    products: slice.map(p => ({
+      productId: p.product_id,
+      partNumber: p.part_number,
+      description: p.description,
+      slug: p.slug,
+      category: p.category_name,
+      categorySlug: p.catalogue_category_slug,
+      imageUrl: p.image_url,
+      imageStatus: p.image_status,
+      canonicalUrl: p.canonical_url
+    }))
+  });
+});
+
+router.get('/api/catalog/products/:partNumber', (req, res) => {
+  const rawPartNumber = req.params.partNumber;
+  const product = ProductStore.getProductByPartNumber(rawPartNumber);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found', query: rawPartNumber });
+  }
+
+  const related = ProductStore.getRelatedProducts(product, 4);
+  res.json({
+    product: {
+      productId: product.product_id,
+      partNumber: product.part_number,
+      description: product.description,
+      slug: product.slug,
+      hsn: product.hsn,
+      gst: product.gst,
+      category: product.category_name,
+      categorySlug: product.catalogue_category_slug,
+      imageUrl: product.image_url,
+      imageStatus: product.image_status,
+      canonicalUrl: product.canonical_url
+    },
+    related: related.map(r => ({
+      partNumber: r.part_number,
+      description: r.description,
+      slug: r.slug,
+      canonicalUrl: r.canonical_url
+    }))
+  });
+});
+
+router.get('/api/catalog/images', (req, res) => {
+  const inventoryPath = path.join(__dirname, '../../storage/external_catalog/image_inventory.json');
+  if (fs.existsSync(inventoryPath)) {
+    const inventory = JSON.parse(fs.readFileSync(inventoryPath, 'utf8'));
+    return res.json({
+      totalImagesDiscovered: inventory.length,
+      sample: inventory.slice(0, 20)
+    });
+  }
+  res.json({ totalImagesDiscovered: 0, sample: [] });
+});
+
+router.get('/api/catalog/image-status', (req, res) => {
+  const all = ProductStore.getAllProducts();
+  const distribution = {
+    source_image: 0,
+    generated_image: 0,
+    placeholder_image: 0
+  };
+
+  for (const p of all) {
+    distribution[p.image_status] = (distribution[p.image_status] || 0) + 1;
+  }
+
+  const categories = ProductStore.getAllCategories();
+  const categoryVerifiedCount = categories.filter(c => c.image_status === 'verified').length;
+
+  res.json({
+    totalProducts: all.length,
+    productImageCoverage: distribution,
+    totalCategories: categories.length,
+    categoriesVerifiedImages: categoryVerifiedCount,
+    rightsReviewPolicy: 'STRICT_ZERO_WATERMARK_SCRUBBING_ENFORCED',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // ----------------------------------------------------

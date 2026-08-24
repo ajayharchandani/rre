@@ -112,7 +112,20 @@ const ProductStore = {
 
   getProductByPartNumber(rawPartNumber) {
     const matches = this.getProductsByPartNumber(rawPartNumber);
-    return matches[0] || null;
+    if (matches.length <= 1) return matches[0] || null;
+
+    // Two distinct real part numbers can collapse to the same aggressively
+    // stripped normalized key (e.g. "400/31300" and "4003/1300" both become
+    // "40031300" once every separator is removed) — normalize() intentionally
+    // ignores separator position to match formatting variants of the SAME
+    // part number, but that also merges genuinely different part numbers
+    // when a separator shifts by a digit. Disambiguate with toSlug(), which
+    // collapses separators to a single hyphen instead of deleting them, so
+    // separator position (and therefore which real part number was meant)
+    // is preserved.
+    const querySlug = PartNumberNormalizer.toSlug(rawPartNumber);
+    const exact = matches.find(p => PartNumberNormalizer.toSlug(p.part_number) === querySlug);
+    return exact || matches[0];
   },
 
   /**

@@ -34,9 +34,9 @@
         <h3 class="footer-heading">Product Categories</h3>
         <ul class="footer-links">
           <% allCategories.slice(0, 7).forEach(cat => { %>
-            <li><a href="/products/<%= cat.slug %>"><%= cat.name %></a></li>
+            <li><a href="/parts/<%= cat.slug %>"><%= cat.name %></a></li>
           <% }) %>
-          <li><a href="/products" style="color: #fbbf24; font-weight: 700;">View All 12 Categories →</a></li>
+          <li><a href="/products" style="color: #fbbf24; font-weight: 700;">View All <%= allCategories.length %> Categories →</a></li>
         </ul>
       </div>
 

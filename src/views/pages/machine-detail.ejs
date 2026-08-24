@@ -28,7 +28,14 @@
 
       <!-- Machine Image Card -->
       <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-xl);">
-        <img src="<%= machine.image || '/images/machines/jcb-3dx.jpg' %>" alt="<%= machine.name %>" style="width: 100%; height: 260px; object-fit: cover;">
+        <% if (machine.image) { %>
+          <img src="<%= machine.image %>" alt="<%= machine.name %>" style="width: 100%; height: 260px; object-fit: cover;">
+        <% } else { %>
+          <div style="width: 100%; height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: #64748b; background: #17212f;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><circle cx="12" cy="13.5" r="3.2"/></svg>
+            <span style="font-size: 0.85rem;">Machine photo coming soon</span>
+          </div>
+        <% } %>
       </div>
     </div>
   </div>
@@ -62,38 +69,45 @@
     </div>
 
     <!-- Machine Products -->
-    <h2 style="font-size: 1.75rem; margin-bottom: 2rem; color: #0f172a;">Fast-Moving Spare Parts for <%= machine.name %></h2>
-    <div class="grid-cards">
-      <% machineProducts.forEach(prod => { %>
-        <article class="product-card">
-          <div class="product-card-img-wrap">
-            <span style="position: absolute; top: 10px; left: 10px; z-index: 2;" class="badge badge-brand">
-              <%= prod.brandName %>
-            </span>
-            <img src="<%= prod.image || '/images/products/hydraulic-pump.jpg' %>" alt="<%= prod.name %>" loading="lazy">
-          </div>
-          <div class="product-card-body">
-            <div style="font-family: monospace; font-weight: 800; color: #0f172a; font-size: 0.95rem; margin-bottom: 0.35rem;">
-              PN: <%= prod.partNumber %>
+    <% if (machineProducts.length > 0) { %>
+      <h2 style="font-size: 1.75rem; margin-bottom: 2rem; color: #0f172a;">Popular <%= machine.brandSlug.toUpperCase() %> Spare Parts</h2>
+      <p style="color: #64748b; margin-top: -1.5rem; margin-bottom: 2rem; font-size: 0.9rem;">
+        Sample listings from our digitized catalog. WhatsApp your part number or machine serial to confirm exact fitment for your <%= machine.name %>.
+      </p>
+      <div class="grid-cards">
+        <% machineProducts.forEach(prod => { %>
+          <article class="product-card">
+            <div class="product-card-img-wrap">
+              <span style="position: absolute; top: 10px; left: 10px; z-index: 2;" class="badge badge-brand">
+                <%= prod.brandName %>
+              </span>
+              <img src="<%= prod.image || '/images/products/rre-image-coming-soon.png' %>" alt="<%= prod.name %> — JCB Part No. <%= prod.partNumber %>" loading="lazy" onerror="this.onerror=null;this.src='/images/products/rre-image-coming-soon.png';">
             </div>
-            <h3 class="product-card-title">
-              <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
-            </h3>
-            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 1.25rem; flex: 1; line-height: 1.45;">
-              <%= prod.description.substring(0, 110) %>...
-            </p>
-            <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.5rem; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
-              <a href="/products/<%= prod.slug %>" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.45rem;">
-                Specs
-              </a>
-              <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, please share price for Part No. ' + prod.partNumber) %>" class="btn btn-whatsapp" style="font-size: 0.82rem; padding: 0.45rem;" target="_blank" rel="noopener">
-                💬 WhatsApp
-              </a>
+            <div class="product-card-body">
+              <div style="font-family: monospace; font-weight: 800; color: #0f172a; font-size: 0.95rem; margin-bottom: 0.35rem;">
+                PN: <%= prod.partNumber %>
+              </div>
+              <h3 class="product-card-title">
+                <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
+              </h3>
+              <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.5rem; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
+                <a href="/products/<%= prod.slug %>" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.45rem;">
+                  Details
+                </a>
+                <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, please share price for Part No. ' + prod.partNumber) %>" class="btn btn-whatsapp" style="font-size: 0.82rem; padding: 0.45rem;" target="_blank" rel="noopener">
+                  💬 WhatsApp
+                </a>
+              </div>
             </div>
-          </div>
-        </article>
-      <% }) %>
-    </div>
+          </article>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <h2 style="font-size: 1.75rem; margin-bottom: 1rem; color: #0f172a;">Browse Spare Parts for <%= machine.name %></h2>
+      <p style="color: #475569; max-width: 640px; margin-bottom: 1.5rem;">
+        Our digitized online catalog is currently JCB-only. WhatsApp our export desk or submit an RFQ with your part number or machine serial and our engineering team will confirm pricing and availability directly.
+      </p>
+    <% } %>
 
   </div>
 </section>

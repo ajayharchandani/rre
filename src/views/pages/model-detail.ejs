@@ -28,7 +28,7 @@
 <!-- Compatible Parts Section -->
 <section style="padding: 4rem 0;">
   <div class="container">
-    <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">Verified Compatible Components for <%= model.name %></h2>
+    <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">Sourcing Parts for <%= model.name %></h2>
 
     <% if (internalLinks.compatibleProducts && internalLinks.compatibleProducts.length > 0) { %>
       <div class="grid-cards">
@@ -44,11 +44,17 @@
               Category: <strong><%= prod.categoryName %></strong>
             </div>
             <a href="<%= prod.url %>" class="btn btn-primary" style="margin-top: auto; font-size: 0.85rem;">
-              View Technical Specs →
+              Request Quote →
             </a>
           </article>
         <% }) %>
       </div>
+    <% } else { %>
+      <p style="color: #475569; max-width: 640px; margin-bottom: 1.5rem;">
+        Exact part fitment varies by production year and engine series even within the same model line. Browse our
+        <a href="/machines/<%= model.machineSlug %>" style="color: #d97706; font-weight: 700;">full parts catalog for <%= machine ? machine.name : model.name %></a>,
+        or WhatsApp your machine's serial number / chassis number and our engineers will confirm exact-fit part numbers for your <%= model.name %>.
+      </p>
     <% } %>
 
     <!-- Parent Machine Navigation -->

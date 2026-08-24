@@ -3,10 +3,16 @@
 <!-- ===== HERO SECTION — SEARCH-FIRST PREMIUM B2B ===== -->
 <section class="hero-section-light">
   <div class="hero-bg-slideshow">
+    <!-- Only the first (active) slide's background loads eagerly — it's the
+         LCP image. The other 3 carry their URL in data-bg and are only
+         attached by main.js right before they're rotated into view, so a
+         first-time visitor isn't charged for ~2.5MB of off-screen hero
+         images they may never see (e.g. if they navigate away or convert
+         within the first ~5s slide interval). -->
     <div class="hero-bg-slide active" style="background-image: url('/images/hero/slide-2.jpg');"></div>
-    <div class="hero-bg-slide" style="background-image: url('/images/hero/slide-1.jpg');"></div>
-    <div class="hero-bg-slide" style="background-image: url('/images/hero/slide-3.jpg');"></div>
-    <div class="hero-bg-slide" style="background-image: url('/images/hero/slide-4.jpg');"></div>
+    <div class="hero-bg-slide" data-bg="/images/hero/slide-1.jpg"></div>
+    <div class="hero-bg-slide" data-bg="/images/hero/slide-3.jpg"></div>
+    <div class="hero-bg-slide" data-bg="/images/hero/slide-4.jpg"></div>
   </div>
   <div class="hero-overlay"></div>
 
@@ -51,10 +57,9 @@
       </form>
       <div class="hero-quick-links">
         <span class="quick-links-label">Fast-Moving SKUs:</span>
-        <a href="/parts/335-y1459" class="hero-quick-chip">335/Y1459 — Hydraulic Pump</a>
-        <a href="/parts/991-00147" class="hero-quick-chip">991/00147 — Boom Seal Kit</a>
-        <a href="/parts/123-06014" class="hero-quick-chip">123/06014 — King Pin</a>
-        <a href="/parts/458-m1047" class="hero-quick-chip">458/M1047 — Crown Wheel</a>
+        <% heroParts.forEach(hp => { %>
+          <a href="/products/<%= hp.slug %>" class="hero-quick-chip"><%= hp.partNumber %> — <%= hp.name %></a>
+        <% }) %>
       </div>
     </div>
 
@@ -258,7 +263,11 @@
       <% featuredMachines.forEach(mach => { %>
         <div class="machine-card" id="machine-<%= mach.slug %>">
           <div class="machine-card-img">
-            <img src="<%= mach.image || '/images/machines/jcb-3dx.jpg' %>" alt="<%= mach.name %>" loading="lazy" onerror="this.src='/images/machines/jcb-3dx.jpg'">
+            <% if (mach.image) { %>
+              <img src="<%= mach.image %>" alt="<%= mach.name %>" loading="lazy">
+            <% } else { %>
+              <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 0.8rem;">Photo coming soon</div>
+            <% } %>
             <span class="machine-brand-badge"><%= mach.brandSlug.toUpperCase() %></span>
           </div>
           <div class="machine-card-body">
@@ -291,25 +300,25 @@
 
     <!-- Highlighted User-Requested Categories -->
     <div class="featured-category-row">
-      <a href="/products/cabin-rubber-parts" class="feat-cat-card feat-cabin" id="feat-cat-cabin">
+      <a href="/parts/cabin-parts" class="feat-cat-card feat-cabin" id="feat-cat-cabin">
         <div class="feat-cat-icon">🚐</div>
         <div class="feat-cat-label">Cabin & Mounts</div>
         <div class="feat-cat-sub">Anti-vibration mounts, cabin dampers, hydraulic hoses</div>
       </a>
-      <a href="/products/cabin-rubber-parts" class="feat-cat-card feat-rubber" id="feat-cat-rubber">
+      <a href="/parts/seals-seal-kits" class="feat-cat-card feat-rubber" id="feat-cat-rubber">
         <div class="feat-cat-icon">🔵</div>
-        <div class="feat-cat-label">Rubber Parts</div>
-        <div class="feat-cat-sub">Rubber seals, mounts, engine dampers, door weather strips</div>
+        <div class="feat-cat-label">Seals & Rubber Parts</div>
+        <div class="feat-cat-sub">Rubber seals, seal kits, engine dampers, door weather strips</div>
       </a>
-      <a href="/products/electrical-solenoid" class="feat-cat-card feat-electrical" id="feat-cat-electrical">
+      <a href="/parts/electrical-parts" class="feat-cat-card feat-electrical" id="feat-cat-electrical">
         <div class="feat-cat-icon">⚡</div>
-        <div class="feat-cat-label">Electrical & Solenoid</div>
-        <div class="feat-cat-sub">12V/24V solenoid valves, alternators, wiring harnesses</div>
+        <div class="feat-cat-label">Electrical Parts</div>
+        <div class="feat-cat-sub">12V/24V wiring, alternators, sensors, switches</div>
       </a>
-      <a href="/products/fabrication-structural" class="feat-cat-card feat-fabrication" id="feat-cat-fabrication">
+      <a href="/parts/solenoid" class="feat-cat-card feat-fabrication" id="feat-cat-solenoid">
         <div class="feat-cat-icon">🏗️</div>
-        <div class="feat-cat-label">Fabrication</div>
-        <div class="feat-cat-sub">Boom arms, linkage frames, chassis plates, weldments</div>
+        <div class="feat-cat-label">Solenoid Valves</div>
+        <div class="feat-cat-sub">Transmission & fuel shut-off solenoid valves</div>
       </a>
     </div>
 
@@ -318,7 +327,7 @@
       <% featuredCategories.forEach(cat => { %>
         <article class="cat-card" id="cat-<%= cat.slug %>" style="display: flex; flex-direction: column; overflow: hidden; padding: 0; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff;">
           <a href="/parts/<%= cat.slug %>" style="display: block; width: 100%; aspect-ratio: 4/3; background: #f8fafc; overflow: hidden; border-bottom: 1px solid #f1f5f9;">
-            <img src="<%= cat.image_url %>" alt="<%= cat.image_alt %>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease;">
+            <img src="<%= cat.image_url %>" alt="<%= cat.image_alt %>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease;" onerror="this.style.display='none';">
           </a>
           <div style="padding: 1.25rem; display: flex; flex-direction: column; flex: 1;">
             <h3 class="cat-title" style="margin-bottom: 0.4rem; font-size: 1.15rem;">

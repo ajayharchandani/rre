@@ -15,6 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (index < 0) index = bgSlides.length - 1;
     currentBgSlide = index;
 
+    // Lazily attach this slide's background image the first time it's
+    // shown, instead of loading all slides upfront on page load.
+    const nextSlide = bgSlides[currentBgSlide];
+    if (nextSlide && nextSlide.dataset.bg) {
+      nextSlide.style.backgroundImage = `url('${nextSlide.dataset.bg}')`;
+      delete nextSlide.dataset.bg;
+    }
+
     bgSlides.forEach((s, i) => s.classList.toggle('active', i === currentBgSlide));
     slideDots.forEach((d, i) => d.classList.toggle('active', i === currentBgSlide));
   }
@@ -240,31 +248,63 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================
   // 7. STICKY MOBILE CTA BAR — whatsapp + rfq
   // ============================================================
+  // #mobile-sticky-bar is CSS-gated to mobile only (display:none by default,
+  // display:flex under the 768px breakpoint in style.css). Setting an inline
+  // style here without the same width check would override that CSS on any
+  // screen size once scrollY > 300 — showing a "mobile" bar on desktop with
+  // no reserved padding-bottom to match, covering the same footer content
+  // the mobile padding-bottom fix exists to protect.
   const mobileBar = document.getElementById('mobile-sticky-bar');
   if (mobileBar) {
     window.addEventListener('scroll', () => {
-      mobileBar.style.display = window.scrollY > 300 ? 'flex' : 'none';
+      const isMobileWidth = window.innerWidth <= 768;
+      mobileBar.style.display = (isMobileWidth && window.scrollY > 300) ? 'flex' : 'none';
     }, { passive: true });
   }
 
   // ============================================================
-  // 8. PRODUCT IMAGE ERROR FALLBACK
+  // 8. RFQ MULTI-STEP WIZARD — .js-rfq-wizard / .js-rfq-next / .js-rfq-prev
   // ============================================================
-  document.querySelectorAll('img').forEach(img => {
-    if (img.hasAttribute('data-fallback')) return;
-    img.setAttribute('data-fallback', '1');
-    img.addEventListener('error', function() {
-      const fallbacks = [
-        '/images/products/hydraulic-pump.jpg',
-        '/images/products/hydraulic-seal-kit.jpg',
-        '/images/products/placeholder.jpg'
-      ];
-      const nextFallback = fallbacks[0];
-      if (this.src !== window.location.origin + nextFallback) {
-        this.src = nextFallback;
-      }
+  const rfqWizard = document.querySelector('.js-rfq-wizard');
+  if (rfqWizard) {
+    const rfqPanels = Array.from(rfqWizard.querySelectorAll('.rfq-step-panel'));
+    const rfqIndicators = document.querySelectorAll('.rfq-step-indicator');
+
+    function showRfqStep(step) {
+      rfqPanels.forEach(panel => {
+        panel.style.display = (parseInt(panel.dataset.step, 10) === step) ? 'block' : 'none';
+      });
+      rfqIndicators.forEach((indicator, i) => {
+        const stepNum = i + 1;
+        indicator.classList.toggle('active', stepNum === step);
+        indicator.style.borderBottomColor = stepNum <= step ? '#f59e0b' : '#cbd5e1';
+        indicator.style.color = stepNum <= step ? '#f59e0b' : '#64748b';
+      });
+      rfqWizard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    rfqWizard.querySelectorAll('.js-rfq-next').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const currentPanel = btn.closest('.rfq-step-panel');
+        const requiredFields = currentPanel.querySelectorAll('[required]');
+        for (const field of requiredFields) {
+          if (!field.checkValidity()) {
+            field.reportValidity();
+            return;
+          }
+        }
+        const currentStep = parseInt(currentPanel.dataset.step, 10);
+        showRfqStep(Math.min(currentStep + 1, rfqPanels.length));
+      });
     });
-  });
+
+    rfqWizard.querySelectorAll('.js-rfq-prev').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const currentStep = parseInt(btn.closest('.rfq-step-panel').dataset.step, 10);
+        showRfqStep(Math.max(currentStep - 1, 1));
+      });
+    });
+  }
 
 });
 

@@ -1,6 +1,7 @@
 // src/services/internalLinkingService.js
 const { categories, brands, machines, machineModels, products, countries, resources } = require('../data/catalog');
 const PartNumberNormalizer = require('./partNumberNormalizer');
+const ProductStore = require('../data/productStore');
 
 class InternalLinkingService {
   /**
@@ -114,47 +115,49 @@ class InternalLinkingService {
   }
 
   /**
-   * Get related links for a Machine Model page
+   * Get related links for a Machine Model page.
+   *
+   * NOTE: catalog.js's demo `products` array used to be filtered here by a
+   * hand-authored `compatibleModels` list to build a "verified compatible
+   * parts" grid. The real digitized catalog (ProductStore) has no
+   * model-year-level fitment data at all, so that grid was asserting a
+   * compatibility relationship nothing actually backs — removed rather than
+   * kept fabricated. model-detail.ejs falls back to directing buyers to the
+   * parent machine page (which shows real sampled products) and to
+   * RFQ/WhatsApp for fitment confirmation.
    */
   static getLinksForModel(model) {
-    const compatibleProducts = products.filter(p => 
-      (p.compatibleModels || []).includes(model.id) || (p.compatibleModels || []).includes(model.slug)
-    );
-
-    const relatedCategories = categories.filter(c => 
-      compatibleProducts.some(p => p.categorySlug === c.slug)
-    );
-
     return {
-      compatibleProducts: compatibleProducts.map(p => ({
-        name: p.name,
-        partNumber: p.partNumber,
-        url: `/products/${p.slug}`,
-        categoryName: p.categoryName
-      })),
-      compatibleCategories: relatedCategories.map(c => ({
-        name: c.name,
-        url: `/products/${c.slug}`
-      })),
+      compatibleProducts: [],
+      compatibleCategories: [],
       parentMachineUrl: `/machines/${model.machineSlug}`,
       brandUrl: `/brands/${model.brandSlug}`
     };
   }
 
   /**
-   * Get related links for a Country page
+   * Get related links for a Country page.
+   *
+   * topProducts previously came from catalog.js's small demo dataset — the
+   * exact same 6 products regardless of destination country (never actually
+   * country-specific despite the "Recommended Spares for Export to X"
+   * framing), and with names that don't match the real catalog record for
+   * the same part number. Sourced from the real catalog instead, which
+   * guarantees the part number, name, and URL shown here always match
+   * search / category / product-detail for that same product.
    */
   static getLinksForCountry(country) {
-    const topProducts = products.slice(0, 6);
+    const topProducts = ProductStore.getAllProducts().slice(0, 6);
     const relevantBrands = brands.filter(b => (country.popularBrands || []).includes(b.name));
     const relevantCategories = categories.filter(c => (country.popularCategories || []).includes(c.name));
 
     return {
       topProducts: topProducts.map(p => ({
-        name: p.name,
-        partNumber: p.partNumber,
+        name: p.description,
+        partNumber: p.part_number,
         url: `/products/${p.slug}`,
-        categoryName: p.categoryName
+        categoryName: p.catalogue_category_name || p.category_name,
+        image: p.image_url
       })),
       popularBrands: relevantBrands.map(b => ({
         name: b.name,
