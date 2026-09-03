@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-08-31T07:36:22.555Z",
+  "source_directory": "C:\\Users\\harch\\OneDrive\\Desktop\\rre photos",
+  "summary": {
+    "total_images_scanned": 2,
+    "successfully_matched": 1,
+    "images_added_directly": 1,
+    "images_regenerated": 0,
+    "unmatched_external_images": 1
+  },
+  "items": [
+    {
+      "image_filename": "121-16702.jpeg",
+      "parsed_part_number": "121/16702",
+      "matched_part_number": "N/A",
+      "product_id": "N/A",
+      "description": "External Part (Unlisted in current catalog)",
+      "category": "Unassigned",
+      "slug": "N/A",
+      "status": "UNMATCHED_EXTERNAL_PART",
+      "image_type": "REGENERATED_STAGED",
+      "image_url": "N/A",
+      "resolution": "N/A",
+      "size_kb": "N/A",
+      "notes": "External reference part number. Not in current 85,150 price list."
+    },
+    {
+      "image_filename": "914-60223.jpeg",
+      "parsed_part_number": "914/60223",
+      "matched_part_number": "914/60223",
+      "product_id": "fef94a2e4b825928",
+      "description": "PROPSHAFT(P92)",
+      "category": "U.J. Cross / Spider Kit",
+      "slug": "914-60223-propshaft-p92",
+      "status": "MATCHED_AND_PUBLISHED",
+      "image_type": "DIRECT_SOURCE",
+      "image_url": "/images/products/914-60223-propshaft-p92.webp",
+      "resolution": "866x1024",
+      "size_kb": 49,
+      "notes": "Direct clean photograph"
+    }
+  ]
+}

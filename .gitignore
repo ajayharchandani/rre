@@ -13,4 +13,28 @@ scripts/.pdf-image-staging/
 
 # Environment variables — contains SMTP credentials, never commit
 .env
-.env.local
+.env.*
+!.env.example
+
+# Secrets & credentials — never commit
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+.npmrc
+secrets*.json
+credentials*.json
+*.credentials
+service-account*.json
+
+# Local pipeline inputs / intermediates — not needed to run or deploy the site
+storage/source_photos/
+storage/generated_assets/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -57,7 +57,11 @@
     <% if (searchResults.totalResults > 0) { %>
       <div class="grid-cards">
         <% searchResults.results.forEach(prod => { %>
-          <article class="card">
+          <article class="card" style="display: flex; flex-direction: column;">
+            <div style="height: 140px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; background: #f8fafc; border-radius: 6px; overflow: hidden; padding: 0.5rem;">
+              <img src="<%= prod.image_url || '/images/products/rre-image-coming-soon.png' %>" alt="<%= prod.description %> — JCB Part No. <%= prod.part_number %>" style="max-height: 130px; max-width: 100%; width: auto; height: auto; object-fit: contain; display: block;" loading="lazy" onerror="this.onerror=null;this.src='/images/products/rre-image-coming-soon.png';">
+            </div>
+
             <div style="margin-bottom: 0.5rem;">
               <span style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 0.85rem; background: #f1f5f9; padding: 0.2rem 0.5rem; border-radius: 4px;">
                 PN: <%= prod.part_number %>

@@ -1,717 +1,458 @@
 # HOSTINGER_DEPLOYMENT.md
-## RRE International — Hostinger Premium Shared Hosting Deployment Guide
+## RRE International — Deployment Guide (Node.js / Express)
 
-**Version:** 1.0
-**Prepared:** 20 August 2026
-**Status:** Reference Document — Do NOT execute production deployment yet
-
----
-
-> [!CAUTION]
-> This document is a reference guide. Do NOT execute any production deployment step until the client has confirmed: domain, WhatsApp number, export email, brand scope, and all mandatory pre-development items in PROJECT_MASTER_PLAN.md Section 42.
+**Last updated:** 3 September 2026
+**Applies to:** this repository as it actually is — a Node.js + Express + EJS
+web app with **no database**.
 
 ---
 
-## Prerequisites
+## 0. What this app actually is
 
-Before beginning deployment, ensure the following are ready:
+Read this first. Earlier versions of this document described a Laravel /
+PHP / MySQL stack. That was aspirational and never built. The real app:
 
-- [ ] Hostinger Premium account active with domain pointed
-- [ ] SSH access enabled in hPanel
-- [ ] MySQL database created in hPanel
-- [ ] `.env.production` values prepared (see Section 6)
-- [ ] Git repository ready (`main` branch)
-- [ ] Assets built locally (`npm run build`)
-- [ ] All `[CLIENT INPUT REQUIRED]` items resolved
+| Thing | Reality |
+|---|---|
+| Runtime | Node.js (CommonJS). Works on Node 18, 20 or 22. Dev machine runs 24. |
+| Framework | Express 5 + `express-ejs-layouts`, server-rendered EJS templates |
+| Database | **None.** Catalogue data is JSON files loaded into memory at startup |
+| Entry point | `src/server.js` — `app.listen(process.env.PORT || 3000)` |
+| Persistent state | Only `storage/rfq-uploads/` (buyer file uploads from the RFQ form) |
+| Outbound email | SMTP via `nodemailer`, for RFQ notifications only (optional) |
+| Build step at deploy time | **None required** — the generated JSON is committed |
 
----
+### Runtime dependencies (what production actually needs)
 
-## 1. Domain Setup
+`express`, `express-ejs-layouts`, `ejs`, `cookie-parser`, `multer`,
+`nodemailer`, `dotenv`.
 
-### 1.1 Add Domain in hPanel
-1. Log in to Hostinger hPanel
-2. Navigate to **Hosting → Manage → Domains**
-3. Add primary domain: `rreinternational.com` **[CLIENT INPUT REQUIRED — confirm exact domain]**
-4. Set document root to: `/home/[username]/public_html` (Hostinger default)
+`sharp`, `xlsx` and `lucide-static` are in `package.json` `dependencies`
+but are **only used by `scripts/`** (the catalogue/image build pipeline),
+never by anything under `src/`. `sharp` compiles a native binary on
+install, which is slow and sometimes fails on shared hosting. See
+§3.3 for how to avoid installing it in production.
 
-### 1.2 Configure Document Root for Laravel
-Laravel's public directory must be the web root. Hostinger's default `public_html` maps to the web root.
+### Memory footprint — the one real constraint
 
-**Option A (Recommended) — Point domain to Laravel's public/ folder:**
-```
-/home/[username]/
-├── rreinternational/         ← Laravel application root (NOT web-accessible)
-│   ├── app/
-│   ├── config/
-│   ├── database/
-│   ├── resources/
-│   ├── routes/
-│   ├── storage/
-│   ├── vendor/
-│   └── public/               ← This must be the web root
-└── public_html/              ← Hostinger's default web root
-```
+At startup `src/data/productStore.js` reads `src/data/generated/products.json`
+(~74 MB of text) with `JSON.parse` and builds several in-memory `Map`
+indexes over it. Expect the process to sit around **400–700 MB resident**.
 
-**Method:** In hPanel, change the domain's document root to point at `rreinternational/public/` directly, OR use the symlink method below.
+- On a **VPS**: fine, give it ≥ 1 GB RAM.
+- On **shared hosting**: check the plan's per-process memory limit before
+  committing. If the app is killed on boot with no useful error, this is
+  almost always why (see §9).
 
-**Option B — Symlink method (if hPanel doesn't allow custom document root):**
-```bash
-# Via SSH
-# Move Laravel's public contents to public_html
-# Then symlink storage
-cd /home/[username]/public_html
-# Or redirect via index.php — see troubleshooting (Section 16)
-```
-
-**Option C — .htaccess redirect from public_html:**
-```apache
-# /home/[username]/public_html/.htaccess
-RewriteEngine On
-RewriteRule ^(.*)$ /home/[username]/rreinternational/public/$1 [L]
-```
-
-> [!NOTE]
-> The cleanest approach on Hostinger is to set the subdomain/domain document root directly to `rreinternational/public` via hPanel's domain management. Confirm this option is available in your actual hPanel.
-
-### 1.3 Subdomain for Staging
-1. Create subdomain: `staging.rreinternational.com`
-2. Point to: `/home/[username]/rreinternational-staging/public`
-3. This mirrors production for pre-launch testing
-
-### 1.4 Admin Subdomain (Optional)
-- Create subdomain: `admin.rreinternational.com`
-- Point to the same application (Filament runs at `/admin` by default)
-- Or restrict access via IP whitelist in `.htaccess`
+`src/data/generated/product-images.json` (~60 MB) is **not** loaded at
+startup — only by the `/qa/image-review` and `/api/catalog/images` routes,
+which re-read it from disk on every request. Treat those as internal/QA
+only; don't link them in navigation or hammer them.
 
 ---
 
-## 2. PHP Configuration
+## 1. Choose a deployment model
 
-### 2.1 Set PHP Version in hPanel
-1. hPanel → Hosting → Manage → **PHP Configuration**
-2. Select **PHP 8.2** (or 8.3 — confirm Composer/Laravel 11 compatibility)
-3. Click Save
+| Model | Use when | Section |
+|---|---|---|
+| **A. hPanel "Setup Node.js App"** | You have a Hostinger plan that shows a Node.js app option in hPanel and its per-process memory limit is comfortably above ~700 MB | §4 |
+| **B. Hostinger VPS + PM2 + nginx** | Shared hosting can't give the process enough memory, or you want full control / zero-downtime restarts | §6 |
 
-### 2.2 Enable Required PHP Extensions
-In hPanel → PHP Configuration → **Extensions** tab, enable:
-```
-bcmath, ctype, curl, dom, fileinfo, gd, intl, json,
-mbstring, openssl, pdo, pdo_mysql, tokenizer, xml, zip
-```
-
-### 2.3 Configure PHP Options
-In hPanel → PHP Configuration → **Options** tab:
-```ini
-memory_limit = 512M
-upload_max_filesize = 50M
-post_max_size = 50M
-max_execution_time = 120
-max_input_vars = 3000
-```
-
-Or add to Laravel's `public/.htaccess`:
-```apache
-php_value memory_limit 512M
-php_value upload_max_filesize 50M
-php_value post_max_size 50M
-php_value max_execution_time 120
-php_value max_input_vars 3000
-```
-
-### 2.4 Verify PHP CLI Version (SSH)
-```bash
-# After SSH login, check CLI PHP version
-php -v
-
-# If it shows wrong version, use full path
-/opt/alt/php82/usr/bin/php -v
-
-# Find available PHP binaries
-ls /opt/alt/
-```
+If hPanel only offers PHP and no Node.js app screen, your current plan
+cannot run this app — you need a VPS (Model B) or a plan upgrade.
 
 ---
 
-## 3. MySQL Setup
+## 2. Prerequisites (both models)
 
-### 3.1 Create Database in hPanel
-1. hPanel → Databases → **MySQL Databases**
-2. Create database: `rre_production`
-3. Create database user: `rre_user`
-4. Set a strong password (generate 32-char random password)
-5. Assign user to database with **All Privileges**
-6. Note: Hostinger MySQL host is typically `127.0.0.1` or `localhost`
-
-### 3.2 Verify Connection Details
-```
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=rre_production
-DB_USERNAME=rre_user
-DB_PASSWORD=[STRONG_RANDOM_PASSWORD]
-```
-
-### 3.3 Run Migrations (via SSH)
-```bash
-cd /home/[username]/rreinternational
-/opt/alt/php82/usr/bin/php artisan migrate --force
-```
-
-### 3.4 Seed Initial Data (development only)
-```bash
-# NEVER run seeders with fake data in production
-# Only run verified real data seeders
-/opt/alt/php82/usr/bin/php artisan db:seed --class=CountriesSeeder
-/opt/alt/php82/usr/bin/php artisan db:seed --class=CategoriesSeeder
-```
+- [ ] Hostinger account with the domain (`rreinternational.com`) attached
+- [ ] Decision on canonical host: **`www.rreinternational.com`** is the
+      current default in `src/services/seoService.js`. Keep it, or override
+      with the `APP_URL` env var (§8).
+- [ ] SMTP mailbox password for `info@rreinternational.com` if you want RFQ
+      emails (hPanel → Emails → Email Accounts → *Connect Devices*). Optional —
+      the app runs fine without it, RFQ submissions are just logged instead.
+- [ ] A GitHub remote for this repo **if** you want Git-based deploys
+      (recommended). There is currently **no `git remote` configured** — add
+      one:
+      ```bash
+      git remote add origin git@github.com:<org>/rre-international.git
+      git push -u origin master
+      ```
+      The default branch here is `master`.
 
 ---
 
-## 4. SSH Setup
+## 3. One-time code prep before the first deploy
 
-### 4.1 Enable SSH in hPanel
-1. hPanel → Advanced → **SSH Access**
-2. Toggle SSH ON
-3. Note the SSH hostname, port (typically 22), and username
+These are small repo changes that make deployment predictable. Do them
+once, commit, then deploy.
 
-### 4.2 Connect via SSH
-```bash
-ssh [username]@[hostname] -p 22
+### 3.1 Pin a Node version
 
-# Or with key-based auth (recommended)
-ssh -i ~/.ssh/rre_hostinger [username]@[hostname] -p 22
+Add to `package.json` so hPanel / PM2 pick a supported major:
+
+```json
+"engines": { "node": ">=18 <23" }
 ```
 
-### 4.3 Generate SSH Key (local machine)
-```bash
-ssh-keygen -t ed25519 -C "rre-international-deploy" -f ~/.ssh/rre_hostinger
-```
-Add public key in hPanel → SSH Access → Manage Keys.
+### 3.2 Confirm the startup file
 
-### 4.4 SSH Security Best Practices
-- Use key-based authentication only
-- Do not share SSH credentials
-- Rotate keys if team member leaves
-- Note: SSH on shared hosting is non-root; `sudo` is not available
+The app **must** be started from `src/server.js`. That file only calls
+`app.listen()` when it is the process entry point (`require.main === module`).
+
+- `app.js` and `index.js` in the repo root both just `require('./src/server.js')`
+  and do **not** call `listen` themselves — if you point the platform's
+  startup file at `app.js`, the server never binds a port and the deploy
+  fails.
+- **Set the startup file to `src/server.js`** (§4.3 / §6). Optionally delete
+  `app.js` and `index.js` to remove the trap.
+
+### 3.3 Keep build-only packages out of production (optional but recommended)
+
+Move `sharp`, `xlsx` and `lucide-static` from `dependencies` to
+`devDependencies` in `package.json`. Nothing in `src/` imports them, so the
+running site is unaffected, and production installs become
+`npm install --omit=dev` — no native `sharp` compile on the server. You'll
+still get them locally with a normal `npm install` for running the
+`scripts/` pipeline.
+
+If you'd rather not touch `package.json`, you can instead run
+`npm install --omit=optional` on the server and accept the `sharp` build.
+
+### 3.4 `.env` is never committed
+
+`.env` is gitignored. Real values go into the host's environment variable
+UI (§4.5) or the PM2 ecosystem file (§6), **not** a committed file.
 
 ---
 
-## 5. Git Setup
+## 4. Model A — hPanel "Setup Node.js App"
 
-### 5.1 Repository Structure
-```
-Branches:
-├── main              → Production (protected)
-├── development       → Staging / pre-production
-└── feature/*         → Feature branches (merge to development first)
-```
+Menu labels vary slightly between hPanel versions; the flow is the same.
 
-### 5.2 Git Deployment via hPanel
-1. hPanel → Advanced → **Git**
-2. Connect GitHub account via OAuth
-3. Select repository: `[org]/rre-international`
-4. Select branch: `main`
-5. Set deployment path: `/home/[username]/rreinternational`
-6. Enable auto-deploy on push: **YES** (for development branch only initially)
-7. Production deploy: manual trigger or protected branch rules
+### 4.1 Create the application
 
-### 5.3 Post-Deploy Hook
-Create `/home/[username]/rreinternational/deploy.sh`:
-```bash
-#!/bin/bash
-set -e
+hPanel → **Advanced → Node.js** (or **Website → Node.js app**) → **Create application**:
 
-echo "=== RRE International Deploy $(date) ==="
+| Field | Value |
+|---|---|
+| Node.js version | 18, 20 or 22 (latest LTS offered) |
+| Application mode | `Production` |
+| Application root | e.g. `domains/rreinternational.com/app` (a folder **outside** `public_html`) |
+| Application URL | `rreinternational.com` (and `www`) |
+| Application startup file | `src/server.js` |
 
-# Navigate to application root
-cd /home/[username]/rreinternational
+Create it. hPanel generates a domain-root `.htaccess`/Passenger wiring that
+proxies the domain to the Node process — you don't manage the port
+yourself; the platform sets `PORT` and `src/server.js` reads it.
 
-# Install/update dependencies (skip dev)
-/opt/alt/php82/usr/bin/php /usr/local/bin/composer install \
-  --no-dev \
-  --optimize-autoloader \
-  --no-interaction
+### 4.2 Get the code onto the server
 
-# Run migrations
-/opt/alt/php82/usr/bin/php artisan migrate --force
+**Option 1 — Git (recommended for repeat deploys):**
+hPanel → **Advanced → Git** → create a repository:
+- Repository URL: your GitHub remote (add a deploy key if private)
+- Branch: `master`
+- Install path: the **Application root** from §4.1
+- After the first pull, use **Deploy** (or set auto-deploy on push) for
+  future updates.
 
-# Clear and rebuild caches
-/opt/alt/php82/usr/bin/php artisan config:cache
-/opt/alt/php82/usr/bin/php artisan route:cache
-/opt/alt/php82/usr/bin/php artisan view:cache
-/opt/alt/php82/usr/bin/php artisan event:cache
+**Option 2 — File Manager / SFTP (one-off or no GitHub):**
+Upload the whole project into the Application root **except**:
+`node_modules/`, `.git/`, `storage/rfq-uploads/*` (keep the folder),
+`scratch/`, `test-results/`, `.env`.
+The committed `src/data/generated/*.json` files are large (~135 MB total) —
+SFTP will take a while; Git is faster.
 
-# Restart queue (if using database queue)
-/opt/alt/php82/usr/bin/php artisan queue:restart
+### 4.3 Verify the startup file
 
-echo "=== Deploy complete ==="
-```
+In the Node.js app screen, confirm **Application startup file** = `src/server.js`.
+If it defaulted to `app.js`, change it and save.
+
+### 4.4 Install dependencies
+
+In the Node.js app screen use **Run NPM install**, or via SSH:
 
 ```bash
-chmod +x deploy.sh
+cd ~/domains/rreinternational.com/app        # your Application root
+source ~/nodevenv/domains/rreinternational.com/app/18/bin/activate  # path shown in hPanel
+npm install --omit=dev                        # if you did §3.3
+# otherwise: npm install --omit=optional
 ```
 
-### 5.4 .gitignore (Critical)
-```gitignore
-# Environment — NEVER commit
-.env
-.env.*
-!.env.example
+### 4.5 Set environment variables
 
-# Dependencies
-/vendor/
-/node_modules/
+In the Node.js app screen there is an **Environment variables** section.
+Add (see §8 for the full reference):
 
-# Build artifacts (commit dist/ if building remotely)
-# Do NOT commit if building locally and deploying built assets
-# /public/build/   ← commit this if building locally before deploy
-
-# Storage (user uploads — never in Git)
-/storage/app/public/rfq-uploads/
-/storage/app/public/documents/
-
-# Cache / compiled
-/bootstrap/cache/*.php
-/storage/framework/cache/
-/storage/framework/sessions/
-/storage/framework/views/
-
-# Logs
-/storage/logs/
-
-# IDE / OS
-.idea/
-.vscode/
-.DS_Store
-Thumbs.db
-
-# Testing
-/coverage/
 ```
+NODE_ENV=production
+APP_URL=https://www.rreinternational.com
+SMTP_HOST=smtp.hostinger.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=info@rreinternational.com
+SMTP_PASS=<mailbox password>
+RFQ_NOTIFICATION_EMAIL=info@rreinternational.com
+```
+
+Do **not** set `PORT` — the platform manages it.
+
+### 4.6 Start / restart
+
+Click **Restart** in the Node.js app screen. Every code change or env var
+change needs a restart.
+
+### 4.7 Storage permissions
+
+Ensure `storage/rfq-uploads/` exists and is writable by the app user:
+
+```bash
+mkdir -p storage/rfq-uploads
+chmod 775 storage/rfq-uploads
+```
+
+This directory holds buyer uploads and is gitignored — it must **survive
+deploys**. With Git deploy into a fixed install path it does; if you ever
+deploy by replacing the folder, back it up first.
+
+### 4.8 SSL & HTTPS
+
+hPanel → **Security → SSL** → install Let's Encrypt for the domain and
+enable **Force HTTPS**. The app sets security headers itself
+(`src/middleware/security.js`) but does not force HTTPS — let Hostinger do
+the redirect at the edge.
+
+### 4.9 Smoke test
+
+See §7.
 
 ---
 
-## 6. Environment Variables
+## 5. Model A — deploying updates
 
-### 6.1 .env.example (committed to Git — no real values)
-```env
-APP_NAME="RRE International"
-APP_ENV=production
-APP_KEY=
-APP_DEBUG=false
-APP_URL=https://rreinternational.com
+### 5.1 Normal update (code or data)
 
-LOG_CHANNEL=daily
-LOG_LEVEL=error
-
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=
-DB_USERNAME=
-DB_PASSWORD=
-
-BROADCAST_DRIVER=log
-CACHE_DRIVER=file
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=database
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-
-MAIL_MAILER=smtp
-MAIL_HOST=
-MAIL_PORT=587
-MAIL_USERNAME=
-MAIL_PASSWORD=
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=
-MAIL_FROM_NAME="${APP_NAME}"
-
-# Brevo / transactional email
-BREVO_API_KEY=
-
-# WhatsApp
-WHATSAPP_NUMBER=        # [CLIENT INPUT REQUIRED]
-WHATSAPP_COUNTRY_CODE=91
-
-# Analytics
-GA4_MEASUREMENT_ID=
-GTM_CONTAINER_ID=
-
-# Cloudflare R2 (image storage)
-CLOUDFLARE_R2_KEY=
-CLOUDFLARE_R2_SECRET=
-CLOUDFLARE_R2_BUCKET=
-CLOUDFLARE_R2_ENDPOINT=
-
-# Admin
-FILAMENT_AUTH_GUARD=web
-ADMIN_EMAIL=
-
-# Security
-TURNSTILE_SITE_KEY=
-TURNSTILE_SECRET_KEY=
-```
-
-### 6.2 Setting .env on Server
 ```bash
-# Via SSH — create/edit directly on server
-nano /home/[username]/rreinternational/.env
-
-# Or upload via SFTP
-# Never commit real .env to Git
+# locally
+git add -A && git commit -m "..." && git push origin master
 ```
 
-### 6.3 Generate Application Key
+Then in hPanel → Git → **Deploy** (or it auto-deploys), then Node.js app →
+**Restart**. If `package.json` changed, run **Run NPM install** first.
+
+### 5.2 Fast path — only product images changed
+
+When the change is just files under `src/public/images/products/` (and the
+`src/data/generated/products.json` / `product-images.json` references to
+them), you do **not** need an `npm install`, and static images are served
+directly by `express.static`:
+
+1. Commit + push, deploy via Git (or upload just the changed
+   `src/public/images/products/*.webp` and the two JSON files via SFTP).
+2. **Restart** the Node.js app — `products.json` is only read at startup, so
+   image-URL changes in it don't take effect until a restart.
+3. Hard-refresh a product page and a category page to confirm.
+
+`express.static` sends `Cache-Control: max-age=1d`, so a replaced image at
+the same filename can look stale in a browser for up to a day — test in a
+private window or append `?v=2`.
+
+### 5.3 Rollback
+
+Git deploy keeps history:
+
 ```bash
-/opt/alt/php82/usr/bin/php artisan key:generate --force
+cd <install path>
+git log --oneline -10
+git reset --hard <good-commit>
 ```
+
+Then **Restart**. (Uncommitted server-side changes are lost — there
+shouldn't be any; `storage/rfq-uploads/` is gitignored and untouched.)
 
 ---
 
-## 7. Build Process
+## 6. Model B — VPS + PM2 + nginx (condensed)
 
-### 7.1 Local Build (Before Deployment)
+Use a Hostinger VPS (KVM) with Ubuntu, ≥ 1 GB RAM, Node 20 LTS.
+
 ```bash
-# On local development machine — NOT on Hostinger
-cd rre-international/
+# as a non-root deploy user
+sudo apt update && sudo apt install -y nginx
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+sudo npm i -g pm2
 
-# Install dependencies
-npm install
-
-# Build for production
-npm run build
-# This generates: public/build/assets/app-[hash].css + app-[hash].js
-
-# Commit built assets
-git add public/build/
-git commit -m "build: compile assets for production"
-git push origin main
+cd /var/www
+git clone git@github.com:<org>/rre-international.git
+cd rre-international
+npm install --omit=dev        # after §3.3; else npm install
+mkdir -p storage/rfq-uploads && chmod 775 storage/rfq-uploads
 ```
 
-### 7.2 Composer Install on Server
-```bash
-# Via SSH on Hostinger
-cd /home/[username]/rreinternational
+`ecosystem.config.js`:
 
-/opt/alt/php82/usr/bin/php /usr/local/bin/composer install \
-  --no-dev \
-  --optimize-autoloader \
-  --prefer-dist \
-  --no-interaction
+```js
+module.exports = {
+  apps: [{
+    name: 'rre',
+    script: 'src/server.js',
+    instances: 1,               // single instance: ~600 MB, in-memory catalogue
+    exec_mode: 'fork',
+    max_memory_restart: '1200M',
+    env: {
+      NODE_ENV: 'production',
+      PORT: 3000,
+      APP_URL: 'https://www.rreinternational.com',
+      SMTP_HOST: 'smtp.hostinger.com',
+      SMTP_PORT: '465',
+      SMTP_SECURE: 'true',
+      SMTP_USER: 'info@rreinternational.com',
+      SMTP_PASS: '<mailbox password>',
+      RFQ_NOTIFICATION_EMAIL: 'info@rreinternational.com'
+    }
+  }]
+};
 ```
 
-### 7.3 Laravel Optimization Commands
 ```bash
-# Run after every deployment
-/opt/alt/php82/usr/bin/php artisan optimize
-# This runs: config:cache, event:cache, route:cache, view:cache
-
-# Or individually:
-/opt/alt/php82/usr/bin/php artisan config:cache
-/opt/alt/php82/usr/bin/php artisan route:cache
-/opt/alt/php82/usr/bin/php artisan view:cache
+pm2 start ecosystem.config.js
+pm2 save && pm2 startup     # run the printed command
 ```
+
+nginx reverse proxy (`/etc/nginx/sites-available/rre`):
+
+```nginx
+server {
+  listen 80;
+  server_name rreinternational.com www.rreinternational.com;
+  client_max_body_size 25m;                 # RFQ uploads: 5 files (see multer limits)
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+}
+```
+
+```bash
+sudo ln -s /etc/nginx/sites-available/rre /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d rreinternational.com -d www.rreinternational.com
+```
+
+**Update:** `git pull && npm install --omit=dev && pm2 reload rre`.
 
 ---
 
-## 8. Storage Permissions
+## 7. Post-deploy smoke test
 
-```bash
-# Set correct permissions via SSH
-cd /home/[username]/rreinternational
+Run against the live domain. All should return HTTP 200 unless noted.
 
-# Storage directory — writable by web server
-chmod -R 775 storage/
-chmod -R 775 bootstrap/cache/
+| URL | Expect |
+|---|---|
+| `/` | Homepage renders, category grid visible |
+| `/search?q=332/H0893` | Results page, exact part match at top |
+| `/products` | Paginated catalogue listing |
+| `/parts/bearings` | A category listing page (try any real category slug) |
+| `/rfq` | RFQ form renders |
+| `POST /rfq` (submit the form with a file) | Redirects to `/rfq/confirmation`; file lands in `storage/rfq-uploads/`; if SMTP is set, email arrives at `RFQ_NOTIFICATION_EMAIL` |
+| `/robots.txt` | Plain text, references `…/sitemap.xml` |
+| `/sitemap.xml` | XML sitemap index |
+| `/images/products/02-100073-filterelement.webp` | The image loads (static asset) |
+| `/nope` | Custom 404 page, HTTP 404 |
 
-# Create storage symlink for public assets
-/opt/alt/php82/usr/bin/php artisan storage:link
-
-# Verify symlink created
-ls -la public/storage
-```
-
----
-
-## 9. Public Directory Configuration
-
-### 9.1 Laravel's public/.htaccess
-The default Laravel `.htaccess` in `public/` handles routing. Verify it is present and add:
-
-```apache
-<IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
-
-    RewriteEngine On
-
-    # Force HTTPS
-    RewriteCond %{HTTPS} off
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    # Force www (or non-www — pick one, be consistent)
-    # RewriteCond %{HTTP_HOST} !^www\.
-    # RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Redirect Trailing Slashes
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Send Requests To Front Controller
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
-</IfModule>
-
-# Security headers
-<IfModule mod_headers.c>
-    Header always set X-Frame-Options "SAMEORIGIN"
-    Header always set X-Content-Type-Options "nosniff"
-    Header always set Referrer-Policy "strict-origin-when-cross-origin"
-    Header always set X-XSS-Protection "1; mode=block"
-</IfModule>
-
-# PHP settings override
-php_value memory_limit 512M
-php_value upload_max_filesize 50M
-php_value post_max_size 50M
-php_value max_execution_time 120
-
-# Deny access to sensitive files
-<FilesMatch "\.(env|log|sql|sh|json)$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
-```
+Also check the process log (hPanel Node.js app log, or `pm2 logs rre`) for:
+- `RRE International Platform Running at: http://localhost:<port>` — booted OK
+- `[emailService] SMTP_HOST / SMTP_USER / SMTP_PASS not set` — expected only
+  if you deliberately skipped SMTP
+- Any `Generated catalog data not found` — the `src/data/generated/*.json`
+  files didn't get uploaded
 
 ---
 
-## 10. Cron Jobs
+## 8. Environment variables — complete reference
 
-Configure in hPanel → Advanced → **Cron Jobs**.
+These are the **only** variables the code reads. Anything else is noise.
 
-Use the full PHP binary path. Run `which php` and `/opt/alt/php82/usr/bin/php -v` via SSH to confirm.
-
-```bash
-# Laravel scheduler (runs all scheduled tasks) — every minute
-* * * * * /opt/alt/php82/usr/bin/php /home/[username]/rreinternational/artisan schedule:run >> /dev/null 2>&1
-
-# Process queue jobs — every minute
-* * * * * /opt/alt/php82/usr/bin/php /home/[username]/rreinternational/artisan queue:work --once --queue=default >> /dev/null 2>&1
-```
-
-**Scheduled tasks defined in `routes/console.php` (or `app/Console/Kernel.php`):**
-
-```php
-// Daily at 02:00 — generate XML sitemaps
-Schedule::command('sitemap:generate')->dailyAt('02:00');
-
-// Daily at 03:00 — clean expired uploaded files
-Schedule::command('uploads:cleanup')->dailyAt('03:00');
-
-// Weekly Sunday 04:00 — database backup via mysqldump
-Schedule::command('db:backup')->weeklyOn(0, '04:00');
-
-// Daily at 06:00 — send lead follow-up reminders to sales team
-Schedule::command('leads:remind')->dailyAt('06:00');
-```
-
-> [!WARNING]
-> Stagger all cron jobs — never run multiple CPU-intensive jobs at the same minute. Each cron job counts toward the 20-entry-process limit.
+| Variable | Required | Default | Purpose |
+|---|---|---|---|
+| `PORT` | No | `3000` | Port to listen on. **Leave unset on hPanel** — the platform sets it. Set it on VPS. |
+| `NODE_ENV` | Recommended | — | Set to `production`. Only effect in code: when `development`, the 500 page shows the error message. |
+| `APP_URL` | Recommended | `https://www.rreinternational.com` | Absolute base URL used in SEO tags, JSON-LD, canonical URLs, sitemaps, `robots.txt`. Set it to the real canonical host with scheme, no trailing slash. |
+| `SMTP_HOST` | No | — | RFQ notification email. If unset, email is skipped and the submission is logged. |
+| `SMTP_PORT` | No | `465` | `465` (SSL) or `587` (STARTTLS). |
+| `SMTP_SECURE` | No | `true` unless port `587` | `"true"` / `"false"` string. |
+| `SMTP_USER` | No | — | Mailbox login, also the `From:` address. |
+| `SMTP_PASS` | No | — | Mailbox password. |
+| `RFQ_NOTIFICATION_EMAIL` | No | `info@rreinternational.com` | Where RFQ notifications are delivered. |
 
 ---
 
-## 11. Cache Management
+## 9. Troubleshooting
 
-```bash
-# Clear all caches (after config changes)
-/opt/alt/php82/usr/bin/php artisan cache:clear
-/opt/alt/php82/usr/bin/php artisan config:clear
-/opt/alt/php82/usr/bin/php artisan route:clear
-/opt/alt/php82/usr/bin/php artisan view:clear
+### App won't boot / 502 / "Application error"
+- **Startup file wrong.** Must be `src/server.js`, not `app.js` / `index.js`
+  (§3.2). This is the most common cause.
+- **Catalogue data missing.** Log shows `Generated catalog data not found in
+  .../src/data/generated`. The large JSON files weren't uploaded — re-deploy,
+  or SFTP `src/data/generated/` explicitly.
+- **Killed on startup, no stack trace.** Out of memory parsing
+  `products.json`. Check the plan's per-process memory limit; if it's below
+  ~800 MB, move to a VPS or a larger plan. `--max-old-space-size` won't help
+  if the host's hard limit is lower than what the dataset needs.
+- **Wrong Node version.** `engines` mismatch or an old default. Pick 18/20/22.
 
-# Re-optimize after clearing (production)
-/opt/alt/php82/usr/bin/php artisan optimize
+### 404 on every page except `/`
+The domain is being served by Apache/`public_html` instead of the Node
+process. Re-check the Node.js app's **Application URL** binding and that
+`public_html` for the domain doesn't contain a competing site.
 
-# Clear Cloudflare CDN cache after major deployments
-# Via Cloudflare dashboard → Caching → Purge Everything
-# Or via API (automate in deploy.sh if desired)
-```
+### Product images 404
+- Confirm the file exists under `src/public/images/products/` in the
+  deployed tree (Git deploy includes it; a partial SFTP upload may not).
+- The app serves `src/public` at the web root via `express.static`, so
+  `/images/products/x.webp` → `src/public/images/products/x.webp`.
 
----
+### Replaced image still shows the old picture
+Browser cache — `express.static` sets `max-age=1d`. Test in a private
+window; for a guaranteed refresh change the filename or add `?v=N` in
+`products.json` image URLs.
 
-## 12. SSL Configuration
+### RFQ form returns 500 on submit
+- `storage/rfq-uploads/` doesn't exist or isn't writable (§4.7).
+- Upload exceeded limits: `multer` allows **5 files**; the reverse proxy /
+  platform body limit must allow the total (nginx `client_max_body_size`,
+  §6). Express itself is set to a 20 MB body limit.
 
-### 12.1 Enable SSL in hPanel
-1. hPanel → Security → **SSL**
-2. Select domain `rreinternational.com`
-3. Install **Let's Encrypt** certificate (free, auto-renews)
-4. Enable **Force HTTPS** toggle
+### RFQ emails not arriving
+Check the process log:
+- `SMTP_HOST / SMTP_USER / SMTP_PASS not set` → env vars didn't load; re-add
+  and restart.
+- `Failed to send RFQ notification … <reason>` → bad credentials or
+  host/port. For Hostinger mail use `smtp.hostinger.com:465` with
+  `SMTP_SECURE=true`. The submission itself still succeeded and is in the
+  log.
 
-### 12.2 Verify HTTPS Redirect
-The `.htaccess` in Section 9 handles HTTPS redirect at the application layer. The Hostinger toggle handles it at the server level. Both can be active.
-
-### 12.3 Check SSL Expiry
-Let's Encrypt auto-renews every 90 days. Monitor via Hostinger hPanel SSL section.
-
----
-
-## 13. Backups
-
-### 13.1 Hostinger Automated Backups
-- hPanel → Files → **Backups**
-- Verify frequency on your plan (weekly on Premium; daily on Business)
-- Test a manual restore from backup before going live
-
-### 13.2 Manual Database Backup via SSH
-```bash
-# Create a dated backup
-mysqldump \
-  -h 127.0.0.1 \
-  -u rre_user \
-  -p[PASSWORD] \
-  rre_production \
-  > /home/[username]/backups/rre_$(date +%Y%m%d_%H%M%S).sql
-
-gzip /home/[username]/backups/rre_$(date +%Y%m%d_%H%M%S).sql
-```
-
-### 13.3 Scheduled Backup Command
-```php
-// app/Console/Commands/DatabaseBackupCommand.php
-// Runs weekly via Laravel scheduler (see Section 10)
-// Stores compressed SQL dump in /home/[username]/backups/
-// Optionally push to Cloudflare R2 for offsite storage
-```
+### `sharp` fails during `npm install`
+You don't need it in production. Do §3.3, or install with
+`npm install --omit=dev`.
 
 ---
 
-## 14. Rollback Procedure
+## 10. What is NOT part of this deployment
 
-### 14.1 Code Rollback
-```bash
-# Via SSH — revert to previous Git commit
-cd /home/[username]/rreinternational
-git log --oneline -10           # Find the commit to revert to
-git reset --hard [COMMIT_HASH]  # Reset to that commit
-
-# Re-run optimization
-/opt/alt/php82/usr/bin/php artisan optimize
-```
-
-### 14.2 Database Rollback
-```bash
-# Revert last migration
-/opt/alt/php82/usr/bin/php artisan migrate:rollback
-
-# Revert to specific migration batch
-/opt/alt/php82/usr/bin/php artisan migrate:rollback --step=3
-```
-
-### 14.3 Full Rollback from Backup
-```bash
-# Restore database from backup
-gunzip < /home/[username]/backups/rre_[DATE].sql.gz | \
-  mysql -h 127.0.0.1 -u rre_user -p[PASSWORD] rre_production
-```
-
-> [!CAUTION]
-> Always take a fresh backup BEFORE any deployment to production. Never rollback a database without verifying the target backup is the correct state.
-
----
-
-## 15. Production Deployment Checklist
-
-Run this checklist before every production deployment:
-
-**Pre-deployment:**
-- [ ] Take manual backup (database + files) via hPanel
-- [ ] Test changes on staging (`staging.rreinternational.com`) first
-- [ ] Verify `.env.production` values are correct
-- [ ] Build assets locally: `npm run build`
-- [ ] Commit built assets to `main` branch
-
-**Deployment:**
-- [ ] SSH into server
-- [ ] `git pull origin main`
-- [ ] Run `composer install --no-dev --optimize-autoloader`
-- [ ] Run `php artisan migrate --force`
-- [ ] Run `php artisan optimize`
-- [ ] Run `php artisan queue:restart`
-- [ ] Set correct file permissions: `chmod -R 775 storage/ bootstrap/cache/`
-
-**Post-deployment:**
-- [ ] Visit homepage — verify loads correctly
-- [ ] Test search (part number)
-- [ ] Test RFQ form submission
-- [ ] Test WhatsApp CTA link
-- [ ] Check Laravel log: `tail -50 storage/logs/laravel.log`
-- [ ] Verify Cloudflare cache purged if needed
-- [ ] Check Google Search Console for crawl errors (next day)
-
----
-
-## 16. Troubleshooting
-
-### "500 Internal Server Error" after deploy
-```bash
-# Check Laravel log
-tail -100 /home/[username]/rreinternational/storage/logs/laravel.log
-
-# Common causes:
-# 1. APP_KEY not set → php artisan key:generate
-# 2. Wrong PHP version → verify hPanel PHP setting
-# 3. Missing .env → copy .env.example and fill values
-# 4. Wrong file permissions → chmod -R 775 storage/ bootstrap/cache/
-# 5. Config cache stale → php artisan config:clear && php artisan config:cache
-```
-
-### "404 Not Found" on all pages except homepage
-```bash
-# mod_rewrite likely not enabled or .htaccess not loading
-# Check .htaccess exists in public/
-ls -la /home/[username]/rreinternational/public/.htaccess
-
-# Verify document root points to public/ not application root
-# Check via hPanel domain settings
-```
-
-### Composer not found
-```bash
-# Download Composer locally to server
-cd /home/[username]/
-/opt/alt/php82/usr/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-/opt/alt/php82/usr/bin/php composer-setup.php --install-dir=/home/[username]/bin --filename=composer
-```
-
-### "Class not found" errors
-```bash
-# Regenerate autoloader
-/opt/alt/php82/usr/bin/php composer dump-autoload -o
-```
-
-### Database connection refused
-```bash
-# Verify MySQL host — on Hostinger use 127.0.0.1 not localhost
-# Verify credentials in .env match hPanel MySQL settings
-# Check DB_HOST=127.0.0.1 (not 'localhost' which may use socket)
-```
-
-### Queue jobs not processing
-```bash
-# Check cron is configured correctly in hPanel
-# Test manually:
-/opt/alt/php82/usr/bin/php artisan queue:work --once
-# Check jobs table for failed jobs:
-/opt/alt/php82/usr/bin/php artisan queue:failed
-```
+No MySQL, no Composer, no Laravel/artisan, no Redis, no queue workers, no
+cron jobs are required to run the site. The `scripts/` pipeline (catalogue
+build, image matching, Gemini image regeneration) runs **on a developer
+machine**; its output (`src/data/generated/*.json`,
+`src/public/images/products/*`) is committed and deployed as static content.
 
 ---
 

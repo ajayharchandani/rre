@@ -1,0 +1,3 @@
+image_filename,parsed_part_number,matched_part_number,product_id,description,category,slug,status,image_type,image_url,resolution,size_kb,notes
+121-16702.jpeg,121/16702,N/A,N/A,External Part (Unlisted in current catalog),Unassigned,N/A,UNMATCHED_EXTERNAL_PART,REGENERATED_STAGED,N/A,N/A,N/A,"External reference part number. Not in current 85,150 price list."
+914-60223.jpeg,914/60223,914/60223,fef94a2e4b825928,PROPSHAFT(P92),U.J. Cross / Spider Kit,914-60223-propshaft-p92,MATCHED_AND_PUBLISHED,DIRECT_SOURCE,/images/products/914-60223-propshaft-p92.webp,866x1024,49,Direct clean photograph

@@ -10,6 +10,7 @@
     "build:category-mapping": "node scripts/build-category-mapping.js",
     "extract:pdf-images": "bash scripts/run_pdf_extraction.sh",
     "match:images": "node scripts/match-images.js",
+    "import:photos": "node scripts/integrate-rre-photos.js",
     "validate:catalog": "node scripts/validate-catalog.js"
   },
   "keywords": [
