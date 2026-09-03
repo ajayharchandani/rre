@@ -72,14 +72,10 @@ cannot run this app — you need a VPS (Model B) or a plan upgrade.
 - [ ] SMTP mailbox password for `info@rreinternational.com` if you want RFQ
       emails (hPanel → Emails → Email Accounts → *Connect Devices*). Optional —
       the app runs fine without it, RFQ submissions are just logged instead.
-- [ ] A GitHub remote for this repo **if** you want Git-based deploys
-      (recommended). There is currently **no `git remote` configured** — add
-      one:
-      ```bash
-      git remote add origin git@github.com:<org>/rre-international.git
-      git push -u origin master
-      ```
-      The default branch here is `master`.
+- [x] GitHub remote — **configured**. `origin` →
+      `https://github.com/ajayharchandani/rre.git`, default branch **`main`**
+      (public repo). Push access is via the `ajayhbeaatho-art` account
+      (repo collaborator). Everyday workflow: `git add . && git commit -m "…" && git push`.
 
 ---
 
@@ -150,12 +146,30 @@ yourself; the platform sets `PORT` and `src/server.js` reads it.
 ### 4.2 Get the code onto the server
 
 **Option 1 — Git (recommended for repeat deploys):**
-hPanel → **Advanced → Git** → create a repository:
-- Repository URL: your GitHub remote (add a deploy key if private)
-- Branch: `master`
-- Install path: the **Application root** from §4.1
-- After the first pull, use **Deploy** (or set auto-deploy on push) for
-  future updates.
+hPanel → **Advanced → Git** → **Create a new repository**:
+
+| Field | Value |
+|---|---|
+| Repository | `https://github.com/ajayharchandani/rre.git` (public — no deploy key needed) |
+| Branch | `main` |
+| Directory | the **Application root** from §4.1 (e.g. `domains/rreinternational.com/app`) — **not** `public_html` |
+
+Then **Deploy** for the first pull.
+
+> [!IMPORTANT]
+> Hostinger's Git integration **only replaces files**. It does **not** run
+> `npm install`, does **not** run a build step, and does **not** run any
+> post-deploy hook. After every deploy you still have to install
+> dependencies (first deploy, or whenever `package-lock.json` changed) and
+> **restart the Node process**. Use `scripts/deploy.sh` for this — see §5.
+
+**Auto-deploy on push:** in the Git screen click **Auto Deployment**, copy
+the **Webhook URL**, then in GitHub → repo **Settings → Webhooks → Add
+webhook**: paste it as the Payload URL, content type
+`application/x-www-form-urlencoded`, event = *Just the push event*. Now every
+`git push` to `main` makes Hostinger pull automatically — you still trigger
+the dependency-install/restart step (§5.1), or automate it with a cron job
+(§5.4).
 
 **Option 2 — File Manager / SFTP (one-off or no GitHub):**
 Upload the whole project into the Application root **except**:
@@ -235,11 +249,33 @@ See §7.
 
 ```bash
 # locally
-git add -A && git commit -m "..." && git push origin master
+git add .
+git commit -m "..."
+git push                     # -> origin/main
 ```
 
-Then in hPanel → Git → **Deploy** (or it auto-deploys), then Node.js app →
-**Restart**. If `package.json` changed, run **Run NPM install** first.
+If auto-deploy is wired (§4.2), Hostinger pulls within a few seconds.
+Otherwise click **Deploy** in hPanel → Git.
+
+Then, on the server (SSH into the account), run the deploy helper:
+
+```bash
+cd ~/domains/rreinternational.com/app      # your Application root
+bash scripts/deploy.sh
+```
+
+`scripts/deploy.sh` runs `npm install --omit=dev` (skipped effort when
+nothing changed) and touches `tmp/restart.txt` to restart the app. You can
+also just use the Node.js app screen's **Run NPM install** + **Restart**
+buttons instead.
+
+### 5.1a One-time: make `npm install` on the server lean
+
+`sharp` / `xlsx` / `lucide-static` are in `dependencies` but only used by
+`scripts/` (never by `src/`). Move them to `devDependencies` in
+`package.json` (§3.3) so `npm install --omit=dev` on the server skips
+`sharp`'s slow native compile. Until you do, `deploy.sh` falls back to
+`npm install --omit=optional`.
 
 ### 5.2 Fast path — only product images changed
 
@@ -270,6 +306,20 @@ git reset --hard <good-commit>
 
 Then **Restart**. (Uncommitted server-side changes are lost — there
 shouldn't be any; `storage/rfq-uploads/` is gitignored and untouched.)
+
+### 5.4 Fully hands-off (optional)
+
+Hostinger's Git webhook pulls the files but can't run `deploy.sh`. To make
+`git push` end-to-end automatic, add an hPanel **cron job** that runs the
+helper on a short interval and exits fast when there's nothing new:
+
+```bash
+*/5 * * * * cd ~/domains/rreinternational.com/app && git rev-parse HEAD > .last_deploy_check.tmp 2>/dev/null; if ! cmp -s .last_deploy_check.tmp .last_deployed 2>/dev/null; then bash scripts/deploy.sh >> storage/deploy.log 2>&1 && mv .last_deploy_check.tmp .last_deployed; fi
+```
+
+(Use the correct Node/npm path in `deploy.sh` if `npm` isn't on the cron
+`PATH` — check with `which npm` over SSH.) Simpler alternative: just run
+`bash scripts/deploy.sh` over SSH after each push — it's two lines.
 
 ---
 

@@ -1,0 +1,2 @@
+# Shell scripts run on the Linux server — always LF, never CRLF.
+*.sh text eol=lf

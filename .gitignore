@@ -33,6 +33,13 @@ service-account*.json
 storage/source_photos/
 storage/generated_assets/
 
+# Server runtime — Passenger restart trigger, deploy bookkeeping & logs
+tmp/*
+!tmp/.gitkeep
+storage/deploy.log
+.last_deployed
+.last_deploy_check.tmp
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db
