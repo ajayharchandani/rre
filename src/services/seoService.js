@@ -13,13 +13,21 @@ class SeoService {
   static buildCanonical(path = '/') {
     const base = this.getBaseUrl().replace(/\/+$/, '');
     let cleanPath = path.startsWith('/') ? path : `/${path}`;
-    // Strip query parameters and hashes from canonical URLs
-    cleanPath = cleanPath.split('?')[0].split('#')[0];
-    // Preserve root slash or clean trailing slash for standardized URLs
+    cleanPath = cleanPath.split('#')[0];
+
+    // Drop the query string, EXCEPT a pagination marker (?page=N, N>1) —
+    // paginated listing pages must self-canonicalize, not collapse to page 1.
+    const [bare, qs] = cleanPath.split('?');
+    let suffix = '';
+    if (qs) {
+      const page = new URLSearchParams(qs).get('page');
+      if (page && /^\d+$/.test(page) && Number(page) > 1) suffix = `?page=${page}`;
+    }
+    cleanPath = bare;
     if (cleanPath.length > 1 && cleanPath.endsWith('/')) {
       cleanPath = cleanPath.slice(0, -1);
     }
-    return `${base}${cleanPath}`;
+    return `${base}${cleanPath}${suffix}`;
   }
 
   /**

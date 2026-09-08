@@ -409,7 +409,10 @@ router.get('/parts/:categorySlug', (req, res, next) => {
     path: canonicalPath,
     image: category.image_url || undefined,
     imageAlt: category.image_alt || `${category.name} — JCB spare parts`,
-    robots: 'index, follow',
+    // Page 1 is the indexable category page; deeper pages self-canonicalize
+    // but are noindex,follow — every product they list is already in the XML
+    // sitemap, so they add crawl paths without index bloat.
+    robots: page > 1 ? 'noindex, follow' : 'index, follow',
     breadcrumbs: [
       { name: "Products", url: "/products" },
       { name: category.name, url: `/parts/${category.slug}` }
