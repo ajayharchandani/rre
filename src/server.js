@@ -15,12 +15,15 @@ const { organization, categories, brands, machines } = require('./data/catalog')
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Site-wide template config. Analytics / Search Console stay inert until the
-// corresponding env var is set on the host (see HOSTINGER_DEPLOYMENT.md §8),
-// so deploying this code changes nothing until the IDs are provided.
+// Site-wide template config. GA4 measurement ID and the Search Console
+// verification token are public values (the GA4 tag is visible in page
+// source; the GSC token is published in DNS), so they are safe defaults in
+// code. An env var of the same name overrides them if ever needed.
+// Primary Search Console verification is the DNS TXT record on the apex
+// domain; the meta tag below additionally covers a URL-prefix property.
 app.locals.site = {
-  ga4MeasurementId: process.env.GA4_MEASUREMENT_ID || '',
-  gscVerification: process.env.GSC_VERIFICATION_TOKEN || '',
+  ga4MeasurementId: process.env.GA4_MEASUREMENT_ID || 'G-VXNCSCEESK',
+  gscVerification: process.env.GSC_VERIFICATION_TOKEN || 'Hxi4VhuJ8K_MKQ02NAF-nn30yWDcr0D9JQLwGIkrKxM',
   bingVerification: process.env.BING_VERIFICATION_TOKEN || '',
   defaultOgImage: '/images/rre-og-default.jpg'
 };
