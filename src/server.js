@@ -15,6 +15,16 @@ const { organization, categories, brands, machines } = require('./data/catalog')
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Site-wide template config. Analytics / Search Console stay inert until the
+// corresponding env var is set on the host (see HOSTINGER_DEPLOYMENT.md §8),
+// so deploying this code changes nothing until the IDs are provided.
+app.locals.site = {
+  ga4MeasurementId: process.env.GA4_MEASUREMENT_ID || '',
+  gscVerification: process.env.GSC_VERIFICATION_TOKEN || '',
+  bingVerification: process.env.BING_VERIFICATION_TOKEN || '',
+  defaultOgImage: '/images/rre-og-default.jpg'
+};
+
 // View engine setup with express-ejs-layouts
 app.use(expressLayouts);
 app.set('layout', 'layouts/main');

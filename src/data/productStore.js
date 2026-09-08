@@ -42,6 +42,34 @@ function load() {
     ? JSON.parse(fs.readFileSync(LEGACY_REDIRECTS_PATH, 'utf8'))
     : {};
 
+  // --- Indexability policy -------------------------------------------------
+  // The master price list has ~85k rows but only a subset carry enough real,
+  // page-specific substance to deserve their own indexable URL. A row is
+  // "strong" (index, follow) when ANY of these hold, all derived from real
+  // sourced data — never fabricated:
+  //   1. it has a genuine product photo (not the placeholder), or
+  //   2. it is mapped to a real customer-facing catalogue category, or
+  //   3. its description is a real multi-word part name (>=2 words, >=12
+  //      alphanumerics), or
+  //   4. its description carries an OE cross-reference number in brackets,
+  //      e.g. "Track Rod Link (335/Y0144)".
+  // Everything else (single-word generic fasteners with no photo and no
+  // category — "BOLT", "NUT", "WASHER") is noindex, follow: still reachable,
+  // still passes link equity, kept out of the index and the sitemap until it
+  // gains a photo, a category, or a fuller description. Tunable as GSC data
+  // comes in. No product data is mutated — this is a derived runtime flag.
+  const PLACEHOLDER_IMAGE_STATES = new Set(['placeholder_image', 'placeholder', 'image_pending', null, undefined, '']);
+  function computeIsIndexable(p) {
+    if (p.indexable === false) return false;
+    if (!PLACEHOLDER_IMAGE_STATES.has(p.image_status)) return true;
+    if (p.catalogue_category_slug) return true;
+    const desc = String(p.description || '').trim();
+    if (/\([^)]*[0-9]{2,}[^)]*\)/.test(desc)) return true;
+    const words = desc.split(/\s+/).filter(Boolean);
+    const alnum = desc.replace(/[^a-z0-9]/gi, '').length;
+    return words.length >= 2 && alnum >= 12;
+  }
+
   const bySlug = new Map();
   const byPartNumberNormalized = new Map();
   const byCatalogueCategorySlug = new Map();
@@ -51,6 +79,7 @@ function load() {
   }
 
   for (const product of products) {
+    product.is_indexable = computeIsIndexable(product);
     bySlug.set(product.slug, product);
 
     // A handful of part numbers repeat across distinct rows (different

@@ -8,22 +8,33 @@
   <meta name="description" content="<%= seo.description %>">
   <meta name="robots" content="<%= seo.robots %>">
   <link rel="canonical" href="<%= seo.canonical %>">
+  <% var ogType = (seo.openGraph && seo.openGraph.type) || seo.type || 'website'; %>
+  <% var ogImage = (seo.openGraph && seo.openGraph.image) || seo.image || ((locals.site && site.defaultOgImage) || ''); %>
 
   <!-- OpenGraph & Twitter Social Meta -->
   <meta property="og:title" content="<%= seo.title %>">
   <meta property="og:description" content="<%= seo.description %>">
   <meta property="og:url" content="<%= seo.canonical %>">
   <meta property="og:site_name" content="<%= organization.name %>">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="<%= seo.image %>">
+  <meta property="og:type" content="<%= ogType %>">
+  <% if (ogImage) { %><meta property="og:image" content="<%= ogImage %>">
+  <meta property="og:image:alt" content="<%= seo.imageAlt || seo.title %>"><% } %>
+  <% if (ogType === 'article' && seo.publishedTime) { %><meta property="article:published_time" content="<%= seo.publishedTime %>"><% } %>
+  <% if (ogType === 'article' && (seo.modifiedTime || seo.publishedTime)) { %><meta property="article:modified_time" content="<%= seo.modifiedTime || seo.publishedTime %>"><% } %>
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<%= seo.title %>">
   <meta name="twitter:description" content="<%= seo.description %>">
-  <meta name="twitter:image" content="<%= seo.image %>">
+  <% if (ogImage) { %><meta name="twitter:image" content="<%= ogImage %>"><% } %>
+
+  <% if (locals.site && site.gscVerification) { %><meta name="google-site-verification" content="<%= site.gscVerification %>"><% } %>
+  <% if (locals.site && site.bingVerification) { %><meta name="msvalidate.01" content="<%= site.bingVerification %>"><% } %>
 
   <!-- Favicon & Stylesheet -->
-  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
   <!-- Google Fonts: Inter — Premium B2B Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +58,17 @@
         <%- JSON.stringify(schema, null, 2) %>
       </script>
     <% }) %>
+  <% } %>
+
+  <% if (locals.site && site.ga4MeasurementId) { %>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= site.ga4MeasurementId %>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '<%= site.ga4MeasurementId %>');
+  </script>
   <% } %>
 </head>
 <body>
@@ -105,6 +127,22 @@
 
   <!-- Frontend Client Scripts -->
   <script src="/js/main.js" defer></script>
+
+  <% if (locals.site && site.ga4MeasurementId) { %>
+  <script>
+    // Report WhatsApp / RFQ intent to GA4 as conversions.
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a');
+      if (!a || typeof gtag !== 'function') return;
+      var href = a.getAttribute('href') || '';
+      if (/wa\.me|api\.whatsapp\.com|whatsapp:/i.test(href)) {
+        gtag('event', 'whatsapp_click', { link_url: href, page_path: location.pathname });
+      } else if (href.indexOf('/rfq') === 0) {
+        gtag('event', 'rfq_start', { page_path: location.pathname });
+      }
+    }, true);
+  </script>
+  <% } %>
 
 </body>
 </html>

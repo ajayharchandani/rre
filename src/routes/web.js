@@ -66,6 +66,21 @@ function getRealJcbProductSample(offset, count) {
   }));
 }
 
+// Alternate ways the same part number is commonly written / pasted by buyers
+// and stockists (slash vs hyphen vs compact). Purely mechanical variants of
+// the real number — never a claim that a different part interchanges.
+function getPartNumberVariants(partNumber) {
+  const raw = String(partNumber || '').trim().toUpperCase();
+  if (!raw) return [];
+  const variants = new Set([
+    raw.replace(/[\/\s_]+/g, '-'),      // 335-Y1459
+    raw.replace(/[^A-Z0-9]/g, ''),      // 335Y1459
+    raw.replace(/[\/\s_-]+/g, ' ')      // 335 Y1459
+  ]);
+  variants.delete(raw);
+  return Array.from(variants).filter(v => v && v !== raw);
+}
+
 // Helper to provide global template context
 function getGlobalContext(req) {
   return {
@@ -168,38 +183,38 @@ router.get('/', (req, res) => {
   });
 });
 
+// Favicon at the conventional root path (browsers and crawlers request
+// /favicon.ico directly). The real file lives under /images.
+router.get('/favicon.ico', (req, res) => {
+  res.set('Cache-Control', 'public, max-age=604800');
+  res.sendFile(path.join(__dirname, '../public/images/favicon.ico'));
+});
+
 // ----------------------------------------------------
 // 2. ROBOTS.TXT
 // ----------------------------------------------------
 router.get('/robots.txt', (req, res) => {
   const baseUrl = SeoService.getBaseUrl();
+  // One "*" group carries every rule. A named user-agent group would REPLACE
+  // this group for that bot (not merge), so we do not add per-bot groups just
+  // to repeat "Allow: /" — every listed AI/search crawler is already covered
+  // by "*". CSS/JS are explicitly allowed so Google can render pages.
   const robotsTxt = `User-agent: *
 Allow: /
+Allow: /css/
+Allow: /js/
+Allow: /images/
 
-# Protected private endpoints
+# Internal search, private endpoints, and parameterised duplicates
+Disallow: /search
 Disallow: /admin
-Disallow: /admin/
 Disallow: /rfq/private
-Disallow: /api/private
-Disallow: /search?*
-Disallow: /*?*sort=*
-Disallow: /*?*filter=*
-
-# Legitimate AI & Search Crawlers Allowed for Public Content
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: Claude-User
-Allow: /
-
-User-agent: Applebot
-Allow: /
+Disallow: /rfq/confirmation
+Disallow: /api/
+Disallow: /qa/
+Disallow: /audit
+Disallow: /*?*sort=
+Disallow: /*?*filter=
 
 Sitemap: ${baseUrl}/sitemap.xml
 `;
@@ -340,17 +355,34 @@ router.get('/products/:slug', (req, res, next) => {
     sourceUrl: SeoService.buildCanonical(product.canonical_url)
   });
 
+  // Part-number format variants a buyer might type or paste. Derived purely
+  // from the real part number — no invented cross-references.
+  const partNumberVariants = getPartNumberVariants(product.part_number);
+
+  // Title leads with the part number (that is the query), then the real
+  // description. Meta description is assembled from sourced fields only and
+  // is genuinely page-specific.
+  const catName = product.catalogue_category_name || (category && category.name) || null;
+  const title = `${product.part_number} ${product.description} · JCB Spare Part | ${organization.name}`;
+  const description =
+    `${organization.name} supplies JCB part ${product.part_number} (${product.description})` +
+    `${catName ? `, a ${catName.toLowerCase()} component` : ''}, as a precision aftermarket replacement. ` +
+    `Request export price and availability by WhatsApp or RFQ — ISO 9001:2015 manufacturer and exporter, Delhi, India.`;
+
   const seo = SeoService.getMeta({
-    title: product.seo_title,
-    description: product.meta_description,
+    title,
+    description,
     path: product.canonical_url,
-    robots: product.indexable ? 'index, follow' : 'noindex, follow',
+    image: product.image_url && product.image_status !== 'placeholder_image' ? product.image_url : undefined,
+    imageAlt: `${product.description} — JCB part ${product.part_number}`,
+    type: 'website',
+    robots: product.is_indexable ? 'index, follow' : 'noindex, follow',
     breadcrumbs: [
       { name: "Products", url: "/products" },
       ...(category ? [{ name: category.name, url: `/parts/${category.slug}` }] : []),
       { name: product.description, url: product.canonical_url }
     ],
-    schema: [SeoService.getProductSchema(product)]
+    schema: [SeoService.getProductSchema(product, { description })]
   });
 
   res.render('pages/product-detail', {
@@ -359,7 +391,8 @@ router.get('/products/:slug', (req, res, next) => {
     product,
     category,
     internalLinks,
-    whatsAppUrl
+    whatsAppUrl,
+    partNumberVariants
   });
 });
 

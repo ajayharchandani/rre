@@ -454,6 +454,9 @@ These are the **only** variables the code reads. Anything else is noise.
 | `SMTP_USER` | No | — | Mailbox login, also the `From:` address. |
 | `SMTP_PASS` | No | — | Mailbox password. |
 | `RFQ_NOTIFICATION_EMAIL` | No | `info@rreinternational.com` | Where RFQ notifications are delivered. |
+| `GA4_MEASUREMENT_ID` | No | — | Google Analytics 4 tag (e.g. `G-XXXXXXXXXX`). When set, the GA4 snippet + WhatsApp/RFQ click events load site-wide. Unset = no analytics code emitted. |
+| `GSC_VERIFICATION_TOKEN` | No | — | Value of the `google-site-verification` meta tag from Search Console (URL-prefix property). Renders the verification meta in `<head>` when set. |
+| `BING_VERIFICATION_TOKEN` | No | — | Value of the Bing Webmaster `msvalidate.01` meta tag. |
 
 ---
 

@@ -100,10 +100,10 @@ class SitemapService {
 
     const chunk = ProductStore.getProductsChunk(chunkNumber1Indexed - 1, PRODUCTS_CHUNK_SIZE);
     const urls = chunk
-      .filter(p => p.indexable !== false)
+      .filter(p => p.is_indexable !== false && p.indexable !== false)
       .map(product => ({
         loc: `${baseUrl}${product.canonical_url}`,
-        priority: '0.7',
+        priority: product.image_status && product.image_status !== 'placeholder_image' ? '0.7' : '0.5',
         changefreq: 'monthly',
         lastmod: today
       }));

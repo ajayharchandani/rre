@@ -31,6 +31,7 @@ class SeoService {
       description,
       path = '/',
       image = '/images/rre-og-default.jpg',
+      imageAlt,
       type = 'website',
       robots = 'index, follow',
       publishedTime,
@@ -68,6 +69,10 @@ class SeoService {
       description: finalDesc,
       canonical,
       robots,
+      // Flat fields consumed directly by layouts/main.ejs
+      image: fullImageUrl,
+      imageAlt: imageAlt || finalTitle,
+      type,
       openGraph: {
         title: finalTitle,
         description: finalDesc,
@@ -183,10 +188,10 @@ class SeoService {
    * (src/data/generated/products.json). No brand/availability/rating
    * claims are made — those don't exist in the source data.
    */
-  static getProductSchema(product) {
+  static getProductSchema(product, { description } = {}) {
     const baseUrl = this.getBaseUrl();
     const productUrl = `${baseUrl}/products/${product.slug}`;
-    const imageUrl = product.image_url
+    const imageUrl = product.image_url && product.image_status !== 'placeholder_image'
       ? (product.image_url.startsWith('http') ? product.image_url : `${baseUrl}${product.image_url}`)
       : null;
 
@@ -195,16 +200,31 @@ class SeoService {
       "@type": "Product",
       "@id": `${productUrl}#product`,
       "name": product.description,
-      "description": product.meta_description || product.description,
+      "description": description || product.meta_description || product.description,
       "sku": product.part_number,
       "mpn": product.part_number,
+      // Aftermarket replacement part — the part is made and supplied by RRE,
+      // so RRE is both its manufacturer and its brand. No OEM brand is
+      // asserted (that would imply an authorization RRE doesn't hold).
+      "brand": {
+        "@type": "Brand",
+        "name": organization.name
+      },
       "manufacturer": {
         "@id": `${baseUrl}/#organization`
       },
-      "category": product.category_name
+      "category": product.catalogue_category_name || product.category_name
     };
 
     if (imageUrl) schema.image = imageUrl;
+
+    // Only genuine, sourced attributes from the master price list.
+    const additionalProperty = [];
+    if (product.hsn) additionalProperty.push({ "@type": "PropertyValue", "name": "HSN Code", "value": String(product.hsn) });
+    if (product.gst !== null && product.gst !== undefined && product.gst !== '') {
+      additionalProperty.push({ "@type": "PropertyValue", "name": "GST Rate", "value": `${product.gst}%` });
+    }
+    if (additionalProperty.length) schema.additionalProperty = additionalProperty;
 
     if (product.show_price && product.mrp) {
       schema.offers = {

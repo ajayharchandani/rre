@@ -17,11 +17,20 @@
 
         <h1 style="font-size: 2.1rem; margin-bottom: 0.75rem; line-height: 1.25; color: #0f172a;">
           <%= product.description %>
+          <span style="display:block; font-size: 1.05rem; font-weight: 600; color: #475569; margin-top: 0.35rem;">JCB Part No. <%= product.part_number %></span>
         </h1>
+
+        <% if (partNumberVariants && partNumberVariants.length) { %>
+          <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
+            Also written as
+            <% partNumberVariants.forEach((v, i) => { %><span style="font-family: monospace; color: #334155;"><%= v %></span><%= i < partNumberVariants.length - 1 ? ', ' : '' %><% }) %>.
+          </p>
+        <% } %>
 
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; text-align: center; margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);">
           <img src="<%= product.image_url || '/images/products/rre-image-coming-soon.png' %>" alt="<%= product.description %> — JCB Part No. <%= product.part_number %>" style="max-height: 240px; max-width: 100%; width: auto; margin: 0 auto; object-fit: contain; display: block;" onerror="this.onerror=null;this.src='/images/products/rre-image-coming-soon.png';">
-          <% if (product.image_status === 'source_image') { %>
+          <% var hasPhoto = product.image_url && product.image_status && !['placeholder_image','placeholder','image_pending'].includes(product.image_status); %>
+          <% if (hasPhoto) { %>
             <div style="font-size: 0.78rem; color: #64748b; margin-top: 0.75rem;">Photo from RRE International's product catalogue</div>
           <% } else { %>
             <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.75rem;">Photograph not yet available for this part</div>
@@ -86,8 +95,18 @@
             </tbody>
           </table>
 
-          <div style="margin-top: 1.5rem; padding: 1.25rem; background: #f8fafc; border-radius: 8px; font-size: 0.9rem; color: #334155;">
-            For export FOB / CIF pricing based on destination and order quantity, please request a quote via WhatsApp or the RFQ form.
+          <div style="margin-top: 1.5rem; padding: 1.25rem; background: #f8fafc; border-radius: 8px; font-size: 0.92rem; color: #334155; line-height: 1.6;">
+            <p style="margin: 0 0 0.75rem;">
+              Part number <strong><%= product.part_number %></strong> — <%= product.description %><% if (category) { %>, a
+              <a href="/parts/<%= category.slug %>"><%= category.name %></a> component<% } %> — is listed in
+              RRE International's JCB spare parts catalogue<% if (product.hsn) { %> (HSN <%= product.hsn %><% if (product.gst || product.gst === 0) { %>, GST <%= product.gst %>%<% } %>)<% } %>.
+              RRE manufactures and exports this part as a precision aftermarket replacement from its ISO 9001:2015 certified
+              facility in Delhi, India.
+            </p>
+            <p style="margin: 0;">
+              For FOB / CIF export pricing to your destination and current lead time, send part number
+              <strong><%= product.part_number %></strong> to our export desk on WhatsApp or submit an RFQ.
+            </p>
           </div>
 
         </div>
