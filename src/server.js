@@ -5,6 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const expressLayouts = require('express-ejs-layouts');
 
+const canonicalHost = require('./middleware/canonicalHost');
 const securityMiddleware = require('./middleware/security');
 const redirectMiddleware = require('./middleware/redirects');
 const cacheControl = require('./middleware/cacheControl');
@@ -34,6 +35,10 @@ app.use(expressLayouts);
 app.set('layout', 'layouts/main');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// Canonical origin (apex -> www, strip trailing slash) — runs before
+// everything so duplicate hosts/paths never reach a handler.
+app.use(canonicalHost);
 
 // Body parsing and cookies
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));

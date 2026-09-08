@@ -725,6 +725,8 @@ router.get('/resources/:slug', (req, res, next) => {
     description: article.metaDescription,
     path: `/resources/${article.slug}`,
     type: 'article',
+    image: `/images/resources/${article.slug}.jpg`,
+    imageAlt: article.title,
     publishedTime: article.publishedDate,
     breadcrumbs: BreadcrumbService.forArticle(article),
     schema: [

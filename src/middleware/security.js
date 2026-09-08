@@ -13,6 +13,9 @@ module.exports = function securityMiddleware(req, res, next) {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   // Basic XSS protection for older browsers
   res.setHeader('X-XSS-Protection', '1; mode=block');
+  // Enforce HTTPS for a year. No `includeSubDomains` (mail autoconfig
+  // subdomains are out of our control) and no `preload` (hard to reverse).
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000');
 
   // Block private routes from search engine indexing
   const path = req.path;
