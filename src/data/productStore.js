@@ -202,6 +202,40 @@ const ProductStore = {
     };
   },
 
+  /**
+   * A spread of real, photographed catalogue products for showcase blocks
+   * (homepage, machine hubs). Round-robins across catalogue categories so
+   * the selection isn't 20 seals in a row, and only returns products with a
+   * genuine studio/source photo — never the placeholder. These are RRE's
+   * actual illustrated range, NOT a machine-fitment claim.
+   */
+  getShowcaseProducts(limit = 12) {
+    const withPhoto = [];
+    for (const [, list] of state.byCatalogueCategorySlug) {
+      for (const p of list) {
+        if (p.image_url && p.image_status && !['placeholder_image', 'placeholder', 'image_pending'].includes(p.image_status)) {
+          withPhoto.push(p);
+        }
+      }
+    }
+    // round-robin by category for variety
+    const byCat = new Map();
+    for (const p of withPhoto) {
+      const k = p.catalogue_category_slug || 'other';
+      if (!byCat.has(k)) byCat.set(k, []);
+      byCat.get(k).push(p);
+    }
+    const queues = [...byCat.values()];
+    const out = [];
+    let i = 0;
+    while (out.length < limit && queues.some(q => q.length)) {
+      const q = queues[i % queues.length];
+      if (q.length) out.push(q.shift());
+      i++;
+    }
+    return out;
+  },
+
   /** Chunk of products for sitemap generation (0-indexed page). */
   getProductsChunk(chunkIndex, chunkSize = 10000) {
     const start = chunkIndex * chunkSize;

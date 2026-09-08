@@ -68,45 +68,81 @@
       <% }) %>
     </div>
 
-    <!-- Machine Products -->
-    <% if (machineProducts.length > 0) { %>
-      <h2 style="font-size: 1.75rem; margin-bottom: 2rem; color: #0f172a;">Popular <%= machine.brandSlug.toUpperCase() %> Spare Parts</h2>
-      <p style="color: #64748b; margin-top: -1.5rem; margin-bottom: 2rem; font-size: 0.9rem;">
-        Sample listings from our digitized catalog. WhatsApp your part number or machine serial to confirm exact fitment for your <%= machine.name %>.
+    <!-- Browse spare parts by system (real categories, no fitment claim) -->
+    <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: #0f172a;">Browse <%= machine.name %> Spare Parts by System</h2>
+    <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 2rem; max-width: 760px;">
+      RRE International's replacement parts catalogue is organised by component system. Part fitment on the
+      <%= machine.name %> can vary by production year and engine series, so confirm the exact part number with your
+      machine serial before ordering.
+    </p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.85rem; margin-bottom: 4rem;">
+      <% allCategories.forEach(cat => { %>
+        <a href="/parts/<%= cat.slug %>" style="display: block; padding: 1rem 1.15rem; border: 1px solid #e2e8f0; border-radius: 8px; text-decoration: none; background: #fff;">
+          <span style="display: block; font-weight: 700; color: #0f172a; font-size: 0.98rem;"><%= cat.name %></span>
+          <span style="display: block; font-size: 0.82rem; color: #64748b; margin-top: 0.15rem;"><%= cat.count.toLocaleString('en-IN') %> listings</span>
+        </a>
+      <% }) %>
+    </div>
+
+    <% if (showcaseProducts && showcaseProducts.length > 0) { %>
+      <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: #0f172a;">Photographed Spares from RRE's JCB Catalogue</h2>
+      <p style="color: #64748b; margin-bottom: 2rem; font-size: 0.9rem; max-width: 760px;">
+        A sample of parts we stock and photograph in-house. These are drawn from RRE's JCB range and are shown for
+        illustration — they are not a fitment guarantee for the <%= machine.name %>. Send your part number or serial
+        number for confirmation.
       </p>
       <div class="grid-cards">
-        <% machineProducts.forEach(prod => { %>
+        <% showcaseProducts.forEach(prod => { %>
           <article class="product-card">
             <div class="product-card-img-wrap">
-              <span style="position: absolute; top: 10px; left: 10px; z-index: 2;" class="badge badge-brand">
-                <%= prod.brandName %>
-              </span>
-              <img src="<%= prod.image || '/images/products/rre-image-coming-soon.png' %>" alt="<%= prod.name %> — JCB Part No. <%= prod.partNumber %>" loading="lazy" onerror="this.onerror=null;this.src='/images/products/rre-image-coming-soon.png';">
+              <img src="<%= prod.image_url %>" alt="<%= prod.description %> — JCB part <%= prod.part_number %>" loading="lazy" onerror="this.onerror=null;this.src='/images/products/rre-image-coming-soon.png';">
             </div>
             <div class="product-card-body">
               <div style="font-family: monospace; font-weight: 800; color: #0f172a; font-size: 0.95rem; margin-bottom: 0.35rem;">
-                PN: <%= prod.partNumber %>
+                PN: <%= prod.part_number %>
               </div>
               <h3 class="product-card-title">
-                <a href="/products/<%= prod.slug %>"><%= prod.name %></a>
+                <a href="/products/<%= prod.slug %>"><%= prod.description %></a>
               </h3>
               <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.5rem; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 0.75rem;">
-                <a href="/products/<%= prod.slug %>" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.45rem;">
-                  Details
-                </a>
-                <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, please share price for Part No. ' + prod.partNumber) %>" class="btn btn-whatsapp" style="font-size: 0.82rem; padding: 0.45rem;" target="_blank" rel="noopener">
-                  💬 WhatsApp
-                </a>
+                <a href="/products/<%= prod.slug %>" class="btn btn-outline" style="font-size: 0.82rem; padding: 0.45rem;">Details</a>
+                <a href="https://wa.me/<%= organization.contact.whatsappNumber %>?text=<%= encodeURIComponent('Hello RRE International, please share price for Part No. ' + prod.part_number + ' (' + prod.description + ').') %>" class="btn btn-whatsapp" style="font-size: 0.82rem; padding: 0.45rem;" target="_blank" rel="noopener">💬 WhatsApp</a>
               </div>
             </div>
           </article>
         <% }) %>
       </div>
     <% } else { %>
-      <h2 style="font-size: 1.75rem; margin-bottom: 1rem; color: #0f172a;">Browse Spare Parts for <%= machine.name %></h2>
-      <p style="color: #475569; max-width: 640px; margin-bottom: 1.5rem;">
-        Our digitized online catalog is currently JCB-only. WhatsApp our export desk or submit an RFQ with your part number or machine serial and our engineering team will confirm pricing and availability directly.
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 2rem; max-width: 700px;">
+        <p style="color: #475569; margin: 0;">
+          RRE International's illustrated online catalogue is currently JCB-only. For <%= machine.brandSlug.toUpperCase() %>
+          parts, WhatsApp the export desk or submit an RFQ with your part number or machine serial and our engineering
+          team will confirm pricing and availability directly.
+        </p>
+      </div>
+    <% } %>
+
+    <!-- Model identification help -->
+    <div style="margin-top: 3.5rem; padding: 1.5rem; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;">
+      <strong style="color: #92400e;">Not sure which variant you have?</strong>
+      <p style="color: #78350f; font-size: 0.92rem; margin: 0.5rem 0 0;">
+        See our guide on
+        <a href="/resources/how-to-identify-correct-jcb-3dx-hydraulic-seal-kit-by-year" style="color: #b45309; font-weight: 700;">identifying the correct part by production year</a>,
+        or send your machine serial number to our export desk.
       </p>
+    </div>
+
+    <!-- FAQ (mirrors FAQPage schema) -->
+    <% if (typeof faqs !== 'undefined' && faqs.length) { %>
+      <div style="margin-top: 3.5rem; border-top: 1px solid #e2e8f0; padding-top: 2.5rem;">
+        <h2 style="font-size: 1.6rem; margin-bottom: 1.5rem; color: #0f172a;">Frequently Asked Questions</h2>
+        <% faqs.forEach(f => { %>
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.05rem; margin-bottom: 0.4rem; color: #0f172a;"><%= f.question %></h3>
+            <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0;"><%= f.answer %></p>
+          </div>
+        <% }) %>
+      </div>
     <% } %>
 
   </div>

@@ -45,26 +45,13 @@ const upload = multer({
   }
 });
 
-// The digitized 85,000+ SKU catalog (ProductStore) currently covers JCB
-// only and carries no brand/machine/model tagging. Brand, Machine, and
-// Model pages used to fill their "products" sections from catalog.js's
-// small hand-written demo dataset instead — which meant a part number
-// shown there could belong to a completely different product than the
-// same part number's real catalog record. Real products are the only
-// ones guaranteed to match everywhere else (search, category, product
-// detail), so JCB pages sample real products here; non-JCB brands/machines
-// (Caterpillar, Case, Komatsu — not yet digitized) get none, rather than a
-// fabricated list.
-function getRealJcbProductSample(offset, count) {
-  return ProductStore.getAllProducts().slice(offset, offset + count).map(p => ({
-    partNumber: p.part_number,
-    name: p.description,
-    description: p.description,
-    slug: p.slug,
-    image: p.image_url,
-    brandName: 'JCB'
-  }));
-}
+// The digitized 85,000+ SKU catalogue (ProductStore) covers JCB only and
+// carries no brand / machine / model tagging. Brand and machine pages
+// therefore show a spread of RRE's genuinely photographed catalogue spares
+// via ProductStore.getShowcaseProducts() — real products that match search /
+// category / product-detail exactly — never a per-model fitment claim.
+// Non-JCB brands/machines (Caterpillar, Case, Komatsu — not yet digitised)
+// get no product list rather than a fabricated one.
 
 // Alternate ways the same part number is commonly written / pasted by buyers
 // and stockists (slash vs hyphen vs compact). Purely mechanical variants of
@@ -408,12 +395,20 @@ router.get('/parts/:categorySlug', (req, res, next) => {
   const { products: categoryProducts, total, totalPages } = ProductStore.getProductsByCategory(category.slug, { page, pageSize: 48 });
 
   const canonicalPath = page > 1 ? `/parts/${category.slug}?page=${page}` : `/parts/${category.slug}`;
-  const otherCategories = ProductStore.getAllCategories().filter(c => c.slug !== category.slug).slice(0, 8);
+  const otherCategories = ProductStore.getAllCategories().filter(c => c.slug !== category.slug);
 
+  const baseUrl = SeoService.getBaseUrl();
+  const descBase = category.description
+    ? `${category.description} `
+    : '';
   const seo = SeoService.getMeta({
-    title: `${category.name} Spare Parts (${total.toLocaleString('en-IN')} listings)`,
-    description: `Browse ${total.toLocaleString('en-IN')} spare part listings under category ${category.name} from RRE International's master price list.`,
+    title: page > 1
+      ? `${category.name} Spare Parts — Page ${page} | ${organization.name}`
+      : `${category.name} — JCB Spare Parts (${total.toLocaleString('en-IN')} listings) | ${organization.name}`,
+    description: `${descBase}${total.toLocaleString('en-IN')} ${category.name} listings for JCB earthmoving equipment. Request export pricing and availability from RRE International, ISO 9001:2015 manufacturer and exporter, Delhi, India.`,
     path: canonicalPath,
+    image: category.image_url || undefined,
+    imageAlt: category.image_alt || `${category.name} — JCB spare parts`,
     robots: 'index, follow',
     breadcrumbs: [
       { name: "Products", url: "/products" },
@@ -423,7 +418,26 @@ router.get('/parts/:categorySlug', (req, res, next) => {
       SeoService.getBreadcrumbSchema([
         { name: "Products", url: "/products" },
         { name: category.name, url: `/parts/${category.slug}` }
-      ])
+      ]),
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "@id": `${baseUrl}${canonicalPath}#collection`,
+        "name": `${category.name} — JCB Spare Parts`,
+        "description": category.description || undefined,
+        "isPartOf": { "@id": `${baseUrl}/#website` },
+        "about": { "@id": `${baseUrl}/#organization` },
+        "mainEntity": {
+          "@type": "ItemList",
+          "numberOfItems": total,
+          "itemListElement": categoryProducts.slice(0, 24).map((p, i) => ({
+            "@type": "ListItem",
+            "position": (page - 1) * 48 + i + 1,
+            "url": `${baseUrl}/products/${p.slug}`,
+            "name": `${p.part_number} ${p.description}`
+          }))
+        }
+      }
     ]
   });
 
@@ -433,7 +447,7 @@ router.get('/parts/:categorySlug', (req, res, next) => {
     category,
     categoryProducts,
     pagination: { page, totalPages, total, baseUrl: `/parts/${category.slug}` },
-    internalLinks: { otherCategories: otherCategories.map(c => ({ name: c.name, url: `/parts/${c.slug}` })) }
+    internalLinks: { otherCategories: otherCategories.map(c => ({ name: c.name, url: `/parts/${c.slug}`, count: c.count })) }
   });
 });
 
@@ -460,9 +474,14 @@ router.get('/brands/:slug', (req, res, next) => {
   if (!brand) return next();
 
   const brandMachines = machines.filter(m => m.brandSlug === brand.slug);
-  // Real product data (see getRealJcbProductSample above) — only JCB is
-  // digitized today.
-  const brandProducts = brand.slug === 'jcb' ? getRealJcbProductSample(0, 8) : [];
+  // Only the JCB catalogue is digitised. Show a spread of RRE's actually
+  // photographed JCB spares (not an arbitrary slice of the raw index).
+  const brandProducts = brand.slug === 'jcb'
+    ? ProductStore.getShowcaseProducts(8).map(p => ({
+        partNumber: p.part_number, name: p.description, description: p.description,
+        slug: p.slug, image: p.image_url, brandName: 'JCB'
+      }))
+    : [];
   const internalLinks = InternalLinkingService.getLinksForBrand(brand);
 
   const seo = SeoService.getMeta({
@@ -505,18 +524,35 @@ router.get('/machines/:slug', (req, res, next) => {
   if (!machine) return next();
 
   const models = machineModels.filter(m => m.machineSlug === machine.slug);
-  // Real product data — only JCB is digitized today. Each JCB machine page
-  // samples a different slice of the real catalog purely for variety; the
-  // real catalog carries no per-machine fitment data, so this is not a
-  // claim of model-specific compatibility.
-  const machineIndex = Math.max(0, machines.findIndex(m => m.slug === machine.slug));
-  const machineProducts = machine.brandSlug === 'jcb' ? getRealJcbProductSample(machineIndex * 8, 6) : [];
+
+  // The real 85k catalogue carries NO per-machine fitment data. So a machine
+  // page is a navigational hub, not a "parts that fit your machine" list:
+  //  - every spare-parts category (real, with counts) to browse into,
+  //  - the genuine production-year / engine breakdown for this platform,
+  //  - a spread of RRE's actually-photographed catalogue spares (JCB hubs
+  //    only), framed as "from our JCB range", never as fitment for THIS model.
+  const showcaseProducts = machine.brandSlug === 'jcb' ? ProductStore.getShowcaseProducts(9) : [];
+
+  const engineVariants = [...new Set(models.map(m => m.engineVariant).filter(Boolean))];
+  const faqs = [];
+  if (engineVariants.length) {
+    faqs.push({
+      question: `Which engine variants were fitted to the ${machine.name}?`,
+      answer: `Across its production run the ${machine.name} has used: ${engineVariants.join('; ')}. Hydraulic, cooling and transmission spares can differ between these — send your machine year or serial number when requesting a quote so we confirm the correct part.`
+    });
+  }
+  faqs.push({
+    question: `Are these genuine or aftermarket ${machine.name} parts?`,
+    answer: `${organization.name} manufactures and exports precision aftermarket replacement parts from its ISO 9001:2015 certified facility in Delhi, India. It is an independent supplier and not an authorised ${machine.brandSlug.toUpperCase()} dealer or franchise.`
+  });
 
   const seo = SeoService.getMeta({
     title: machine.metaTitle,
     description: machine.metaDescription,
     path: `/machines/${machine.slug}`,
-    breadcrumbs: BreadcrumbService.forMachine(machine)
+    image: machine.image || undefined,
+    breadcrumbs: BreadcrumbService.forMachine(machine),
+    schema: [SeoService.getFaqSchema(faqs)].filter(Boolean)
   });
 
   res.render('pages/machine-detail', {
@@ -524,7 +560,8 @@ router.get('/machines/:slug', (req, res, next) => {
     seo,
     machine,
     models,
-    machineProducts
+    showcaseProducts,
+    faqs
   });
 });
 
@@ -535,12 +572,27 @@ router.get('/machines/:brandSlug/:modelSlug', (req, res, next) => {
 
   const machine = machines.find(m => m.slug === model.machineSlug);
   const internalLinks = InternalLinkingService.getLinksForModel(model);
+  // Other production-year / engine variants of the same platform.
+  const siblingModels = machineModels.filter(m => m.machineSlug === model.machineSlug && m.slug !== model.slug);
+
+  // FAQs built only from the model's real spec fields.
+  const faqs = [
+    {
+      question: `What engine is fitted to the ${model.name}?`,
+      answer: `The ${model.name} (${model.yearRange}) is fitted with the ${model.engineVariant}. Its hydraulic system is a ${model.hydraulicVariant}.`
+    },
+    {
+      question: `How do I confirm the correct part number for my ${model.name}?`,
+      answer: `Send your machine serial / chassis number to RRE International's export desk on WhatsApp (${organization.contact.phoneDisplay}) or via the RFQ form. Fitment can change within a model line by production year, so the serial number is the reliable check.`
+    }
+  ];
 
   const seo = SeoService.getMeta({
-    title: `${model.name} Spare Parts Exporter | RRE International`,
-    description: `Complete replacement spare parts catalog for ${model.name} (${model.yearRange}, ${model.engineVariant}). Seal kits, pins, bushes, and transmission spares.`,
+    title: `${model.name} Spare Parts — Engine & Year Guide | ${organization.name}`,
+    description: `${model.name}: ${model.yearRange}, ${model.engineVariant}, ${model.hydraulicVariant}. Identify and source the correct aftermarket seal kits, pins, bushes, pumps and transmission spares from RRE International.`,
     path: `/machines/${brandSlug}/${modelSlug}`,
-    breadcrumbs: BreadcrumbService.forModel(machine, model)
+    breadcrumbs: BreadcrumbService.forModel(machine, model),
+    schema: [SeoService.getFaqSchema(faqs)].filter(Boolean)
   });
 
   res.render('pages/model-detail', {
@@ -548,6 +600,8 @@ router.get('/machines/:brandSlug/:modelSlug', (req, res, next) => {
     seo,
     model,
     machine,
+    siblingModels,
+    faqs,
     internalLinks
   });
 });
