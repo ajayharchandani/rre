@@ -22,6 +22,18 @@ PHP / MySQL stack. That was aspirational and never built. The real app:
 | Outbound email | SMTP via `nodemailer`, for RFQ notifications only (optional) |
 | Build step at deploy time | **None required** — the generated JSON is committed |
 
+> [!CAUTION]
+> The Hostinger Node.js app **build command MUST be left blank** (or set to
+> `npm run build`, which is a deliberate no-op). Do **not** set it to
+> `build:catalog`. `build:catalog` regenerates `src/data/generated/products.json`
+> from the master Excel, and that regenerated file has `image_url: null` for
+> every product — the real image assignments are applied by the offline image
+> pipeline (`match-images.js`, `process_drive_images.js`, …) and live **only**
+> in the committed JSON. Running `build:catalog` on deploy silently wipes all
+> ~1,200 product images from the live site while leaving the image files
+> themselves in place. This happened once (Sep 2026); the deployment build
+> command has since been cleared.
+
 ### Runtime dependencies (what production actually needs)
 
 `express`, `express-ejs-layouts`, `ejs`, `cookie-parser`, `multer`,

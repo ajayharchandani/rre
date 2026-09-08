@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node src/server.js",
+    "build": "node -e \"console.log('RRE: no deploy-time build. src/data/generated/*.json is committed build output. Do NOT run build:catalog on the server - it regenerates products.json from the Excel and wipes every product image assignment (those are applied by the offline image pipeline, not by build:catalog).')\"",
     "build:catalog": "node scripts/build-catalog.js && node scripts/build-category-mapping.js",
     "build:category-mapping": "node scripts/build-category-mapping.js",
     "extract:pdf-images": "bash scripts/run_pdf_extraction.sh",

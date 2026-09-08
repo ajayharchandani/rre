@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
+const crypto = require('crypto');
 const PartNumberNormalizer = require('../src/services/partNumberNormalizer');
 
 const ROOT = path.join(__dirname, '..');
@@ -222,6 +223,27 @@ async function main() {
     let action = '';
     let imageType = '';
 
+    // Check if source file is a generic "IMAGE COMING SOON" graphic placeholder
+    const fileHash = crypto.createHash('md5').update(fs.readFileSync(filePath)).digest('hex');
+    if (fileHash === '1d7618c715939b29dcaed14d561636e5') {
+      action = 'SOURCE_PLACEHOLDER_OMITTED';
+      imageType = 'SUPPLIER_PLACEHOLDER_GRAPHIC';
+      auditRows.push({
+        image_filename: file,
+        part_number: matchedProduct.part_number,
+        product_id: matchedProduct.product_id,
+        product_title: matchedProduct.description || matchedProduct.title,
+        status: action,
+        action_taken: 'Source photo is a generic "IMAGE COMING SOON" graphic; omitted from AI generation to prevent fabricating product features',
+        image_type: imageType,
+        image_url: matchedProduct.image_url,
+        resolution: '400x400',
+        size_kb: Math.round(fs.statSync(filePath).size / 1024),
+        notes: 'Source image contains no actual product photo. Requires authentic photo from supplier.'
+      });
+      continue;
+    }
+
     if (isCleanSource) {
       // Clear, usable, no watermark -> KEEP ORIGINAL IMAGE
       effectiveImagePath = filePath;
@@ -263,7 +285,23 @@ async function main() {
     const targetWebpPath = path.join(PUBLIC_PRODUCT_DIR, targetWebpFilename);
     const targetThumbPath = path.join(PUBLIC_PRODUCT_DIR, targetThumbFilename);
 
-    const opt = await optimizeToWebp(effectiveImagePath, targetWebpPath, targetThumbPath);
+    let opt;
+    try {
+      opt = await optimizeToWebp(effectiveImagePath, targetWebpPath, targetThumbPath);
+    } catch (err) {
+      // If already created and locked by server, read existing metadata
+      if (fs.existsSync(targetWebpPath)) {
+        const outMeta = await sharp(targetWebpPath).metadata();
+        const outStat = fs.statSync(targetWebpPath);
+        opt = {
+          outWidth: outMeta.width,
+          outHeight: outMeta.height,
+          outSizeKb: Math.round(outStat.size / 1024)
+        };
+      } else {
+        throw err;
+      }
+    }
 
     // Update product record (ONLY image fields modified)
     matchedProduct.image_url = `/images/products/${targetWebpFilename}`;
