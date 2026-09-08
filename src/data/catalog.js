@@ -222,7 +222,7 @@ const machines = [
     brandSlug: "jcb",
     type: "Backhoe Loader",
     image: "/images/machines/jcb-3dx.jpg",
-    description: "The world's most widely deployed backhoe loader platform. RRE International manufactures over 1,200 verified replacement SKUs for JCB 3DX across transmission, hydraulic cylinders, steering pivot pins, and axle differential components.",
+    description: "The world's most widely deployed backhoe loader platform. RRE International manufactures a broad range of verified replacement parts used on JCB 3DX machines — transmission and drivetrain, hydraulic cylinder seal kits, steering pivot pins, and axle/differential components among them.",
     metaTitle: "JCB 3DX Spare Parts Manufacturer & Exporter | RRE International",
     metaDescription: "Comprehensive aftermarket replacement spare parts catalog for JCB 3DX backhoes. Seal kits, king pins, bushes, hydraulic pumps, crown wheels. ISO 9001:2015 certified."
   },
@@ -1161,6 +1161,145 @@ const resources = [
       
       <h2>2. Why RRE Uses Controlled Induction Case Hardening</h2>
       <p>We forge our pins from EN9, EN18 and EN19 alloy steels. Using high-frequency induction furnaces, we achieve a rock-hard outer case (58–62 HRC to 3.0mm depth) while preserving a ductile, shock-absorbing inner core (30–35 HRC).</p>
+    `
+  },
+  {
+    id: "guide-identify-jcb-part-by-number",
+    title: "How to Identify a JCB Spare Part by Its Part Number",
+    slug: "how-to-identify-jcb-spare-part-by-part-number",
+    author: "RRE International Parts Desk",
+    publishedDate: "2026-09-09",
+    readingTime: "6 min read",
+    category: "Parts Identification",
+    excerpt: "How JCB part numbers are structured, where to find the number on a machine or a worn part, why the same part shows up written three different ways, and how to check you have the right reference before you order.",
+    metaTitle: "How to Identify a JCB Spare Part by Part Number | RRE International",
+    metaDescription: "A practical guide to reading JCB part numbers (e.g. 320/07434): the number format, where to find it, slash vs hyphen vs compact variants, superseded references, and how to verify the correct part before ordering.",
+    content: `
+      <h2>1. What a JCB part number looks like</h2>
+      <p>Most JCB references follow a <strong>three-digit / five-character</strong> pattern, for example <strong>320/07434</strong>, <strong>991/00147</strong> or <strong>458/M1047</strong>. The block before the slash is a family/group code; the block after it identifies the specific part. Older references can be shorter or use different separators (<strong>02/200877</strong>, <strong>15/920103</strong>), and some carry a letter (<strong>332/Y1459</strong>, <strong>458/M1047</strong>). The number is a <em>catalogue reference</em> — it is not a dimension code and does not, on its own, tell you which machine or which production year the part fits.</p>
+
+      <h2>2. Where to find the number</h2>
+      <ul>
+        <li><strong>On the old part.</strong> Cast, stamped or laser-etched into the component itself, or printed on the original packaging/label.</li>
+        <li><strong>In the machine's parts manual</strong> (the illustrated parts catalogue for your model and serial range), against the exploded diagram for the assembly you are working on.</li>
+        <li><strong>From your dealer's previous invoice</strong> for the same repair.</li>
+        <li><strong>From the machine data plate</strong> for the model and serial number — you then look the assembly up in the parts manual for that serial range.</li>
+      </ul>
+      <p>If the number on the old part is unreadable, note the machine model and serial/chassis number and describe the assembly — that is usually enough for a parts desk to locate the reference.</p>
+
+      <h2>3. The same part, written three ways</h2>
+      <p>Buyers and stockists write the same reference differently. These are all the <strong>same part</strong>:</p>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Style</th><th>Example</th><th>Where you see it</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Slash (OEM style)</td><td><strong>320/07434</strong></td><td>JCB catalogues, dealer systems</td></tr>
+          <tr><td>Hyphen</td><td>320-07434</td><td>Web forms, spreadsheets, many aftermarket sites</td></tr>
+          <tr><td>Compact (no separator)</td><td>32007434</td><td>Search boxes, SKU fields, barcodes</td></tr>
+        </tbody>
+      </table>
+      <p>On RRE International product pages the primary reference is shown in the OEM slash format, with the hyphen and compact variants listed underneath as "Also written as", so a search in any style lands on the right page. When you send an enquiry, any format is fine.</p>
+
+      <h2>4. Superseded and cross-referenced numbers</h2>
+      <p>References change over a machine's life. A part first sold as one number can be <strong>superseded</strong> by a later one when JCB revises the design, and two numbers can be listed as interchangeable. If a number returns nothing, it may have been replaced — quote the number you have <em>and</em> the machine serial, and ask whether it has been superseded. Do not assume a visually similar part is a match; confirm the supersession in writing.</p>
+
+      <h2>5. Verifying you have the right part before you order</h2>
+      <ol>
+        <li><strong>Measure the critical dimensions</strong> of the old part — for a pin, the diameter and overall length; for a seal kit, the cylinder bore and rod diameter; for a bush, the inner and outer diameter and length.</li>
+        <li><strong>Compare the description</strong> — "boom ram seal kit", "king post upper bush", "10x37 crown wheel & pinion" — against the catalogue entry.</li>
+        <li><strong>Check the fitment question</strong> — engine variant and production year affect hydraulic pump flanges, seal groove geometry and pin sizes even within one model line. See our guide on <a href="/resources/how-to-identify-correct-jcb-3dx-hydraulic-seal-kit-by-year">identifying the correct JCB 3DX seal kit by year</a>.</li>
+      </ol>
+
+      <h2>6. Sourcing the part from RRE International</h2>
+      <p>Search the reference in any format in the catalogue at <a href="/products">rreinternational.com/products</a>, or send it to our parts desk with your machine serial number:</p>
+      <ul>
+        <li>Single part: use the enquiry button on the product page, or WhatsApp the number.</li>
+        <li>Multiple parts: submit a <a href="/rfq">Bill of Materials (RFQ)</a> with references, quantities, machine models and your destination port.</li>
+      </ul>
+      <p>RRE International manufactures and exports aftermarket replacement parts as an independent, ISO 9001:2015 certified supplier; it is not an authorised JCB dealer. Part numbers are used for identification and cross-reference only.</p>
+    `
+  },
+  {
+    id: "guide-source-construction-parts-from-india",
+    title: "How to Source Construction Equipment Spare Parts from India: A B2B Buyer's Guide",
+    slug: "how-to-source-construction-equipment-spare-parts-from-india",
+    author: "RRE International Export Desk",
+    publishedDate: "2026-09-09",
+    readingTime: "9 min read",
+    category: "Export & Procurement",
+    excerpt: "For fleet operators, workshops and parts distributors buying earthmoving spares from India: how to vet a supplier, structure an enquiry, choose Incoterms, plan the shipment, and get the documentation right for your region.",
+    metaTitle: "How to Source Construction Equipment Spare Parts from India | RRE International",
+    metaDescription: "A practical B2B guide to importing JCB, Caterpillar, Case and Komatsu aftermarket spare parts from India: supplier vetting, RFQ/BOM process, FOB vs CIF, LCL/FCL consolidation, transit times, and import documentation for the GCC and Africa.",
+    content: `
+      <h2>1. Why buyers source earthmoving spares from India</h2>
+      <p>India has a deep manufacturing base for aftermarket earthmoving and backhoe-loader parts, built around one of the world's largest operating populations of JCB backhoes. For a distributor or fleet buyer this means competitive pricing on high-wear items — pivot pins, bronze bushes, hydraulic seal kits, transmission gears, water pumps, undercarriage parts — with the metallurgy and machining capability to make them to specification, and established sea-freight routes to the Gulf, Africa and beyond.</p>
+
+      <h2>2. Vetting a supplier</h2>
+      <p>Before placing an order, confirm:</p>
+      <table class="spec-table">
+        <thead><tr><th>Check</th><th>What good looks like</th></tr></thead>
+        <tbody>
+          <tr><td>Quality system</td><td>A current <strong>ISO 9001:2015</strong> certificate with a verifiable certificate number and issuing body.</td></tr>
+          <tr><td>Manufacturer vs trader</td><td>In-house machining, hardening and testing — not a re-box operation. Ask for photos of the plant and the process for a part you intend to buy.</td></tr>
+          <tr><td>Metallurgy & testing</td><td>Named steel grades (EN9/EN18/EN19, 20MnCr5, SAE 660 bronze), stated hardness and case depth, and dimensional inspection (CMM) for critical parts.</td></tr>
+          <tr><td>Export experience</td><td>Familiarity with your region's conformity scheme (see §6), VCI marine packaging, and consolidation.</td></tr>
+          <tr><td>Traceability</td><td>The part number, description and category you order match what is quoted, invoiced and shipped.</td></tr>
+        </tbody>
+      </table>
+      <p>RRE International operates under ISO 9001:2015 (Certificate No. ECI/2512/2983) with in-house CNC machining, induction hardening, precision grinding, hydrostatic cylinder testing and CMM verification at its plant in Delhi NCR. See the <a href="/about">facility and quality page</a>.</p>
+
+      <h2>3. Structuring the enquiry</h2>
+      <p>A clear enquiry gets a firm quotation faster. Include:</p>
+      <ul>
+        <li><strong>Part references</strong> in any format (see our guide on <a href="/resources/how-to-identify-jcb-spare-part-by-part-number">reading JCB part numbers</a>), with quantities.</li>
+        <li><strong>Machine model and serial number</strong> for each line, so fitment can be confirmed.</li>
+        <li><strong>Destination port</strong> and whether you want <strong>FOB</strong> or <strong>CIF</strong> pricing.</li>
+        <li><strong>Shipping mode</strong> preference — sea (LCL or FCL) or air for breakdown-critical items.</li>
+      </ul>
+      <p>For a handful of parts, enquire from the product page or by WhatsApp. For a full list, submit a <a href="/rfq">Bill of Materials (RFQ)</a> — you can upload a spreadsheet or PDF.</p>
+
+      <h2>4. Incoterms for spare parts</h2>
+      <table class="spec-table">
+        <thead><tr><th>Term</th><th>Seller covers</th><th>Buyer covers</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>FOB</strong> Indian port (Nhava Sheva / Mundra)</td><td>Goods, export packing, inland haulage, export clearance, loading on vessel</td><td>Ocean freight, insurance, destination charges, import clearance, delivery</td><td>Buyers with their own freight forwarder / consolidation</td></tr>
+          <tr><td><strong>CIF</strong> destination port</td><td>All of the above plus ocean freight and marine insurance to the named port</td><td>Destination charges, import clearance, delivery</td><td>Buyers who want a single landed cost to the port</td></tr>
+        </tbody>
+      </table>
+
+      <h2>5. Planning the shipment: LCL vs FCL and transit times</h2>
+      <p>Dense steel parts (pins, bushes, gears) reach a 20 ft container's weight limit quickly; light, bulky items (seal kits, filters, electrical) fill volume. A balanced mix keeps freight cost per part down. Consolidate small repeat orders into one sailing rather than shipping monthly parcels. Indicative sea transit from western Indian ports:</p>
+      <table class="spec-table">
+        <thead><tr><th>Destination</th><th>Main ports</th><th>Sea transit</th></tr></thead>
+        <tbody>
+          <tr><td>UAE</td><td>Jebel Ali, Khalifa</td><td>3–5 days</td></tr>
+          <tr><td>Qatar</td><td>Hamad</td><td>5–7 days</td></tr>
+          <tr><td>Saudi Arabia</td><td>Jeddah, Dammam</td><td>6–9 days</td></tr>
+          <tr><td>Kenya / East Africa</td><td>Mombasa</td><td>12–16 days</td></tr>
+          <tr><td>South Africa</td><td>Durban</td><td>18–24 days</td></tr>
+          <tr><td>Nigeria / West Africa</td><td>Apapa, Tin Can Island</td><td>22–28 days</td></tr>
+        </tbody>
+      </table>
+      <p>See the <a href="/export-process">export process page</a> for packaging and consolidation detail, and the guide on <a href="/resources/b2b-importers-guide-container-consolidation-spare-parts-india">container consolidation strategy</a>.</p>
+
+      <h2>6. Import documentation by region</h2>
+      <p>Requirements vary by destination. Common ones:</p>
+      <ul>
+        <li><strong>UAE:</strong> Commercial invoice attested by Chamber of Commerce, Certificate of Origin (India–UAE CEPA format for preferential duty), Bill of Lading, packing list with HSN codes.</li>
+        <li><strong>Saudi Arabia:</strong> SABER platform Product & Shipment Conformity Certificates (PCoC / SCoC), legalised commercial invoice, Certificate of Origin, "Made in India" country-of-origin marking on parts and packaging.</li>
+        <li><strong>Qatar:</strong> Chamber-attested invoice, Certificate of Origin, Certificate of Conformity (QGOS), detailed packing list.</li>
+        <li><strong>Nigeria:</strong> SONCAP certificate, Form M and e-RAR, Combined Certificate of Value and Origin (CCVO).</li>
+        <li><strong>Kenya:</strong> Pre-Export Verification of Conformity (PVoC / CoC by an accredited body), Import Declaration Form, Certificate of Origin.</li>
+        <li><strong>South Africa:</strong> SARS clearance documents, invoice with HSN classification, Certificate of Origin (DA59 where required).</li>
+      </ul>
+      <p>A capable exporter will prepare or coordinate these — including uploading test reports and certificates to SABER, or arranging PVoC inspection at the works — so the consignment clears without demurrage. Country-specific detail is on the <a href="/export">export markets pages</a>.</p>
+
+      <h2>7. Protecting parts for the voyage</h2>
+      <p>Machined and hardened steel corrodes in salt-air humidity over a 20–30 day voyage. Ask how parts are protected: ultrasonic degreasing, VCI rust-inhibitor oil, vacuum-sealed barrier film, foam or crating, and desiccant inside fumigated ISPM-15 wooden cases for long transits. RRE International runs an automated VCI anti-corrosion packaging line for oceanic export.</p>
+
+      <h2>8. Getting a quotation</h2>
+      <p>Send your part list and destination to RRE International's export desk via the <a href="/rfq">RFQ form</a> or WhatsApp. You'll get an FOB or CIF proforma with lead times, and guidance on documentation for your market. RRE International is an independent aftermarket manufacturer and exporter, not an authorised dealer of any equipment brand.</p>
     `
   }
 ];

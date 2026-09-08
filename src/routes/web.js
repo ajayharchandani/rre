@@ -880,6 +880,62 @@ router.get('/export-process', (req, res) => {
   });
 });
 
+// Commercial hub for the broad supplier / exporter queries. Synthesises the
+// exporter proposition (already spread across /about, /brands, /export,
+// /export-process) into one page and links out to all of them — a real hub,
+// not a doorway. Country-specific detail stays on /export/*.
+router.get('/spare-parts-exporter', (req, res) => {
+  const allCategories = ProductStore.getAllCategories();
+  const topCategories = allCategories.slice(0, 12);
+  const totalListings = ProductStore.getCounts().totalProducts;
+
+  const faqs = [
+    {
+      question: "Is RRE International an authorised JCB / Caterpillar / Case / Komatsu dealer?",
+      answer: `No. ${organization.name} is an independent manufacturer and exporter of aftermarket replacement parts, ISO 9001:2015 certified (Certificate No. ${organization.certification.certificateNumber}), based in Delhi, India. OEM brand names and part numbers are used for identification and cross-reference only.`
+    },
+    {
+      question: "What equipment does RRE International supply parts for?",
+      answer: `Replacement parts for JCB (3DX, 3CX, 4DX and JS-series), Caterpillar 424-series backhoes, Case 770/770EX loaders, and Komatsu PC-series excavator wear components. The JCB catalogue is digitised online — ${totalListings.toLocaleString('en-IN')} part references across ${allCategories.length} component categories.`
+    },
+    {
+      question: "Do you quote FOB or CIF, and from which ports?",
+      answer: "Both. FOB from Nhava Sheva (JNPT) or Mundra, or CIF to your destination port. LCL and FCL consolidation from western Indian ports; air freight for breakdown-critical items."
+    },
+    {
+      question: "How do I request a quotation for a list of parts?",
+      answer: `Submit a Bill of Materials via the RFQ form (${SeoService.getBaseUrl()}/rfq) — upload a spreadsheet or PDF with part numbers, quantities, machine models and your destination port — or send a shorter list to the export desk on WhatsApp (${organization.contact.phoneDisplay}).`
+    },
+    {
+      question: "How are parts protected for sea freight?",
+      answer: "Ultrasonic degreasing, VCI rust-inhibitor oil, vacuum-sealed barrier film, foam/crating, and desiccant in fumigated ISPM-15 wooden cases for long transits — via an automated VCI anti-corrosion packaging line."
+    }
+  ];
+
+  const seo = SeoService.getMeta({
+    title: `Construction & Heavy Equipment Spare Parts Exporter, India | ${organization.name}`,
+    description: `${organization.name} manufactures and exports aftermarket replacement spare parts for JCB, Caterpillar, Case and Komatsu earthmoving equipment from Delhi, India. ISO 9001:2015 certified. FOB / CIF export worldwide — request a quote by part number or Bill of Materials.`,
+    path: '/spare-parts-exporter',
+    breadcrumbs: [{ name: "Spare Parts Exporter", url: "/spare-parts-exporter" }],
+    schema: [
+      SeoService.getOrganizationSchema(),
+      SeoService.getFaqSchema(faqs)
+    ].filter(Boolean)
+  });
+
+  res.render('pages/spare-parts-exporter', {
+    ...getGlobalContext(req),
+    seo,
+    brands,
+    topCategories,
+    allCategories,
+    totalListings,
+    countries,
+    resources,
+    faqs
+  });
+});
+
 router.get('/contact', (req, res) => {
   const seo = SeoService.getMeta({
     title: "Contact RRE International — Export Sales Desk & Delhi Facility",

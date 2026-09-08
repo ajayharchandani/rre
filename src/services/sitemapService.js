@@ -80,6 +80,7 @@ class SitemapService {
       { loc: `${baseUrl}/machines`, priority: '0.8', changefreq: 'weekly', lastmod: today },
       { loc: `${baseUrl}/rfq`, priority: '0.9', changefreq: 'weekly', lastmod: today },
       { loc: `${baseUrl}/export`, priority: '0.8', changefreq: 'weekly', lastmod: today },
+      { loc: `${baseUrl}/spare-parts-exporter`, priority: '0.8', changefreq: 'monthly', lastmod: today },
       { loc: `${baseUrl}/resources`, priority: '0.8', changefreq: 'weekly', lastmod: today },
       { loc: `${baseUrl}/about`, priority: '0.7', changefreq: 'monthly', lastmod: today },
       { loc: `${baseUrl}/contact`, priority: '0.7', changefreq: 'monthly', lastmod: today },
