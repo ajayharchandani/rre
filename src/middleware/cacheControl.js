@@ -35,13 +35,14 @@ module.exports = function cacheControl(req, res, next) {
 
   // robots.txt / sitemaps regenerate cheaply and should stay fairly fresh.
   if (path === '/robots.txt' || path.startsWith('/sitemap') || path.startsWith('/sitemaps/') || path === '/llms.txt') {
-    res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400');
     return next();
   }
 
-  // Everything else: catalogue HTML. Browser revalidates (cheap 304 via
-  // ETag); a shared cache may serve for 5 min and serve stale for a day
-  // while refreshing.
-  res.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=86400');
+  // Everything else: catalogue HTML. A short positive max-age (some edge
+  // caches, including Hostinger's, refuse to store a response with
+  // max-age=0 even when s-maxage is set); s-maxage lets the shared cache
+  // hold it longer, and a deploy always purges the cache.
+  res.set('Cache-Control', 'public, max-age=60, s-maxage=600, stale-while-revalidate=86400');
   next();
 };
