@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-09-08T12:22:41.681Z",
+  "generated_at": "2026-09-08T17:37:09.256Z",
   "source_folder": "C:\\Users\\harch\\OneDrive\\Desktop\\rre-international\\storage\\source_photos",
   "summary": {
     "total_images_scanned": 1167,
     "part_numbers_found_on_website": 854,
-    "images_replaced": 60,
+    "images_replaced": 73,
     "images_kept_unchanged": 2,
     "part_numbers_not_found_or_ignored": 313,
-    "images_requiring_manual_review_or_batch_generation": 762
+    "images_requiring_manual_review_or_batch_generation": 749
   },
   "items": [
     {
@@ -1107,13 +1107,13 @@
       "part_number": "121/13500",
       "product_id": "58a20fb1088704b6",
       "product_title": "DOOR LOCK R/H",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/121-13500-door-lock-r-h.webp",
-      "resolution": "400x400",
-      "size_kb": 58,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 101,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "121-16702.jpeg",
@@ -1159,52 +1159,52 @@
       "part_number": "121/38101",
       "product_id": "4ce4a24e5a33cad9",
       "product_title": "SLEWPINION",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/121-38101-slewpinion.webp",
-      "resolution": "400x400",
-      "size_kb": 60,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 118,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "121-38104.jpg",
       "part_number": "121/38104",
       "product_id": "b05f57fc38cc3d2c",
       "product_title": "SLEWRACK",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/121-38104-slewrack.webp",
-      "resolution": "400x400",
-      "size_kb": 49,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 53,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "121-60601.jpg",
       "part_number": "121/60601",
       "product_id": "2e743e5b21f8c5d3",
       "product_title": "CAPCOOLENTFILTER",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/121-60601-capcoolentfilter.webp",
-      "resolution": "400x400",
-      "size_kb": 50,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 120,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "122-38502.jpg",
       "part_number": "122/38502",
       "product_id": "346989b0b2483522",
       "product_title": "STABILISER LEVER KNOB",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/122-38502-stabiliser-lever-knob.webp",
-      "resolution": "400x400",
-      "size_kb": 53,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 42,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "122-62400.jpg",
@@ -1224,13 +1224,13 @@
       "part_number": "122/67479",
       "product_id": "02144b1a9ddc25d8",
       "product_title": "BUSH",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/122-67479-bush.webp",
-      "resolution": "400x400",
+      "resolution": "1024x1024",
       "size_kb": 33,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "12221M71M00.jpg",
@@ -1250,13 +1250,13 @@
       "part_number": "123/00224",
       "product_id": "87ed9c4ab65753fa",
       "product_title": "KINGPOSTRAINCOVER",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-00224-kingpostraincover.webp",
-      "resolution": "400x400",
-      "size_kb": 69,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 39,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-00295.jpg",
@@ -1315,13 +1315,13 @@
       "part_number": "123/00661",
       "product_id": "dbbc62050aa60055",
       "product_title": "WINDOW STOP",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-00661-window-stop.webp",
-      "resolution": "400x400",
-      "size_kb": 41,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 65,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-00928826-00820823-00476.jpg",
@@ -1354,26 +1354,26 @@
       "part_number": "123/00932",
       "product_id": "3fb85ec34439a317",
       "product_title": "LOCKINGPIN",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-00932-lockingpin.webp",
-      "resolution": "400x400",
-      "size_kb": 26,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 32,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-01427_346-00138.jpg",
       "part_number": "123/01427",
       "product_id": "522091ded7a94f31",
       "product_title": "REAR FRAME HOSE RETAINER",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-01427-rear-frame-hose-retainer.webp",
-      "resolution": "400x400",
-      "size_kb": 29,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 39,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-02407.jpg",
@@ -1393,26 +1393,26 @@
       "part_number": "123/02450",
       "product_id": "9fdaca961bfaef07",
       "product_title": "L/H DOOR LATCH",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-02450-l-h-door-latch.webp",
-      "resolution": "400x400",
-      "size_kb": 28,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 23,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-02451.jpg",
       "part_number": "123/02451",
       "product_id": "c5bf32ef70fbc530",
       "product_title": "R/H DOOR LATCH",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-02451-r-h-door-latch.webp",
-      "resolution": "400x400",
+      "resolution": "1024x1024",
       "size_kb": 20,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-02459.jpg",
@@ -1432,13 +1432,13 @@
       "part_number": "123/02469",
       "product_id": "de1856bb70c799d9",
       "product_title": "L/HREARMUDGAURDS",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-02469-l-hrearmudgaurds.webp",
-      "resolution": "400x400",
-      "size_kb": 25,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 18,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-02470.jpg",
