@@ -49,9 +49,26 @@
       <% }) %>
     </div>
 
+    <!-- Category grid (digitised brands only) -->
+    <% if (typeof brandCategories !== 'undefined' && brandCategories.length) { %>
+      <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem;"><%= brand.name %> Spare Parts by Category</h2>
+      <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1.75rem; max-width: 760px;">
+        <%= totalListings.toLocaleString('en-IN') %> <%= brand.name %> part numbers, organised by component system.
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.85rem; margin-bottom: 4rem;">
+        <% brandCategories.forEach(cat => { %>
+          <a href="/parts/<%= cat.slug %>" style="display: block; padding: 1rem 1.15rem; border: 1px solid #e2e8f0; border-radius: 8px; text-decoration: none; background: #fff;">
+            <span style="display: block; font-weight: 700; color: #0f172a; font-size: 0.98rem;"><%= cat.name %></span>
+            <span style="display: block; font-size: 0.82rem; color: #64748b; margin-top: 0.15rem;"><%= cat.count.toLocaleString('en-IN') %> listings</span>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+
     <!-- Featured Products for Brand -->
     <% if (brandProducts.length > 0) { %>
-      <h2 style="font-size: 1.75rem; margin-bottom: 2rem;">Fast-Moving <%= brand.name %> Replacement Parts</h2>
+      <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem;">Photographed <%= brand.name %> Spares from RRE's Catalogue</h2>
+      <p style="color: #64748b; margin-bottom: 2rem; font-size: 0.9rem; max-width: 760px;">A sample of parts RRE stocks and photographs in-house.</p>
       <div class="grid-cards">
         <% brandProducts.forEach(prod => { %>
           <article class="product-card">
@@ -75,8 +92,21 @@
     <% } else { %>
       <h2 style="font-size: 1.75rem; margin-bottom: 1rem;">Browse Our <%= brand.name %> Spare Parts</h2>
       <p style="color: #475569; max-width: 640px; margin-bottom: 1.5rem;">
-        Our digitized online catalog is currently JCB-only. For <%= brand.name %> part numbers, WhatsApp our export desk or submit an RFQ — our engineering team will confirm pricing and availability directly.
+        RRE International's illustrated online catalogue is currently JCB-only. For <%= brand.name %> part numbers, WhatsApp our export desk or submit an RFQ — our engineering team will confirm pricing and availability directly.
       </p>
+    <% } %>
+
+    <!-- FAQ (mirrors FAQPage schema) -->
+    <% if (typeof faqs !== 'undefined' && faqs.length) { %>
+      <div style="margin-top: 3.5rem; border-top: 1px solid #e2e8f0; padding-top: 2.5rem;">
+        <h2 style="font-size: 1.6rem; margin-bottom: 1.5rem; color: #0f172a;">Frequently Asked Questions</h2>
+        <% faqs.forEach(f => { %>
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.05rem; margin-bottom: 0.4rem; color: #0f172a;"><%= f.question %></h3>
+            <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin: 0;"><%= f.answer %></p>
+          </div>
+        <% }) %>
+      </div>
     <% } %>
 
   </div>

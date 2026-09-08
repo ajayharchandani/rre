@@ -484,11 +484,37 @@ router.get('/brands/:slug', (req, res, next) => {
     : [];
   const internalLinks = InternalLinkingService.getLinksForBrand(brand);
 
+  // Only the JCB brand page maps to a real digitised catalogue, so only it
+  // shows the category grid + counts. All FAQ answers are factual.
+  const isDigitised = brand.slug === 'jcb';
+  const brandCategories = isDigitised ? ProductStore.getAllCategories() : [];
+  const totalListings = isDigitised ? ProductStore.getCounts().totalProducts : 0;
+
+  const faqs = [
+    {
+      question: `Does RRE International supply genuine or aftermarket ${brand.name} parts?`,
+      answer: `${organization.name} is an independent manufacturer and exporter of precision aftermarket replacement parts, ISO 9001:2015 certified, based in Delhi, India. It is not an authorised ${brand.name} dealer, distributor or franchise. ${brand.disclaimer}`
+    },
+    {
+      question: `Which ${brand.name} machines does RRE International cover?`,
+      answer: brandMachines.length
+        ? `Replacement parts are supplied for: ${brandMachines.map(m => m.name).join('; ')}. Send your part number or machine serial for confirmation.`
+        : `Send your ${brand.name} part number or machine serial to the export desk and the engineering team will confirm availability.`
+    }
+  ];
+  if (isDigitised) {
+    faqs.push({
+      question: `How many JCB spare parts are in RRE International's catalogue?`,
+      answer: `The online catalogue lists ${totalListings.toLocaleString('en-IN')} JCB part numbers across ${brandCategories.length} component categories, from hydraulic seal kits and pins to transmission and electrical parts.`
+    });
+  }
+
   const seo = SeoService.getMeta({
     title: brand.metaTitle,
     description: brand.metaDescription,
     path: `/brands/${brand.slug}`,
-    breadcrumbs: BreadcrumbService.forBrand(brand)
+    breadcrumbs: BreadcrumbService.forBrand(brand),
+    schema: [SeoService.getFaqSchema(faqs)].filter(Boolean)
   });
 
   res.render('pages/brand-detail', {
@@ -497,6 +523,9 @@ router.get('/brands/:slug', (req, res, next) => {
     brand,
     brandMachines,
     brandProducts,
+    brandCategories,
+    totalListings,
+    faqs,
     internalLinks
   });
 });

@@ -7,6 +7,7 @@ const expressLayouts = require('express-ejs-layouts');
 
 const securityMiddleware = require('./middleware/security');
 const redirectMiddleware = require('./middleware/redirects');
+const cacheControl = require('./middleware/cacheControl');
 const utmTracker = require('./middleware/utmTracker');
 const webRoutes = require('./routes/web');
 const SeoService = require('./services/seoService');
@@ -48,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public'), {
 // Middlewares
 app.use(securityMiddleware);
 app.use(redirectMiddleware);
+app.use(cacheControl);
 app.use(utmTracker);
 
 // Web routes
