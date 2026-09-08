@@ -35,14 +35,14 @@ module.exports = function cacheControl(req, res, next) {
 
   // robots.txt / sitemaps regenerate cheaply and should stay fairly fresh.
   if (path === '/robots.txt' || path.startsWith('/sitemap') || path.startsWith('/sitemaps/') || path === '/llms.txt') {
-    res.set('Cache-Control', 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400');
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=1800, stale-while-revalidate=86400');
     return next();
   }
 
-  // Everything else: catalogue HTML. A short positive max-age (some edge
-  // caches, including Hostinger's, refuse to store a response with
-  // max-age=0 even when s-maxage is set); s-maxage lets the shared cache
-  // hold it longer, and a deploy always purges the cache.
-  res.set('Cache-Control', 'public, max-age=60, s-maxage=600, stale-while-revalidate=86400');
+  // Everything else: catalogue HTML. s-maxage keeps it at the Cloudflare edge
+  // (Cache Rule = respect origin); max-age is a short browser cache. Kept to
+  // 5 min so a deploy's changes surface quickly even without an explicit CDN
+  // purge — stale-while-revalidate then refreshes in the background.
+  res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400');
   next();
 };
