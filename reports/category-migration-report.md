@@ -1,6 +1,6 @@
 # RRE International — Category Migration Report
 
-Generated: 2026-08-24T18:26:19.487Z
+Generated: 2026-09-08T11:44:44.985Z
 Sources: JCB Price list month of June 2026.xlsx (master), Jcb catalogue E.pdf (category evidence, via reports/pdf-extract.jsonl)
 
 ## 1. Mapping Method Summary
@@ -15,31 +15,31 @@ Sources: JCB Price list month of June 2026.xlsx (master), Jcb catalogue E.pdf (c
 
 | Category | Internal Cat 1 Codes Contributing | Product Count | With Real Image | Without Image (placeholder) |
 |---|---|---|---|---|
-| Hoses | 130, 210, 3CX, 3DX, 455, 506, 528, 530, ACS, ATH, ATT, BHL, ENG, G1, GEN, HLN, J81, LOD, SSL, TH, TRD, UNCATEGORIZED, VMX | 6695 | 21 | 6674 |
+| Hoses | 130, 210, 3CX, 3DX, 455, 506, 528, 530, ACS, ATH, ATT, BHL, ENG, G1, GEN, HLN, J81, LOD, SSL, TH, TRD, UNCATEGORIZED, VMX | 6695 | 19 | 6676 |
 | Seals & Seal Kits | 210, 3D, 455, 506, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 3565 | 95 | 3470 |
-| Shim / Spacer / Washer | 130, 3DX, 455, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 2824 | 39 | 2785 |
+| Shim / Spacer / Washer | 130, 3DX, 455, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 2824 | 37 | 2787 |
 | Electrical Parts | 3DX, 430, 455, 506, 528, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1906 | 64 | 1842 |
-| Cabin Parts | 130, 3DX, 528, 530, ACS, ATH, ATT, BHL, ENG, G1, G20, GEN, HLN, LOD, SSL, TH, TRD | 1640 | 29 | 1611 |
-| Engine Parts | 3DX, 528, ACS, ATT, BHL, ENG, GEN, HLN, LUB, SSL, TH, TRD, WLS | 1546 | 96 | 1450 |
-| Filters | 3CX, 3DX, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1515 | 39 | 1476 |
-| Pins | 455, 528, 530, ATH, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1252 | 61 | 1191 |
-| Gasket | 528, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 1052 | 16 | 1036 |
+| Cabin Parts | 130, 3DX, 528, 530, ACS, ATH, ATT, BHL, ENG, G1, G20, GEN, HLN, LOD, SSL, TH, TRD | 1640 | 27 | 1613 |
+| Engine Parts | 3DX, 528, ACS, ATT, BHL, ENG, GEN, HLN, LUB, SSL, TH, TRD, WLS | 1546 | 87 | 1459 |
+| Filters | 3CX, 3DX, 528, 530, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1515 | 37 | 1478 |
+| Pins | 455, 528, 530, ATH, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 1252 | 59 | 1193 |
+| Gasket | 528, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD, UNCATEGORIZED | 1052 | 13 | 1039 |
 | Cables | 3DX, 528, ACS, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 941 | 25 | 916 |
-| Bushes / Bearing Liners | 205, 528, ACS, ATT, BHL, ENG, GEN, HLN, J20, SSL, TH, TRD, UNCATEGORIZED | 831 | 77 | 754 |
+| Bushes / Bearing Liners | 205, 528, ACS, ATT, BHL, ENG, GEN, HLN, J20, SSL, TH, TRD, UNCATEGORIZED | 831 | 64 | 767 |
 | Bearings | 210, 528, ACS, ATH, ATT, BHL, ENG, GEN, HLN, SSL, TRD | 697 | 33 | 664 |
 | Transmission & Gear Parts | 3DX, 432, 528, ATT, BHL, ENG, GEN, HLN, LUB, SSL, TH, TRD, UNCATEGORIZED | 682 | 38 | 644 |
 | Hydraulic / Pump Drive | 3DX, 528, 530, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 484 | 12 | 472 |
 | Bucket Parts | 43X, 528, 530, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 476 | 3 | 473 |
 | Greasing | 3DX, 455, 528, ATT, BHL, ENG, GEN, HLN, TH, TRD, UNCATEGORIZED | 364 | 5 | 359 |
 | Light & Lenses | 3DX, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 354 | 7 | 347 |
-| Body Parts | 205, 3DX, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 344 | 34 | 310 |
-| Axle & Wheel Parts | 130, 3DE, 3DX, 528, ATT, BHL, ENG, GEN, HLN, LUB, SSL, TH, TRD | 329 | 48 | 281 |
+| Body Parts | 205, 3DX, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 344 | 33 | 311 |
+| Axle & Wheel Parts | 130, 3DE, 3DX, 528, ATT, BHL, ENG, GEN, HLN, LUB, SSL, TH, TRD | 329 | 47 | 282 |
 | Brake Parts | 3DX, 530, ATT, BHL, ENG, HLN, SSL, TH, TRD | 263 | 21 | 242 |
 | Solenoid | 528, ATT, BHL, ENG, GEN, HLN, SSL, TH, TRD | 250 | 10 | 240 |
 | Wear Pads / Wear Plates | ACS, ATT, BHL, ENG, HLN, LOD, TH, TRD | 202 | 13 | 189 |
-| U.J. Cross / Spider Kit | BHL, HLN, TRD | 54 | 10 | 44 |
+| U.J. Cross / Spider Kit | BHL, HLN, TRD | 54 | 11 | 43 |
 | Column Switch | 528, BHL, HLN, TRD | 27 | 12 | 15 |
-| Torque Converter | BHL, HLN, TRD | 13 | 6 | 7 |
+| Torque Converter | BHL, HLN, TRD | 13 | 0 | 13 |
 | Transmission & Pumps | BHL, HLN, SSL, TRD | 8 | 3 | 5 |
 
 ## 3. PRODUCT REPORT
@@ -51,8 +51,8 @@ Sources: JCB Price list month of June 2026.xlsx (master), Jcb catalogue E.pdf (c
 | Products categorized (catalogue_category assigned) | 28314 |
 | Products needing review (category_status = needs_review) | 56836 |
 | Products excluded from database | 0 |
-| Products with a real source image | 817 |
-| Products on placeholder image | 84333 |
+| Products with a real source image | 775 |
+| Products on placeholder image | 84375 |
 
 **All products remain published and searchable regardless of category_status — none were removed from the database.**
 

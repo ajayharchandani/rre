@@ -35,6 +35,21 @@ function csvEscape(val) {
   return s;
 }
 
+function safeWriteFileSync(filePath, data) {
+  for (let attempt = 0; attempt < 8; attempt++) {
+    try {
+      fs.writeFileSync(filePath, data, 'utf8');
+      return;
+    } catch (err) {
+      if (attempt === 7) throw err;
+      const wait = (attempt + 1) * 600;
+      console.warn(`  [Retry ${attempt + 1}/8] Waiting ${wait}ms to write ${path.basename(filePath)}...`);
+      const start = Date.now();
+      while (Date.now() - start < wait) {}
+    }
+  }
+}
+
 function extractCandidates(filename) {
   const ext = path.extname(filename);
   let base = path.basename(filename, ext).trim();
@@ -346,11 +361,11 @@ async function main() {
 
   // 4. Save updated database
   console.log('\n[4/5] Saving updated catalog databases...');
-  fs.writeFileSync(PRODUCTS_PATH, JSON.stringify(products), 'utf8');
+  safeWriteFileSync(PRODUCTS_PATH, JSON.stringify(products));
   console.log(`  ✓ Updated ${PRODUCTS_PATH}`);
 
   if (productImages.length > 0) {
-    fs.writeFileSync(PRODUCT_IMAGES_PATH, JSON.stringify(productImages), 'utf8');
+    safeWriteFileSync(PRODUCT_IMAGES_PATH, JSON.stringify(productImages));
     console.log(`  ✓ Updated ${PRODUCT_IMAGES_PATH}`);
   }
 
@@ -369,7 +384,7 @@ async function main() {
     },
     items: auditRows
   };
-  fs.writeFileSync(REPORT_JSON, JSON.stringify(reportPayload, null, 2), 'utf8');
+  safeWriteFileSync(REPORT_JSON, JSON.stringify(reportPayload, null, 2));
 
   // CSV Report
   const csvHeaders = ['image_filename,part_number,product_id,product_title,status,action_taken,image_type,image_url,resolution,size_kb,notes'];
@@ -387,7 +402,7 @@ async function main() {
     r.notes
   ].map(csvEscape).join(','));
 
-  fs.writeFileSync(REPORT_CSV, [csvHeaders, ...csvLines].join('\n') + '\n', 'utf8');
+  safeWriteFileSync(REPORT_CSV, [csvHeaders, ...csvLines].join('\n') + '\n');
 
   console.log(`  ✓ JSON Report: ${path.relative(ROOT, REPORT_JSON)}`);
   console.log(`  ✓ CSV Report:  ${path.relative(ROOT, REPORT_CSV)}`);
