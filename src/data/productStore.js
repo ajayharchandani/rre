@@ -95,17 +95,23 @@ function load() {
     }
   }
 
-  // Within each category, products with a real (or studio-generated) photo
-  // sort ahead of ones still on the placeholder — so a buyer browsing a
-  // category sees actual parts first instead of a page of "coming soon"
-  // placeholders with the occasional real photo mixed in. Stable sort
-  // preserves each group's original relative order.
+  // Within each category, sort by image quality so the best-photographed
+  // parts lead: the approved high-resolution Gemini studio images first,
+  // then earlier studio renderings, then cropped catalogue photos, then
+  // "coming soon" placeholders. Array.sort is stable in Node, so every tier
+  // keeps its original relative order — no product/image data is touched,
+  // only display order.
+  const imageRank = (p) => {
+    switch (p.image_status) {
+      case 'studio_generated': return 0; // Gemini-regenerated 1024px assets
+      case 'generated_image':  return 1; // earlier studio renderings
+      case 'enhanced':
+      case 'source_image':     return 2; // cropped from the catalogue PDF
+      default:                 return 3; // placeholder_image / pending / none
+    }
+  };
   for (const categoryProducts of byCatalogueCategorySlug.values()) {
-    categoryProducts.sort((a, b) => {
-      const aHasImage = a.image_status !== 'placeholder_image' ? 0 : 1;
-      const bHasImage = b.image_status !== 'placeholder_image' ? 0 : 1;
-      return aHasImage - bHasImage;
-    });
+    categoryProducts.sort((a, b) => imageRank(a) - imageRank(b));
   }
 
   return { products, catalogueCategories, internalCategoryCodes, legacyRedirects, bySlug, byPartNumberNormalized, byCatalogueCategorySlug };
