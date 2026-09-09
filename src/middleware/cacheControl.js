@@ -40,9 +40,11 @@ module.exports = function cacheControl(req, res, next) {
   }
 
   // Everything else: catalogue HTML. s-maxage keeps it at the Cloudflare edge
-  // (Cache Rule = respect origin); max-age is a short browser cache. Kept to
-  // 5 min so a deploy's changes surface quickly even without an explicit CDN
-  // purge — stale-while-revalidate then refreshes in the background.
-  res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400');
+  // (Cache Rule = respect origin); max-age is a short browser cache. Held for
+  // an hour at the edge so normal traffic (and a cold-cache refill after a
+  // purge) doesn't stampede the Hostinger origin — the deploy flow always
+  // clears the CDN, so content still surfaces immediately on release, and
+  // stale-while-revalidate refreshes anything older in the background.
+  res.set('Cache-Control', 'public, max-age=60, s-maxage=3600, stale-while-revalidate=86400');
   next();
 };
