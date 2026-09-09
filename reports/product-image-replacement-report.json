@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-09-09T05:07:11.779Z",
+  "generated_at": "2026-09-09T10:11:21.972Z",
   "source_folder": "C:\\Users\\harch\\OneDrive\\Desktop\\rre-international\\storage\\source_photos",
   "summary": {
     "total_images_scanned": 1167,
     "part_numbers_found_on_website": 854,
-    "images_replaced": 87,
+    "images_replaced": 99,
     "images_kept_unchanged": 2,
     "part_numbers_not_found_or_ignored": 313,
-    "images_requiring_manual_review_or_batch_generation": 735
+    "images_requiring_manual_review_or_batch_generation": 723
   },
   "items": [
     {
@@ -288,13 +288,13 @@
       "part_number": "20/915901",
       "product_id": "0530b6da788a8774",
       "product_title": "SEAL",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/20-915901-seal.webp",
-      "resolution": "400x400",
-      "size_kb": 47,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 52,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "04-500230.jpg",
@@ -1835,13 +1835,13 @@
       "part_number": "123/06023",
       "product_id": "5b03a5a940b43049",
       "product_title": "STAB HSG. CAP S/S",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-06023-stab-hsg-cap-s-s.webp",
-      "resolution": "400x400",
-      "size_kb": 28,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 22,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-06097123-06751.jpg",
@@ -1887,13 +1887,13 @@
       "part_number": "123/06578",
       "product_id": "31804aeeed90dc3c",
       "product_title": "CAPPRESSURE0.5BAR",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-06578-cappressure05bar.webp",
-      "resolution": "400x400",
-      "size_kb": 59,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 110,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-06730.jpg",
@@ -1913,52 +1913,52 @@
       "part_number": "123/07665",
       "product_id": "20b24fc650549ac4",
       "product_title": "LOWERWEARTPADADJUSTAB",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-07665-lowerweartpadadjustab.webp",
-      "resolution": "400x400",
-      "size_kb": 50,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 67,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-08002_331-20202.jpg",
       "part_number": "331/20202",
       "product_id": "d61b8e2e4c0ea84a",
       "product_title": "BALLJOINT",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/331-20202-balljoint.webp",
-      "resolution": "400x400",
-      "size_kb": 54,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 64,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-08053.jpg",
       "part_number": "123/08053",
       "product_id": "98f29279a2397eaf",
       "product_title": "SIGHT GAUGE",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-08053-sight-gauge.webp",
-      "resolution": "400x400",
-      "size_kb": 55,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 67,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-08053_2.jpg",
       "part_number": "123/08053",
       "product_id": "98f29279a2397eaf",
       "product_title": "SIGHT GAUGE",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-08053-sight-gauge.webp",
-      "resolution": "400x400",
-      "size_kb": 66,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 67,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "123-08089122-67479.jpg",
@@ -1978,13 +1978,13 @@
       "part_number": "123/09018",
       "product_id": "a7134c7d1a3b5403",
       "product_title": "GASKET",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/123-09018-gasket.webp",
-      "resolution": "400x400",
-      "size_kb": 34,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 72,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "125-34900125-35000.jpg",
@@ -2030,39 +2030,39 @@
       "part_number": "126/00200",
       "product_id": "00b9bf54369dbe4b",
       "product_title": "GA FLUID RESERVOIR + washer",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/126-00200-ga-fluid-reservoir-washer.webp",
-      "resolution": "400x400",
-      "size_kb": 48,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 35,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "126-00247.jpg",
       "part_number": "126/00247",
       "product_id": "307ab505b8fd4b2e",
       "product_title": "GA BUCKET LINK",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/126-00247-ga-bucket-link.webp",
-      "resolution": "400x400",
-      "size_kb": 45,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 76,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "126-00248.jpg",
       "part_number": "126/00248",
       "product_id": "9f63f10402f15be7",
       "product_title": "GA BUCKET LINK + SHACKLE",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/126-00248-ga-bucket-link-shackle.webp",
-      "resolution": "400x400",
-      "size_kb": 42,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 76,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "126-02237.jpg",
@@ -2082,13 +2082,13 @@
       "part_number": "126/02253",
       "product_id": "eeab8288de0985c5",
       "product_title": "Link rod",
-      "status": "REQUIRES_MANUAL_REVIEW_OR_BATCH_GENERATION",
-      "action_taken": "Watermarked image identified; queued for Gemini regeneration",
-      "image_type": "SOURCE_WATERMARKED_QUEUED",
+      "status": "REPLACED_GEMINI_AI",
+      "action_taken": "Replaced with Gemini regenerated asset",
+      "image_type": "GEMINI_REGENERATED_STUDIO_ASSET",
       "image_url": "/images/products/126-02253-link-rod.webp",
-      "resolution": "400x400",
-      "size_kb": 27,
-      "notes": "Watermarked with ANTHE logo overlay; ready for AI studio regeneration."
+      "resolution": "1024x1024",
+      "size_kb": 47,
+      "notes": "Watermark completely eliminated; 1024x1024 studio asset deployed."
     },
     {
       "image_filename": "126-12800.jpg",
