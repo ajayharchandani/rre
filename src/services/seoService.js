@@ -134,10 +134,11 @@ class SeoService {
           "@type": "ContactPoint",
           "telephone": organization.contact.phoneDisplay.split('/')[0].trim(),
           "contactType": "export sales desk",
-          "areaServed": ["AE", "SA", "QA", "OM", "KW", "BH", "NG", "KE", "ZA", "ID", "BD", "Worldwide"],
+          "areaServed": ["AE", "SA", "QA", "NG", "KE", "ZA", "Worldwide"],
           "availableLanguage": ["en", "hi"]
         }
       ],
+      "sameAs": Object.values(organization.socialProfiles || {}),
       "hasCredential": {
         "@type": "EducationalOccupationalCredential",
         "name": organization.certification.title,

@@ -44,7 +44,13 @@ const organization = {
       "Automated VCI Anti-Corrosion Oceanic Packaging Barrier Line"
     ]
   },
-  disclaimer: "RRE International is an independent manufacturer and exporter of replacement spare parts. All manufacturer names, symbols, OEM part numbers (including JCB®, Caterpillar®, Case®, Komatsu®, Volvo®, Perkins®), and machine models are registered trademarks of their respective owners and are used purely for reference, identification, and technical compatibility purposes. RRE International is not affiliated with, sponsored by, or an authorized franchise of these equipment manufacturers."
+  disclaimer: "RRE International is an independent manufacturer and exporter of replacement spare parts. All manufacturer names, symbols, OEM part numbers (including JCB®, Caterpillar®, Case®, Komatsu®, Volvo®, Perkins®), and machine models are registered trademarks of their respective owners and are used purely for reference, identification, and technical compatibility purposes. RRE International is not affiliated with, sponsored by, or an authorized franchise of these equipment manufacturers.",
+  // Only verified, live profiles — used for Organization JSON-LD `sameAs` and footer links.
+  // Add entries here (and nowhere else) as new profiles go live (LinkedIn, GBP, YouTube, etc.).
+  socialProfiles: {
+    instagram: "https://www.instagram.com/rreinternational/",
+    indiamart: "https://www.indiamart.com/rre-international/profile.html"
+  }
 };
 
 const categories = [

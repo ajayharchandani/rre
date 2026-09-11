@@ -167,7 +167,7 @@ class InternalLinkingService {
         name: c.name,
         url: `/products/${c.slug}`
       })),
-      exportGuideUrl: `/resources/how-to-import-heavy-equipment-spare-parts-from-india`
+      exportGuideUrl: `/resources/how-to-source-construction-equipment-spare-parts-from-india`
     };
   }
 }

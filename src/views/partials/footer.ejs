@@ -61,8 +61,10 @@
           <li><a href="/spare-parts-exporter">Heavy Equipment Spare Parts Exporter</a></li>
           <li><a href="/export/uae">Spare Parts Exporter to UAE</a></li>
           <li><a href="/export/saudi-arabia">Parts Exporter to Saudi Arabia</a></li>
+          <li><a href="/export/qatar">Parts Exporter to Qatar</a></li>
           <li><a href="/export/nigeria">Parts Exporter to Nigeria</a></li>
           <li><a href="/export/kenya">Parts Exporter to Kenya</a></li>
+          <li><a href="/export/south-africa">Parts Exporter to South Africa</a></li>
           <li><a href="/export-process">Container Shipping & Incoterms</a></li>
           <li><a href="/resources">Technical & Sourcing Guides</a></li>
           <li><a href="/rfq">Submit Bill of Materials (RFQ)</a></li>
@@ -82,12 +84,18 @@
       <div>
         © <%= new Date().getFullYear() %> <%= organization.name %>. All Rights Reserved. ISO 9001:2015 Cert. No: <%= organization.certification.certificateNumber %>.
       </div>
-      <div style="display: flex; gap: 1.25rem;">
+      <div style="display: flex; gap: 1.25rem; flex-wrap: wrap;">
         <a href="/privacy" style="color: #94a3b8;">Privacy Policy</a>
         <a href="/terms" style="color: #94a3b8;">Terms of Sale</a>
         <a href="/disclaimer" style="color: #94a3b8;">Disclaimer</a>
         <a href="/sitemap.xml" style="color: #94a3b8;">XML Sitemap</a>
         <a href="/robots.txt" style="color: #94a3b8;">Robots.txt</a>
+        <% if (organization.socialProfiles && organization.socialProfiles.instagram) { %>
+          <a href="<%= organization.socialProfiles.instagram %>" style="color: #94a3b8;" target="_blank" rel="noopener">Instagram</a>
+        <% } %>
+        <% if (organization.socialProfiles && organization.socialProfiles.indiamart) { %>
+          <a href="<%= organization.socialProfiles.indiamart %>" style="color: #94a3b8;" target="_blank" rel="noopener">IndiaMART</a>
+        <% } %>
       </div>
     </div>
 
